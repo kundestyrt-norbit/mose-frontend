@@ -1,26 +1,55 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import MainRouter from './pages/MainRouter';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { ThemeProvider } from '@mui/material';
+import { theme } from './styles/theme';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fab } from '@fortawesome/free-brands-svg-icons';
+import {
+  faHome,
+  faTemperatureHigh,
+} from '@fortawesome/free-solid-svg-icons';
+import { Provider as StoreProvider } from 'react-redux';
+import store from './store/store';
+import PageLayoutWrapper from './components/layout/PageLayoutWrapper';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { createUploadLink } from 'apollo-upload-client';
 
-function App() {
+const client = new ApolloClient({
+  link: createUploadLink({ uri: '' }),
+  // link: createUploadLink({ uri: 'http://localhost:4000/graphql' }),
+  cache: new InMemoryCache(),
+
+  headers: {
+    mode: 'no-cors',
+  },
+});
+
+/* Add icons from Font Awesome */
+library.add(
+  faHome,
+  faTemperatureHigh
+);
+
+const App = () => {
+  /* Load themes and store in redux */
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ApolloProvider client={client}>
+      <StoreProvider store={store}>
+        <ThemeProvider theme={theme}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <Router>
+              <PageLayoutWrapper>
+                <MainRouter />
+              </PageLayoutWrapper>
+            </Router>
+          </LocalizationProvider>
+        </ThemeProvider>
+      </StoreProvider>
+    </ApolloProvider>
   );
-}
+};
 
 export default App;
