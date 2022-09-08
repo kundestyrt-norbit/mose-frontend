@@ -1,20 +1,18 @@
-import React from 'react';
-import MainRouter from './pages/MainRouter';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material';
-import { theme } from './styles/theme';
-import { library } from '@fortawesome/fontawesome-svg-core';
+import React from 'react'
+import MainRouter from './pages/MainRouter'
+import { BrowserRouter as Router } from 'react-router-dom'
+import { ThemeProvider } from '@mui/material'
+import { theme } from './styles/theme'
+import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faHome,
-  faTemperatureHigh,
-} from '@fortawesome/free-solid-svg-icons';
-import { Provider as StoreProvider } from 'react-redux';
-import store from './store/store';
-import PageLayoutWrapper from './components/layout/PageLayoutWrapper';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import { createUploadLink } from 'apollo-upload-client';
+  faTemperatureHigh
+} from '@fortawesome/free-solid-svg-icons'
+import { Provider as StoreProvider } from 'react-redux'
+import store from './store/store'
+import PageLayoutWrapper from './components/layout/PageLayoutWrapper'
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
+import { createUploadLink } from 'apollo-upload-client'
 
 const client = new ApolloClient({
   link: createUploadLink({ uri: '' }),
@@ -22,17 +20,17 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 
   headers: {
-    mode: 'no-cors',
-  },
-});
+    mode: 'no-cors'
+  }
+})
 
 /* Add icons from Font Awesome */
 library.add(
   faHome,
   faTemperatureHigh
-);
+)
 
-const App = () => {
+const App = (): JSX.Element => {
   /* Load themes and store in redux */
   return (
     <ApolloProvider client={client}>
@@ -46,7 +44,7 @@ const App = () => {
         </ThemeProvider>
       </StoreProvider>
     </ApolloProvider>
-  );
-};
+  )
+}
 
-export default App;
+export default App

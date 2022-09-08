@@ -1,13 +1,13 @@
-import { SET_MENU_OPEN, SET_TOP_BAR_OPEN } from './layout.actionTypes';
+import { SET_MENU_OPEN, SET_TOP_BAR_OPEN } from './layout.actionTypes'
 export interface LayoutState {
-  menuOpen: boolean;
-  topBarOpen: boolean;
+  menuOpen: boolean
+  topBarOpen: boolean
 }
 
 const initialLayoutState: LayoutState = {
   menuOpen: false,
-  topBarOpen: false,
-};
+  topBarOpen: false
+}
 
 /**
  * A reducer for handling the state of the layout.
@@ -20,14 +20,14 @@ export const layoutReducer = (
     case SET_MENU_OPEN:
       return {
         ...state,
-        menuOpen: action.payload.menuOpen,
-      };
+        menuOpen: action.payload.menuOpen
+      }
     case SET_TOP_BAR_OPEN:
       return {
         ...state,
-        topBarOpen: action.payload.topBarOpen,
-      };
+        topBarOpen: action.payload.topBarOpen
+      }
     default:
-      return state;
+      return state
   }
-};
+}

@@ -1,11 +1,9 @@
-import React, { ReactNode } from "react";
-
 /**
  * Does nothing. Just redirection to /sensors
  * Natural page to have in the future
  */
-const HomePage = () => {
-  return <></>;
-};
+const HomePage = (): JSX.Element => {
+  return <></>
+}
 
-export default HomePage;
+export default HomePage

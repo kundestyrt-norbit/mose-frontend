@@ -1,13 +1,13 @@
-import { combineReducers } from 'redux';
-import { LayoutState, layoutReducer } from './layout/layout.reducer';
+import { combineReducers } from 'redux'
+import { LayoutState, layoutReducer } from './layout/layout.reducer'
 
 export interface RootState {
-  layout: LayoutState;
+  layout: LayoutState
 }
 
 /**
  * A combined reducer for handling the state of the application.
  */
 export default combineReducers({
-  layout: layoutReducer,
-});
+  layout: layoutReducer
+})

@@ -1,8 +1,8 @@
-import React from 'react';
-import { Routes as Switch, Route, useLocation } from 'react-router-dom';
-import HomePage from './HomePage/HomePage';
-import NotFoundPage from './NotFoundPage/NotFoundPage';
-import SensorPage from './SensorPage/SensorPage';
+import React from 'react'
+import { Routes as Switch, Route, useLocation } from 'react-router-dom'
+import HomePage from './HomePage/HomePage'
+import NotFoundPage from './NotFoundPage/NotFoundPage'
+import SensorPage from './SensorPage/SensorPage'
 
 export enum Routes {
   HOME = '/',
@@ -18,9 +18,9 @@ export enum RouteFolders {
 /**
  * Includes all pages we can visit in the application.
  */
-const MainRouter = () => {
+const MainRouter = (): JSX.Element => {
   // location holds state of what route is active
-  const location = useLocation();
+  const location = useLocation()
 
   return (
     <Switch location={location} key={location.key}>
@@ -32,7 +32,7 @@ const MainRouter = () => {
       />
       <Route element={<NotFoundPage/>} key={location.key} />
     </Switch>
-  );
-};
+  )
+}
 
-export default MainRouter;
+export default MainRouter

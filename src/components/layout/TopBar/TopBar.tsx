@@ -1,38 +1,34 @@
-import React, { createRef, useEffect, useState } from 'react';
-import { styled } from '@mui/system';
-import { AnimatePresence, motion, Variants } from 'framer-motion';
-import { useLocation } from 'react-router';
-import { Routes } from '../../../pages/MainRouter';
-import { useDispatch, useSelector } from 'react-redux';
-import { setTopBarOpen } from '../../../store/layout/layout.actions';
-import { RootState } from '../../../store';
-import { useClickOutside } from '../../../hooks/useClickOutside';
+import React, { createRef } from 'react'
+import { styled } from '@mui/system'
+import { AnimatePresence, motion, Variants } from 'framer-motion'
+import { useDispatch, useSelector } from 'react-redux'
+import { setTopBarOpen } from '../../../store/layout/layout.actions'
+import { RootState } from '../../../store'
+import { useClickOutside } from '../../../hooks/useClickOutside'
 
 /**
  * The top of the page with searchbar and sidebar button.
  * Will also display filtering options when the searchbar is selected.
  */
-const TopBar = () => {
+const TopBar = (): JSX.Element => {
   // Store
   const topBarOpen: boolean = useSelector(
     (rootState: RootState) => rootState.layout.topBarOpen
-  );
+  )
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const ref = createRef<HTMLDivElement>();
+  const ref = createRef<HTMLDivElement>()
 
-  const closeTopBar = () => topBarOpen && dispatch(setTopBarOpen(false));
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const closeTopBar = () => topBarOpen && dispatch(setTopBarOpen(false))
 
   // Close top bar on click outside
-  useClickOutside(ref, closeTopBar);
+  useClickOutside(ref, closeTopBar)
 
-  const location = useLocation();
-
-  
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-  };
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault()
+  }
 
   return (
     <MainWrapper ref={ref}>
@@ -56,24 +52,24 @@ const TopBar = () => {
         </FormTopLayer>
       </BarFlexWrapper>
     </MainWrapper>
-  );
-};
+  )
+}
 
 const expandedContentVariants: Variants = {
   show: {
-    opacity: 1,
+    opacity: 1
   },
   hide: {
-    opacity: 0,
-  },
-};
+    opacity: 0
+  }
+}
 
-const BarFlexWrapper = styled('div')``;
+const BarFlexWrapper = styled('div')``
 
 const FormTopLayer = styled('form')`
   position: relative;
   z-index: 10;
-`;
+`
 
 const ExpandedContentWrapper = styled(motion.div)`
   position: absolute;
@@ -86,17 +82,17 @@ const ExpandedContentWrapper = styled(motion.div)`
     margin: 0;
   }
   background-color: ${({ theme }) => theme.palette.background.paper};
-`;
+`
 
 const TopBarInnerWrapper = styled('div')`
   border-bottom: 1px solid ${({ theme }) => theme.palette.border.main};
-`;
+`
 
 const MainWrapper = styled('div')`
   position: sticky;
   top: 0;
   z-index: 90;
   background-color: ${({ theme }) => theme.palette.background.default};
-`;
+`
 
-export default TopBar;
+export default TopBar

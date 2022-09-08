@@ -1,47 +1,48 @@
-import React from 'react';
-import { styled } from '@mui/system';
-import { LinkWithIconGridRouter } from '../../elements/LinkWithIcon';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { RouteFolders, Routes } from '../../../pages/MainRouter';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../store';
-import { setMenuOpen } from '../../../store/layout/layout.actions';
+import React from 'react'
+import { styled } from '@mui/system'
+import { LinkWithIconGridRouter } from '../../elements/LinkWithIcon'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { RouteFolders, Routes } from '../../../pages/MainRouter'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../../../store'
+import { setMenuOpen } from '../../../store/layout/layout.actions'
 
 /**
  * The sidebar on the left side of the screen containing links for navigating the pages.
  * Can be opened and closed when using narrow screen or window.
  */
-const SideBar = () => {
-  const dispatch = useDispatch();
+const SideBar = (): JSX.Element => {
+  const dispatch = useDispatch()
   const menuOpen = useSelector(
     (rootState: RootState) => rootState.layout.menuOpen
-  );
+  )
 
-  const closeMenu = () => dispatch(setMenuOpen(false));
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const closeMenu = () => dispatch(setMenuOpen(false))
 
   return (
     <MainWrapper>
       <SideBarOuterWrapper open={menuOpen}>
         <SideBarInnerWrapper>
           <LinkWithIconGridRouter to={RouteFolders.BASE} onClick={closeMenu}>
-            <FontAwesomeIcon icon={["fas", "home"]} /> <span>Home</span>
+            <FontAwesomeIcon icon={['fas', 'home']} /> <span>Home</span>
           </LinkWithIconGridRouter>
           <LinkWithIconGridRouter to={Routes.SENSOR} onClick={closeMenu}>
-          <FontAwesomeIcon icon={["fas", "temperature-high"]} />{' '}
+          <FontAwesomeIcon icon={['fas', 'temperature-high']} />{' '}
             <span>Sensors</span>
           </LinkWithIconGridRouter>
         </SideBarInnerWrapper>
       </SideBarOuterWrapper>
       {menuOpen && <Backdrop onClick={closeMenu} />}
     </MainWrapper>
-  );
-};
+  )
+}
 
 const MainWrapper = styled('div')`
   position: sticky;
   top: 0;
   z-index: 150;
-`;
+`
 
 const Backdrop = styled('div')`
   position: fixed;
@@ -50,7 +51,7 @@ const Backdrop = styled('div')`
   height: var(--100vh);
   width: 100%;
   z-index: -1;
-`;
+`
 
 const SideBarInnerWrapper = styled('div')`
   padding: 2rem;
@@ -62,7 +63,7 @@ const SideBarInnerWrapper = styled('div')`
   & > * {
     margin: 2rem 0;
   }
-`;
+`
 
 const SideBarOuterWrapper = styled('nav')<{ open: boolean }>`
   --sidebar-width: 14rem;
@@ -93,6 +94,6 @@ const SideBarOuterWrapper = styled('nav')<{ open: boolean }>`
     `
         : ''}
   }
-`;
+`
 
-export default SideBar;
+export default SideBar
