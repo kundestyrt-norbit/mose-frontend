@@ -14,7 +14,7 @@ interface TestProps {
   gqlMocks?: any;
   url: string;
   params?: any;
-  isPage: boolean;
+  isPage?: boolean;
   store?: any;
 }
 

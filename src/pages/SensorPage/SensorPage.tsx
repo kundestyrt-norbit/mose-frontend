@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import SensorPageTemplate from './SensorPageTemplate';
 import MainContentAnimationWrapper from '../../animations/MainContentAnimationWrapper';
 import { Routes } from '../MainRouter';
@@ -11,8 +11,8 @@ const SensorsPage = () => {
 
   const loading = true;
   const error = true;
-  const history = useHistory();
-  if (!error && !loading) history.push(Routes.NOT_FOUND);
+  const navigate = useNavigate();
+  if (!error && !loading) navigate(Routes.NOT_FOUND);
 
   return (
     <MainContentAnimationWrapper condition={!loading}>

@@ -4,7 +4,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 import { theme } from './styles/theme';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { fab } from '@fortawesome/free-brands-svg-icons';
 import {
   faHome,
   faTemperatureHigh,
@@ -39,13 +38,11 @@ const App = () => {
     <ApolloProvider client={client}>
       <StoreProvider store={store}>
         <ThemeProvider theme={theme}>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
             <Router>
               <PageLayoutWrapper>
                 <MainRouter />
               </PageLayoutWrapper>
             </Router>
-          </LocalizationProvider>
         </ThemeProvider>
       </StoreProvider>
     </ApolloProvider>

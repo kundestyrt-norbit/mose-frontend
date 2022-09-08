@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, useLocation } from 'react-router-dom';
+import { Routes as Switch, Route, useLocation } from 'react-router-dom';
 import HomePage from './HomePage/HomePage';
 import NotFoundPage from './NotFoundPage/NotFoundPage';
 import SensorPage from './SensorPage/SensorPage';
@@ -24,13 +24,13 @@ const MainRouter = () => {
 
   return (
     <Switch location={location} key={location.key}>
-      <Route exact path={Routes.HOME} component={HomePage} key={location.key} />
+      <Route path={Routes.HOME} element={<HomePage/>} key={location.key} />
       <Route
         path={Routes.SENSOR}
-        component={SensorPage}
+        element={<SensorPage/>}
         key={location.key}
       />
-      <Route component={NotFoundPage} key={location.key} />
+      <Route element={<NotFoundPage/>} key={location.key} />
     </Switch>
   );
 };
