@@ -1,26 +1,28 @@
-import React from 'react';
-import { styled } from '@mui/system';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../store';
-import { setMenuOpen } from '../../../store/layout/layout.actions';
+import React from 'react'
+import { styled } from '@mui/system'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../../../store'
+import { setMenuOpen } from '../../../store/layout/layout.actions'
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface HamburgerProps {}
 
 /**
  * Button for opening and closing the sidebar.
  */
-const Hamburger = ({}: HamburgerProps) => {
-  const dispatch = useDispatch();
+// eslint-disable-next-line no-empty-pattern
+const Hamburger = ({}: HamburgerProps): JSX.Element => {
+  const dispatch = useDispatch()
   const menuOpen = useSelector(
     (rootState: RootState) => rootState.layout.menuOpen
-  );
+  )
   return (
     <HamburgerWrapper
       tabIndex={0}
       open={menuOpen}
       onClick={() => dispatch(setMenuOpen(!menuOpen))}
       onKeyDown={(e) => {
-        if (e.key === 'Enter') dispatch(setMenuOpen(!menuOpen));
+        if (e.key === 'Enter') dispatch(setMenuOpen(!menuOpen))
       }}
       aria-label="hamburger menu button"
       data-testid="hamburger-button"
@@ -30,8 +32,8 @@ const Hamburger = ({}: HamburgerProps) => {
       <span />
       <span />
     </HamburgerWrapper>
-  );
-};
+  )
+}
 
 const HamburgerWrapper = styled('div')<{ open: boolean }>`
   font-size: 2rem;
@@ -86,6 +88,6 @@ const HamburgerWrapper = styled('div')<{ open: boolean }>`
   ${({ theme }) => theme.breakpoints.up('md')} {
     display: none;
   }
-`;
+`
 
-export default Hamburger;
+export default Hamburger

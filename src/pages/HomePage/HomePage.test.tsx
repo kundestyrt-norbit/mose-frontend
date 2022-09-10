@@ -1,6 +1,6 @@
-import { TestProvider } from '../../utils/test-utils';
-import HomePage from './HomePage';
-import renderer from 'react-test-renderer';
+import { TestProvider } from '../../utils/test-utils'
+import HomePage from './HomePage'
+import renderer from 'react-test-renderer'
 
 describe('HomePage', () => {
   test('rendered successfully', () => {
@@ -10,8 +10,8 @@ describe('HomePage', () => {
           <HomePage />
         </TestProvider>
       )
-      .toJSON();
+      .toJSON()
 
-    expect(tree).toMatchSnapshot();
-  });
-});
+    expect(tree).toMatchSnapshot()
+  })
+})

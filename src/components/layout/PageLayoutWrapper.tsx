@@ -1,32 +1,30 @@
-import { styled } from '@mui/system';
-import React, { useEffect } from 'react';
-import Div100vh from 'react-div-100vh';
-import { SectionsWrapper } from '../elements/Section';
-import TopBar from './TopBar/TopBar';
-import SideBar from './SideBar/SideBar';
-import Hamburger from './TopBar/Hamburger';
+import { styled } from '@mui/system'
+import React, { useEffect } from 'react'
+import { SectionsWrapper } from '../elements/Section'
+import TopBar from './TopBar/TopBar'
+import SideBar from './SideBar/SideBar'
+import Hamburger from './TopBar/Hamburger'
 
 interface PageLayoutWrapperProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 /**
  * Wrapper for including sidebar and topbar in page.
  */
-const PageLayoutWrapper = ({ children }: PageLayoutWrapperProps) => {
-
+const PageLayoutWrapper = ({ children }: PageLayoutWrapperProps): JSX.Element => {
   // Use effect for setting height values on resize
   useEffect(() => {
-    const handleResize = () => {
-      document.body.setAttribute('style', `--100vh: ${window.innerHeight}px;`);
-    };
+    const handleResize = (): void => {
+      document.body.setAttribute('style', `--100vh: ${window.innerHeight}px;`)
+    }
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize)
 
     // Trigger on initial load
-    handleResize();
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    handleResize()
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   return (
     <FullPageWrapper>
@@ -39,10 +37,10 @@ const PageLayoutWrapper = ({ children }: PageLayoutWrapperProps) => {
         </main>
       </div>
     </FullPageWrapper>
-  );
-};
+  )
+}
 
-const ChildrenInnerWrapper = styled(SectionsWrapper)``;
+const ChildrenInnerWrapper = styled(SectionsWrapper)``
 
 const FullPageWrapper = styled('div')`
   height: var(--100vh);
@@ -51,6 +49,6 @@ const FullPageWrapper = styled('div')`
 
   overflow: auto;
   position: relative;
-`;
+`
 
-export default PageLayoutWrapper;
+export default PageLayoutWrapper

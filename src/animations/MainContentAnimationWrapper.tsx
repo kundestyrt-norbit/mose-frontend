@@ -1,9 +1,9 @@
-import { AnimatePresence, motion } from 'framer-motion';
-import React from 'react';
+import { AnimatePresence, motion } from 'framer-motion'
+import React from 'react'
 
 interface MainContentAnimationWrapperProps {
-  condition?: boolean;
-  children: React.ReactNode;
+  condition?: boolean
+  children: React.ReactNode
 }
 
 /**
@@ -11,8 +11,8 @@ interface MainContentAnimationWrapperProps {
  */
 const MainContentAnimationWrapper = ({
   condition,
-  children,
-}: MainContentAnimationWrapperProps) => {
+  children
+}: MainContentAnimationWrapperProps): JSX.Element => {
   return (
     <AnimatePresence>
       {(condition === undefined || condition) && (
@@ -26,7 +26,7 @@ const MainContentAnimationWrapper = ({
         </motion.div>
       )}
     </AnimatePresence>
-  );
-};
+  )
+}
 
-export default MainContentAnimationWrapper;
+export default MainContentAnimationWrapper

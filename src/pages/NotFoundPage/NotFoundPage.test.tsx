@@ -1,6 +1,6 @@
-import { TestProvider } from '../../utils/test-utils';
-import renderer from 'react-test-renderer';
-import NotFoundPage from './NotFoundPage';
+import { TestProvider } from '../../utils/test-utils'
+import renderer from 'react-test-renderer'
+import NotFoundPage from './NotFoundPage'
 
 describe('NotFoundPage', () => {
   test('rendered successfully', () => {
@@ -10,8 +10,8 @@ describe('NotFoundPage', () => {
           <NotFoundPage />
         </TestProvider>
       )
-      .toJSON();
+      .toJSON()
 
-    expect(tree).toMatchSnapshot();
-  });
-});
+    expect(tree).toMatchSnapshot()
+  })
+})
