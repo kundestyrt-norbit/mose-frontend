@@ -21,6 +21,11 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: DISABLE_ESLINT_PLUGIN=true npm run build
+    - name: Share artifact inside workflow
+      uses: actions/upload-artifact@v1
+      with:
+        name: react-github-actions-build
+        path: build
   
   lint:
     runs-on: ubuntu-latest
@@ -33,3 +38,22 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run lint
+    
+  deploy:
+    runs-on: ubuntu-lates
+    needs: [build, lint]
+    if: github.ref == 'refs/heads/main'
+    environment: Deploy
+    steps:
+    - name: Get artifact
+      uses: actions/download-artifact@v1
+      with:
+        name: react-github-actions-build
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+    - name: Deploy app build to S3 bucket
+      run: aws s3 sync ./build/ s3://${{ env.S3_BUCKET_NAME }} --delete
