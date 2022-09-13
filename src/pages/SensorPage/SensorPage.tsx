@@ -15,6 +15,7 @@ const SensorsPage = (): JSX.Element => {
 
   return (
     <MainContentAnimationWrapper condition={!loading}>
+      <h1>Hei</h1>
       {!loading
         ? (
         <SensorPageTemplate
