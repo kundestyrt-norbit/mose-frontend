@@ -14,7 +14,7 @@ const SensorsPage = (): JSX.Element => {
   if (!error && !loading) navigate(Routes.NOT_FOUND)
 
   return (
-    <MainContentAnimationWrapper condition={!loading}>
+    <MainContentAnimationWrapper condition={loading}>
       <h1>Hei</h1>
       {!loading
         ? (
