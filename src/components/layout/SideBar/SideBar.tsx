@@ -1,99 +1,169 @@
-import React from 'react'
-import { styled } from '@mui/system'
-import { LinkWithIconGridRouter } from '../../elements/LinkWithIcon'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { RouteFolders, Routes } from '../../../pages/MainRouter'
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '../../../store'
-import { setMenuOpen } from '../../../store/layout/layout.actions'
+import React, { useEffect } from 'react'
+import { useRouter } from 'next/router'
+import {
+  Box,
+  Button,
+  Divider,
+  Drawer,
+  Stack,
+  SwipeableDrawer,
+  Theme,
+  Typography,
+  useMediaQuery
+} from '@mui/material'
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'
+import Group from '@mui/icons-material/Group'
+import NavItem from '../NavItem'
+import Link from 'next/link'
 
-/**
- * The sidebar on the left side of the screen containing links for navigating the pages.
- * Can be opened and closed when using narrow screen or window.
- */
-const SideBar = (): JSX.Element => {
-  const dispatch = useDispatch()
-  const menuOpen = useSelector(
-    (rootState: RootState) => rootState.layout.menuOpen
+interface SidebarProps {
+  toggleDrawer: (
+    open: boolean
+  ) => (event: React.KeyboardEvent | React.MouseEvent) => void
+  open: boolean
+}
+
+const Sidebar = ({ open, toggleDrawer }: SidebarProps): JSX.Element => {
+  const iOS =
+    typeof navigator !== 'undefined' &&
+    /iPad|iPhone|iPod/.test(navigator.userAgent)
+
+  const router = useRouter()
+  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'), {
+    defaultMatches: true,
+    noSsr: false
+  })
+
+  useEffect(
+    /**
+     * Close on initial render
+     */
+    () => {
+      if (!router.isReady) {
+        return
+      }
+
+      if (open) {
+        toggleDrawer(false)
+      }
+    },
+    [router.asPath]
   )
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  const closeMenu = () => dispatch(setMenuOpen(false))
+  const content = (
+    <Stack sx={{ height: '100%' }}>
+      <div>
+        <Box sx={{ p: 3 }}>
+          {/* <Link href="/">Hello</Link> */}
+        </Box>
+      </div>
+      <Divider
+        sx={{
+          borderColor: '#2D3748',
+          my: 3
+        }}
+      />
+      <Stack sx={{ flexGrow: 1 }} spacing={2} px={2}>
+        {items.map((item) => (
+          <NavItem
+            key={item.title}
+            icon={item.icon}
+            href={item.href}
+            title={item.title}
+          />
+        ))}
+      </Stack>
+      <Divider sx={{ borderColor: '#2D3748' }} />
+      <Box
+        sx={{
+          px: 2,
+          py: 3
+        }}
+      >
+        <Typography color="neutral.100" variant="subtitle2">
+          Hva syns du om nettsiden?
+        </Typography>
+        <Typography color="neutral.500" variant="body2">
+          Send oss ris eller ros her.
+        </Typography>
+        <Link href="/">
+          <Button
+            color="secondary"
+            endIcon={<OpenInNewIcon />}
+            fullWidth
+            sx={{ mt: 2 }}
+            variant="contained"
+          >
+            Gi tilbakemelding her
+          </Button>
+        </Link>
+      </Box>
+    </Stack>
+  )
+
+  if (lgUp) {
+    return (
+      <Drawer
+        anchor="left"
+        open
+        PaperProps={{
+          sx: {
+            backgroundColor: 'neutral.900',
+            color: '#FFFFFF',
+            width: 280
+          }
+        }}
+        variant="permanent"
+      >
+        {content}
+      </Drawer>
+    )
+  }
 
   return (
-    <MainWrapper>
-      <SideBarOuterWrapper open={menuOpen}>
-        <SideBarInnerWrapper>
-          <LinkWithIconGridRouter to={RouteFolders.BASE} onClick={closeMenu}>
-            <FontAwesomeIcon icon={['fas', 'home']} /> <span>Home</span>
-          </LinkWithIconGridRouter>
-          <LinkWithIconGridRouter to={Routes.SENSOR} onClick={closeMenu}>
-          <FontAwesomeIcon icon={['fas', 'temperature-high']} />{' '}
-            <span>Sensors</span>
-          </LinkWithIconGridRouter>
-        </SideBarInnerWrapper>
-      </SideBarOuterWrapper>
-      {menuOpen && <Backdrop onClick={closeMenu} />}
-    </MainWrapper>
+    <SwipeableDrawer
+      anchor="left"
+      onClose={toggleDrawer(false)}
+      onOpen={toggleDrawer(true)}
+      open={open}
+      PaperProps={{
+        sx: {
+          backgroundColor: 'neutral.900',
+          color: '#FFFFFF',
+          width: 280
+        }
+      }}
+      sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
+      variant="temporary"
+      disableBackdropTransition={!iOS}
+      disableDiscovery={iOS}
+    >
+      {content}
+    </SwipeableDrawer>
   )
 }
 
-const MainWrapper = styled('div')`
-  position: sticky;
-  top: 0;
-  z-index: 150;
-`
-
-const Backdrop = styled('div')`
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: var(--100vh);
-  width: 100%;
-  z-index: -1;
-`
-
-const SideBarInnerWrapper = styled('div')`
-  padding: 2rem;
-  background-color: ${({ theme }) => theme.palette.background.paper};
-  flex-grow: 1;
-  border-right: 1px solid ${({ theme }) => theme.palette.border.main};
-  font-size: 1.2rem;
-
-  & > * {
-    margin: 2rem 0;
+const items = [
+  {
+    href: '/',
+    icon: <Group fontSize="small" />,
+    title: 'home'
+  },
+  {
+    href: '/sensor',
+    icon: <Group fontSize="small" />,
+    title: 'sensors'
+  },
+  {
+    href: '/login',
+    icon: <Group fontSize="small" />,
+    title: 'logIn'
+  },
+  {
+    href: '/404',
+    icon: <Group fontSize="small" />,
+    title: 'Error'
   }
-`
+]
 
-const SideBarOuterWrapper = styled('nav')<{ open: boolean }>`
-  --sidebar-width: 14rem;
-
-  position: sticky;
-  top: 0;
-
-  display: flex;
-  flex-shrink: 0;
-  overflow: auto;
-
-  height: 100%;
-  max-height: 100%;
-  width: var(--sidebar-width);
-
-  transition: transform 200ms ease;
-  word-break: break-all;
-
-  ${({ theme }) => theme.breakpoints.down('md')} {
-    transform: translateX(0);
-    margin-left: calc(-1 * var(--sidebar-width));
-    z-index: 100;
-
-    ${(props) =>
-      props.open
-        ? `
-      transform: translateX(var(--sidebar-width));
-    `
-        : ''}
-  }
-`
-
-export default SideBar
+export default Sidebar
