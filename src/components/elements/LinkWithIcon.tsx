@@ -1,6 +1,6 @@
-import React, { HTMLProps, ReactNode } from 'react'
+import { HTMLProps, ReactNode } from 'react'
 import { styled } from '@mui/system'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 
 interface LinkWithIconProps extends HTMLProps<HTMLLinkElement> {
   icon: ReactNode

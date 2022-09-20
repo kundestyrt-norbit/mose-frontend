@@ -1,5 +1,5 @@
 import { styled } from '@mui/system'
-import { Link as RouterLink } from 'react-router-dom'
+import RouterLink from 'next/link'
 
 export const Link = styled(RouterLink)``
 
