@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-mose-dev-174321-authRole",
+      "UnauthRoleArn": "arn:aws:iam::393764067033:role/amplify-mose-dev-174321-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::393764067033:role/amplify-mose-dev-174321-authRole",
+      "Region": "eu-north-1",
+      "DeploymentBucketName": "amplify-mose-dev-174321-deployment",
+      "UnauthRoleName": "amplify-mose-dev-174321-unauthRole",
+      "StackName": "amplify-mose-dev-174321",
+      "StackId": "arn:aws:cloudformation:eu-north-1:393764067033:stack/amplify-mose-dev-174321/f5b60680-38fa-11ed-a504-06320126e046",
+      "AmplifyAppId": "dy3ferfhisreu"
+    },
+    "categories": {
+      "auth": {
+        "mosef1609aa3": {}
+      }
+    }
+  }
+}
