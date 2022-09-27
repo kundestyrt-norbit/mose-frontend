@@ -6,7 +6,7 @@ import PageLayoutWrapper from '../components/layout/PageLayoutWrapper'
  * Does nothing. Just redirection to /sensors
  * Natural page to have in the future
  */
-const hei: NextPage = () => {
+const MapPage: NextPage = () => {
   return (
     <PageLayoutWrapper>
       <SectionsWrapper>hei</SectionsWrapper>
@@ -14,4 +14,4 @@ const hei: NextPage = () => {
   )
 }
 
-export default hei
+export default MapPage
