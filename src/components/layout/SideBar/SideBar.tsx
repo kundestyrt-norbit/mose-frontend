@@ -53,9 +53,7 @@ const Sidebar = ({ open, toggleDrawer }: SidebarProps): JSX.Element => {
   const content = (
     <Stack sx={{ height: '100%' }}>
       <div>
-        <Box sx={{ p: 3 }}>
-          {/* <Link href="/">Hello</Link> */}
-        </Box>
+        <Box sx={{ p: 3 }}>{/* <Link href="/">Hello</Link> */}</Box>
       </div>
       <Divider
         sx={{

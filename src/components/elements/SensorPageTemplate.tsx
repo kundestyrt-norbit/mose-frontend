@@ -7,11 +7,10 @@ interface SensorPageTemplateProps {
 /**
  * Includes the header of the sensor and the information about the sensor.
  */
-const SensorPageTemplate = ({ sensor }: SensorPageTemplateProps): JSX.Element => {
-  return (
-    <div>
-    </div>
-  )
+const SensorPageTemplate = ({
+  sensor
+}: SensorPageTemplateProps): JSX.Element => {
+  return <div></div>
 }
 
 export default SensorPageTemplate

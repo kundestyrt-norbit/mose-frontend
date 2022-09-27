@@ -1,7 +1,10 @@
 import { SectionsWrapper } from '../components/elements/Section'
 import SensorPageTemplate from '../components/elements/SensorPageTemplate'
 import PageLayoutWrapper from '../components/layout/PageLayoutWrapper'
-import { TimestreamWriteClient, ListDatabasesCommand } from '@aws-sdk/client-timestream-write'
+import {
+  TimestreamWriteClient,
+  ListDatabasesCommand
+} from '@aws-sdk/client-timestream-write'
 
 /**
  * Page for displaying information about a sensor.
@@ -13,14 +16,13 @@ declare const process: {
     AWS_SECRET_ACCESS_KEY: string
   }
 }
-const writeClient = new TimestreamWriteClient(
-  {
-    region: 'eu-west-1',
-    credentials: {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-    }
-  })
+const writeClient = new TimestreamWriteClient({
+  region: 'eu-west-1',
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+  }
+})
 
 interface Params {
   MaxResults: number
@@ -31,7 +33,10 @@ const params: Params = {
 }
 const command = new ListDatabasesCommand(params)
 
-async function getDatabasesList (nextToken: string | null, databaseList: string[]): Promise<string[]> {
+async function getDatabasesList (
+  nextToken: string | null,
+  databaseList: string[]
+): Promise<string[]> {
   if (nextToken !== null) {
     params.NextToken = nextToken
   }
@@ -59,12 +64,14 @@ const SensorsPage = ({ data }: any): JSX.Element => {
   return (
     <PageLayoutWrapper>
       <SectionsWrapper>
-        <SensorPageTemplate/>
+        <SensorPageTemplate />
       </SectionsWrapper>
     </PageLayoutWrapper>
   )
 }
-export async function getServerSideProps (): Promise<{props: {data: string[] } }> {
+export async function getServerSideProps (): Promise<{
+  props: { data: string[] }
+}> {
   // Fetch data from external API
   const data = await getDatabasesList(null, [])
 
