@@ -7,11 +7,36 @@ import { CacheProvider, EmotionCache } from '@emotion/react'
 import { theme } from '../styles/theme'
 import createEmotionCache from '../utils/createEmotionCache'
 import Amplify from 'aws-amplify'
+import { withSSRContext } from 'aws-amplify'
+import { withAuthenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
 import config from '../aws-exports'
+
+// Configure SSR with Amplify
 Amplify.configure({
   ...config,
   ssr: true
 })
+
+// Auth from SSR
+const { Auth } = withSSRContext();
+
+// Configure Auth
+Auth.configure({
+  region: process.env.AUTH_REGION,
+  userPoolId: process.env.AUTH_POOL,
+  userPoolWebClientId: process.env.AUTH_POOL_CLIENT,
+  mandatorySignIn: true,
+  // Set this only if you wish to use cookies to storage otherwise ignore it
+  cookieStorage: {
+    domain: 'localhost',
+    // Set true if is a domain with https. For localhost set it to false
+    secure: false,
+    path: '/',
+    expires: 2,
+  },
+})
+
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
 
@@ -19,7 +44,7 @@ interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache
 }
 
-const MyApp = (props: MyAppProps): JSX.Element => {
+const MyApp = (props: MyAppProps, { signOut, user }): JSX.Element => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
   return (
     <CacheProvider value={emotionCache}>
@@ -34,4 +59,4 @@ const MyApp = (props: MyAppProps): JSX.Element => {
     </CacheProvider>
   )
 }
-export default MyApp
+export default withAuthenticator(MyApp)
