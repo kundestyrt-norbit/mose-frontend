@@ -71,8 +71,8 @@
     "dev": "next dev",
     "start": "next start",
     "build": "tsc && next build",
-    "lint": "eslint src/**/*.ts src/**/*.tsx",
-    "lint:fix": "eslint src/**/*.ts src/**/*.tsx --fix",
+    "lint": "eslint \"src/**/*.ts\" \"src/**/*.tsx\"",
+    "lint:fix": "eslint \"src/**/*.ts\" \"src/**/*.tsx\" --fix",
     "cypress:open": "cypress open"
   },
   "browserslist": {
