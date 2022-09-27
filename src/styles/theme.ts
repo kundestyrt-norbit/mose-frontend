@@ -1,11 +1,11 @@
-import { createTheme } from '@mui/material'
+import { createTheme } from "@mui/material";
 
-declare module '@mui/material/styles/createPalette' {
+declare module "@mui/material/styles/createPalette" {
   interface Palette {
-    border: Palette['primary']
+    border: Palette["primary"];
   }
   interface PaletteOptions {
-    border: PaletteOptions['primary']
+    border: PaletteOptions["primary"];
   }
 }
 
@@ -14,18 +14,18 @@ declare module '@mui/material/styles/createPalette' {
  */
 export const theme = createTheme({
   palette: {
-    mode: 'dark',
-    primary: { main: '#ffbf00', dark: '#493d17' },
+    mode: "dark",
+    primary: { main: "#ffbf00", dark: "#493d17" },
     border: {
-      main: '#000'
+      main: "#000",
     },
     background: {
-      paper: '#202020',
-      default: '#151515' // '#151515',
+      paper: "#202020",
+      default: "#151515", // '#151515',
     },
-    text: {}
+    text: {},
   },
   typography: {
-    fontFamily: ['Lato', 'Sans'].join(',')
-  }
-})
+    fontFamily: ["Lato", "Sans"].join(","),
+  },
+});

@@ -1,6 +1,6 @@
-import { Button } from '@mui/material';
-import React, { ReactNode } from 'react';
-import Link from 'next/link';
+import { Button } from '@mui/material'
+import React, { ReactNode } from 'react'
+import Link from 'next/link'
 
 interface NavItemProps {
   href: string;
@@ -18,4 +18,4 @@ const NavItem = ({ href, icon, title }: NavItemProps): JSX.Element => {
   );
 };
 
-export default NavItem;
+export default NavItem

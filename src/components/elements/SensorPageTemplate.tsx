@@ -1,4 +1,4 @@
-import { Sensor } from '../../api/types';
+import { Sensor } from '../../api/types'
 
 interface SensorPageTemplateProps {
   sensor?: Sensor;
@@ -13,4 +13,4 @@ const SensorPageTemplate = ({
   return <div></div>;
 };
 
-export default SensorPageTemplate;
+export default SensorPageTemplate

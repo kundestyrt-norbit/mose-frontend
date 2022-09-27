@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { useRouter } from "next/router";
+import React, { useEffect } from "react"
+import { useRouter } from "next/router"
 import {
   Box,
   Button,
@@ -164,4 +164,4 @@ const items = [
   },
 ];
 
-export default Sidebar;
+export default Sidebar

@@ -1,6 +1,6 @@
-import { HTMLProps, ReactNode } from 'react';
-import { styled } from '@mui/system';
-import Link from 'next/link';
+import { HTMLProps, ReactNode } from 'react'
+import { styled } from '@mui/system'
+import Link from 'next/link'
 
 interface LinkWithIconProps extends HTMLProps<HTMLLinkElement> {
   icon: ReactNode;
@@ -62,4 +62,4 @@ const LinkWithIconGrid = styled('a')`
   }
 `;
 
-export default LinkWithIcon;
+export default LinkWithIcon

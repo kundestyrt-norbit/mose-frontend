@@ -1,8 +1,8 @@
-import { styled } from '@mui/system';
-import React, { useEffect, useState } from 'react';
-import { Box } from '@mui/material';
-import Navbar from './NavBar/NavBar';
-import Sidebar from './SideBar/SideBar';
+import { styled } from '@mui/system'
+import React, { useEffect, useState } from 'react'
+import { Box } from '@mui/material'
+import Navbar from './NavBar/NavBar'
+import Sidebar from './SideBar/SideBar'
 interface PageLayoutWrapperProps {
   children: React.ReactNode;
 }
@@ -77,4 +77,4 @@ const FullPageWrapper = styled('div')`
   position: relative;
 `;
 
-export default PageLayoutWrapper;
+export default PageLayoutWrapper

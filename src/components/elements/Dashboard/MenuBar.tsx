@@ -1,8 +1,8 @@
-import { Button, Divider } from '@mui/material';
-import React, { ReactNode } from 'react';
-import Link from 'next/link';
-import { styled } from '@mui/system';
-import Router, { useRouter } from 'next/router';
+import { Button, Divider } from '@mui/material'
+import React, { ReactNode } from 'react'
+import Link from 'next/link'
+import { styled } from '@mui/system'
+import Router, { useRouter } from 'next/router'
 
 const MenuBar = (): JSX.Element => {
   const router = useRouter();
