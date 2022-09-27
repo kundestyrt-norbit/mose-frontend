@@ -38,7 +38,7 @@ const PageLayoutWrapper = ({ children }: PageLayoutWrapperProps): JSX.Element =>
   return (
     <FullPageWrapper>
       <Navbar onSidebarOpen={() => setSidebarIsOpen(true)} />
-      <Sidebar toggleDrawer={toggleDrawer} open={sidebarIsOpen} />
+      {/* <Sidebar toggleDrawer={toggleDrawer} open={sidebarIsOpen} /> */}
       <PageLayoutRoot>
         <Box
           sx={{
