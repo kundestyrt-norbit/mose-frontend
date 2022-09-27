@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import { useRouter } from 'next/router'
+import React, { useEffect } from "react";
+import { useRouter } from "next/router";
 import {
   Box,
   Button,
@@ -9,30 +9,30 @@ import {
   SwipeableDrawer,
   Theme,
   Typography,
-  useMediaQuery
-} from '@mui/material'
-import OpenInNewIcon from '@mui/icons-material/OpenInNew'
-import Group from '@mui/icons-material/Group'
-import NavItem from '../NavItem'
-import Link from 'next/link'
+  useMediaQuery,
+} from "@mui/material";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import Group from "@mui/icons-material/Group";
+import NavItem from "../NavItem";
+import Link from "next/link";
 
 interface SidebarProps {
   toggleDrawer: (
     open: boolean
-  ) => (event: React.KeyboardEvent | React.MouseEvent) => void
-  open: boolean
+  ) => (event: React.KeyboardEvent | React.MouseEvent) => void;
+  open: boolean;
 }
 
 const Sidebar = ({ open, toggleDrawer }: SidebarProps): JSX.Element => {
   const iOS =
-    typeof navigator !== 'undefined' &&
-    /iPad|iPhone|iPod/.test(navigator.userAgent)
+    typeof navigator !== "undefined" &&
+    /iPad|iPhone|iPod/.test(navigator.userAgent);
 
-  const router = useRouter()
-  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'), {
+  const router = useRouter();
+  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up("lg"), {
     defaultMatches: true,
-    noSsr: false
-  })
+    noSsr: false,
+  });
 
   useEffect(
     /**
@@ -40,27 +40,25 @@ const Sidebar = ({ open, toggleDrawer }: SidebarProps): JSX.Element => {
      */
     () => {
       if (!router.isReady) {
-        return
+        return;
       }
 
       if (open) {
-        toggleDrawer(false)
+        toggleDrawer(false);
       }
     },
     [router.asPath]
-  )
+  );
 
   const content = (
-    <Stack sx={{ height: '100%' }}>
+    <Stack sx={{ height: "100%" }}>
       <div>
-        <Box sx={{ p: 3 }}>
-          {/* <Link href="/">Hello</Link> */}
-        </Box>
+        <Box sx={{ p: 3 }}>{/* <Link href="/">Hello</Link> */}</Box>
       </div>
       <Divider
         sx={{
-          borderColor: '#2D3748',
-          my: 3
+          borderColor: "#2D3748",
+          my: 3,
         }}
       />
       <Stack sx={{ flexGrow: 1 }} spacing={2} px={2}>
@@ -73,11 +71,11 @@ const Sidebar = ({ open, toggleDrawer }: SidebarProps): JSX.Element => {
           />
         ))}
       </Stack>
-      <Divider sx={{ borderColor: '#2D3748' }} />
+      <Divider sx={{ borderColor: "#2D3748" }} />
       <Box
         sx={{
           px: 2,
-          py: 3
+          py: 3,
         }}
       >
         <Typography color="neutral.100" variant="subtitle2">
@@ -99,7 +97,7 @@ const Sidebar = ({ open, toggleDrawer }: SidebarProps): JSX.Element => {
         </Link>
       </Box>
     </Stack>
-  )
+  );
 
   if (lgUp) {
     return (
@@ -108,16 +106,16 @@ const Sidebar = ({ open, toggleDrawer }: SidebarProps): JSX.Element => {
         open
         PaperProps={{
           sx: {
-            backgroundColor: 'neutral.900',
-            color: '#FFFFFF',
-            width: 280
-          }
+            backgroundColor: "neutral.900",
+            color: "#FFFFFF",
+            width: 280,
+          },
         }}
         variant="permanent"
       >
         {content}
       </Drawer>
-    )
+    );
   }
 
   return (
@@ -128,10 +126,10 @@ const Sidebar = ({ open, toggleDrawer }: SidebarProps): JSX.Element => {
       open={open}
       PaperProps={{
         sx: {
-          backgroundColor: 'neutral.900',
-          color: '#FFFFFF',
-          width: 280
-        }
+          backgroundColor: "neutral.900",
+          color: "#FFFFFF",
+          width: 280,
+        },
       }}
       sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
       variant="temporary"
@@ -140,30 +138,30 @@ const Sidebar = ({ open, toggleDrawer }: SidebarProps): JSX.Element => {
     >
       {content}
     </SwipeableDrawer>
-  )
-}
+  );
+};
 
 const items = [
   {
-    href: '/',
+    href: "/",
     icon: <Group fontSize="small" />,
-    title: 'home'
+    title: "home",
   },
   {
-    href: '/sensor',
+    href: "/sensor",
     icon: <Group fontSize="small" />,
-    title: 'sensors'
+    title: "sensors",
   },
   {
-    href: '/login',
+    href: "/login",
     icon: <Group fontSize="small" />,
-    title: 'logIn'
+    title: "logIn",
   },
   {
-    href: '/404',
+    href: "/404",
     icon: <Group fontSize="small" />,
-    title: 'Error'
-  }
-]
+    title: "Error",
+  },
+];
 
-export default Sidebar
+export default Sidebar;

@@ -1,16 +1,20 @@
-import { HTMLProps, ReactNode } from 'react'
-import { styled } from '@mui/system'
-import Link from 'next/link'
+import { HTMLProps, ReactNode } from "react";
+import { styled } from "@mui/system";
+import Link from "next/link";
 
 interface LinkWithIconProps extends HTMLProps<HTMLLinkElement> {
-  icon: ReactNode
-  children: ReactNode
+  icon: ReactNode;
+  children: ReactNode;
 }
 
 /**
  * Link with icon displayed on the left.
  */
-const LinkWithIcon = ({ icon, href, children }: LinkWithIconProps): JSX.Element => {
+const LinkWithIcon = ({
+  icon,
+  href,
+  children,
+}: LinkWithIconProps): JSX.Element => {
   return (
     <div>
       <LinkWithIconGrid href={href}>
@@ -18,8 +22,8 @@ const LinkWithIcon = ({ icon, href, children }: LinkWithIconProps): JSX.Element 
         <span>{children}</span>
       </LinkWithIconGrid>
     </div>
-  )
-}
+  );
+};
 
 export const LinkWithIconGridRouter = styled(Link)`
   display: inline-grid;
@@ -40,9 +44,9 @@ export const LinkWithIconGridRouter = styled(Link)`
     align-self: center;
     justify-self: center;
   }
-`
+`;
 
-const LinkWithIconGrid = styled('a')`
+const LinkWithIconGrid = styled("a")`
   display: inline-grid;
   grid-template-columns: 1em auto;
   gap: 0.6em;
@@ -56,6 +60,6 @@ const LinkWithIconGrid = styled('a')`
     align-self: center;
     justify-self: center;
   }
-`
+`;
 
-export default LinkWithIcon
+export default LinkWithIcon;
