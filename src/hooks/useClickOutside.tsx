@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react'
 
 /**
  * Custom hook for checking if we clicked outside of an element.
@@ -20,11 +20,11 @@ export const useClickOutside = (
     };
 
     // Bind the event listener
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
 
     return () => {
       // Unbind the event listener on clean up
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [ref, callback]);
 };

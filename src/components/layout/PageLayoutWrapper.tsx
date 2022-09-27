@@ -1,8 +1,8 @@
-import { styled } from "@mui/system";
-import React, { useEffect, useState } from "react";
-import { Box } from "@mui/material";
-import Navbar from "./NavBar/NavBar";
-import Sidebar from "./SideBar/SideBar";
+import { styled } from '@mui/system';
+import React, { useEffect, useState } from 'react';
+import { Box } from '@mui/material';
+import Navbar from './NavBar/NavBar';
+import Sidebar from './SideBar/SideBar';
 interface PageLayoutWrapperProps {
   children: React.ReactNode;
 }
@@ -28,14 +28,14 @@ const PageLayoutWrapper = ({
   // Use effect for setting height values on resize
   useEffect(() => {
     const handleResize = (): void => {
-      document.body.setAttribute("style", `--100vh: ${window.innerHeight}px;`);
+      document.body.setAttribute('style', `--100vh: ${window.innerHeight}px;`);
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
     // Trigger on initial load
     handleResize();
-    return () => window.removeEventListener("resize", handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
   return (
     <FullPageWrapper>
@@ -45,10 +45,10 @@ const PageLayoutWrapper = ({
       <PageLayoutRoot>
         <Box
           sx={{
-            display: "flex",
-            flex: "1 1 auto",
-            flexDirection: "column",
-            width: "100%",
+            display: 'flex',
+            flex: '1 1 auto',
+            flexDirection: 'column',
+            width: '100%',
           }}
         >
           {children}
@@ -58,17 +58,17 @@ const PageLayoutWrapper = ({
   );
 };
 
-const PageLayoutRoot = styled("div")(({ theme }) => ({
-  display: "flex",
-  flex: "1 1 auto",
-  maxWidth: "100%",
+const PageLayoutRoot = styled('div')(({ theme }) => ({
+  display: 'flex',
+  flex: '1 1 auto',
+  maxWidth: '100%',
   paddingTop: 64,
-  [theme.breakpoints.up("lg")]: {
+  [theme.breakpoints.up('lg')]: {
     paddingLeft: 280,
   },
 }));
 
-const FullPageWrapper = styled("div")`
+const FullPageWrapper = styled('div')`
   height: var(--100vh);
   width: 100%;
   display: flex;

@@ -1,6 +1,6 @@
-import { HTMLProps, ReactNode } from "react";
-import { styled } from "@mui/system";
-import Link from "next/link";
+import { HTMLProps, ReactNode } from 'react';
+import { styled } from '@mui/system';
+import Link from 'next/link';
 
 interface LinkWithIconProps extends HTMLProps<HTMLLinkElement> {
   icon: ReactNode;
@@ -46,7 +46,7 @@ export const LinkWithIconGridRouter = styled(Link)`
   }
 `;
 
-const LinkWithIconGrid = styled("a")`
+const LinkWithIconGrid = styled('a')`
   display: inline-grid;
   grid-template-columns: 1em auto;
   gap: 0.6em;

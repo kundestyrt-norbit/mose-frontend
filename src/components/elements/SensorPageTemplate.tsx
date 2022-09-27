@@ -1,4 +1,4 @@
-import { Sensor } from "../../api/types";
+import { Sensor } from '../../api/types';
 
 interface SensorPageTemplateProps {
   sensor?: Sensor;
