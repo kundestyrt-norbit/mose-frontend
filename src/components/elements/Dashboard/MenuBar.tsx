@@ -1,11 +1,11 @@
 import { Button, Divider } from '@mui/material'
-import React, { ReactNode } from 'react'
+import React from 'react'
 import Link from 'next/link'
 import { styled } from '@mui/system'
-import Router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 
 const MenuBar = (): JSX.Element => {
-  const router = useRouter();
+  const router = useRouter()
   return (
     <div style={{ position: 'absolute' }}>
       <DashboardWrapper>
@@ -26,8 +26,8 @@ const MenuBar = (): JSX.Element => {
       </DashboardWrapper>
       <Divider />
     </div>
-  );
-};
+  )
+}
 
 export const DashboardWrapper = styled('div')`
   display: flex;
@@ -38,5 +38,5 @@ export const DashboardWrapper = styled('div')`
     margin: 20px 50px 20px 50px;
     font-size: larger;
   }
-`;
+`
 export default MenuBar

@@ -15,35 +15,35 @@ import AdbIcon from '@mui/icons-material/Adb'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-const pages = ['Map', 'Dashboard', 'List'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pages = ['Map', 'Dashboard', 'List']
+const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
 
-const ResponsiveAppBar = () => {
-  const router = useRouter();
+const ResponsiveAppBar = (): JSX.Element => {
+  const router = useRouter()
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
-  );
+  )
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
-  );
+  )
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
+  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>): void => {
+    setAnchorElNav(event.currentTarget)
+  }
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>): void => {
+    setAnchorElUser(event.currentTarget)
+  }
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
+  const handleCloseNavMenu = (): void => {
+    setAnchorElNav(null)
+  }
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+  const handleCloseUserMenu = (): void => {
+    setAnchorElUser(null)
+  }
 
-  console.log(router.asPath);
+  console.log(router.asPath)
 
   return (
     <AppBar position='static'>
@@ -64,7 +64,7 @@ const ResponsiveAppBar = () => {
                   fontWeight: 700,
                   letterSpacing: '.3rem',
                   color: 'inherit',
-                  textDecoration: 'none',
+                  textDecoration: 'none'
                 }}
               >
                 LOGO
@@ -88,17 +88,17 @@ const ResponsiveAppBar = () => {
               anchorEl={anchorElNav}
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'left',
+                horizontal: 'left'
               }}
               keepMounted
               transformOrigin={{
                 vertical: 'top',
-                horizontal: 'left',
+                horizontal: 'left'
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: 'block', sm: 'none' },
+                display: { xs: 'block', sm: 'none' }
               }}
             >
               {pages.map((page) => (
@@ -124,7 +124,7 @@ const ResponsiveAppBar = () => {
                 fontWeight: 700,
                 letterSpacing: '.3rem',
                 color: 'inherit',
-                textDecoration: 'none',
+                textDecoration: 'none'
               }}
             >
               LOGO
@@ -138,20 +138,19 @@ const ResponsiveAppBar = () => {
               width: '50%',
               left: '25%',
               justifyContent: 'space-between',
-              zIndex: 2,
+              zIndex: 2
             }}
           >
             {pages.map((page) => (
-              <Link href={'/' + page.toLowerCase()}>
+              <Link key={page} href={'/' + page.toLowerCase()}>
                 <Button
-                  key={page}
                   onClick={handleCloseNavMenu}
                   sx={{
                     my: 2,
                     display: 'block',
                     color: router.asPath.includes(page.toLowerCase())
                       ? 'red'
-                      : 'white',
+                      : 'white'
                   }}
                 >
                   {page}
@@ -172,12 +171,12 @@ const ResponsiveAppBar = () => {
               anchorEl={anchorElUser}
               anchorOrigin={{
                 vertical: 'top',
-                horizontal: 'right',
+                horizontal: 'right'
               }}
               keepMounted
               transformOrigin={{
                 vertical: 'top',
-                horizontal: 'right',
+                horizontal: 'right'
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
@@ -192,6 +191,6 @@ const ResponsiveAppBar = () => {
         </Toolbar>
       </Container>
     </AppBar>
-  );
-};
+  )
+}
 export default ResponsiveAppBar

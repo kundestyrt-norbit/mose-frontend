@@ -3,9 +3,9 @@ import React, { ReactNode } from 'react'
 import Link from 'next/link'
 
 interface NavItemProps {
-  href: string;
-  icon: ReactNode;
-  title: string;
+  href: string
+  icon: ReactNode
+  title: string
 }
 
 const NavItem = ({ href, icon, title }: NavItemProps): JSX.Element => {
@@ -15,7 +15,7 @@ const NavItem = ({ href, icon, title }: NavItemProps): JSX.Element => {
         {title}
       </Button>
     </Link>
-  );
-};
+  )
+}
 
 export default NavItem

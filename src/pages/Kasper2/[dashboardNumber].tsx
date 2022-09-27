@@ -9,9 +9,9 @@ import Haha from 'next/link'
  * Natural page to have in the future
  */
 const HomePage: NextPage = () => {
-  const router = useRouter();
-  const { dashboardNumber, id } = router.query;
-  console.log(id, dashboardNumber);
+  const router = useRouter()
+  const { dashboardNumber, id } = router.query
+  console.log(id, dashboardNumber)
   return (
     <PageLayoutWrapper>
       <SectionsWrapper>
@@ -20,7 +20,7 @@ const HomePage: NextPage = () => {
         </p>
       </SectionsWrapper>
     </PageLayoutWrapper>
-  );
-};
+  )
+}
 
 export default HomePage
