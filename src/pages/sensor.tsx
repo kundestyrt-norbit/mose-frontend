@@ -51,31 +51,31 @@ async function getDatabasesList (
       })
 
       if (data.NextToken !== undefined) {
-        return await getDatabasesList(data.NextToken, databaseList);
+        return await getDatabasesList(data.NextToken, databaseList)
       }
     }
   } catch (error) {
-    console.log('Error while listing databases', error);
+    console.log('Error while listing databases', error)
   }
-  return databaseList;
+  return databaseList
 }
 const SensorsPage = ({ data }: any): JSX.Element => {
-  console.log(data);
+  console.log(data)
   return (
     <PageLayoutWrapper>
       <SectionsWrapper>
         <SensorPageTemplate />
       </SectionsWrapper>
     </PageLayoutWrapper>
-  );
-};
-export async function getServerSideProps(): Promise<{
-  props: { data: string[] };
+  )
+}
+export async function getServerSideProps (): Promise<{
+  props: { data: string[] }
 }> {
   // Fetch data from external API
-  const data = await getDatabasesList(null, []);
+  const data = await getDatabasesList(null, [])
 
   // Pass data to the page via props
-  return { props: { data } };
+  return { props: { data } }
 }
-export default SensorsPage;
+export default SensorsPage

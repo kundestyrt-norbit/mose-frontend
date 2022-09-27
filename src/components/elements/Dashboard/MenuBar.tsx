@@ -39,4 +39,4 @@ export const DashboardWrapper = styled('div')`
     font-size: larger;
   }
 `;
-export default MenuBar;
+export default MenuBar
