@@ -3,6 +3,7 @@ import SensorPageTemplate from '../components/elements/SensorPageTemplate'
 import PageLayoutWrapper from '../components/layout/PageLayoutWrapper'
 import { TimestreamWriteClient, ListDatabasesCommand } from '@aws-sdk/client-timestream-write'
 
+
 /**
  * Page for displaying information about a sensor.
  */
