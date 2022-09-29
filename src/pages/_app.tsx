@@ -6,10 +6,10 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import { theme } from '../styles/theme'
 import createEmotionCache from '../utils/createEmotionCache'
-import Amplify from 'aws-amplify'
-import { withSSRContext } from 'aws-amplify'
-import { withAuthenticator } from '@aws-amplify/ui-react';
-import '@aws-amplify/ui-react/styles.css';
+import Amplify, { withSSRContext } from 'aws-amplify'
+
+import { withAuthenticator } from '@aws-amplify/ui-react'
+import '@aws-amplify/ui-react/styles.css'
 import config from '../aws-exports'
 
 // Configure SSR with Amplify
@@ -19,7 +19,7 @@ Amplify.configure({
 })
 
 // Auth from SSR
-const { Auth } = withSSRContext();
+const { Auth } = withSSRContext()
 
 // Configure Auth
 Auth.configure({
@@ -33,8 +33,8 @@ Auth.configure({
     // Set true if is a domain with https. For localhost set it to false
     secure: false,
     path: '/',
-    expires: 2,
-  },
+    expires: 2
+  }
 })
 
 // Client-side cache, shared for the whole session of the user in the browser.
