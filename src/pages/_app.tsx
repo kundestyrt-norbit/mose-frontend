@@ -7,7 +7,6 @@ import { CacheProvider, EmotionCache } from '@emotion/react'
 import { theme } from '../styles/theme'
 import createEmotionCache from '../utils/createEmotionCache'
 import Amplify, { withSSRContext } from 'aws-amplify'
-
 import { withAuthenticator } from '@aws-amplify/ui-react'
 import '@aws-amplify/ui-react/styles.css'
 import config from '../aws-exports'
@@ -29,9 +28,9 @@ Auth.configure({
   mandatorySignIn: true,
   // Set this only if you wish to use cookies to storage otherwise ignore it
   cookieStorage: {
-    domain: 'localhost',
+    domain: process.env.COOKIE_STORAGE_DOMAIN,
     // Set true if is a domain with https. For localhost set it to false
-    secure: false,
+    secure: process.env.COOKIE_STORAGE_SECURE,
     path: '/',
     expires: 2
   }
