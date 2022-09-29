@@ -1,68 +1,68 @@
-# # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-# name: Node.js CI
+name: Node.js CI
 
-# on:
-#   push:
-#     branches: [ "main", "production" ]
-#   pull_request:
-#     branches: [ "main", "production" ]
+on:
+  push:
+    branches: [ "main", "production" ]
+  pull_request:
+    branches: [ "main", "production" ]
 
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
-#     steps:
-#     - uses: actions/checkout@v3
-#     - name: Use Node.js 16.x
-#       uses: actions/setup-node@v3
-#       with:
-#         node-version: 16.x
-#         cache: 'npm'
-#     - run: npm ci
-#     - run: DISABLE_ESLINT_PLUGIN=true npm run build
-#     - name: Share artifact inside workflow
-#       uses: actions/upload-artifact@v3
-#       with:
-#         name: react-github-actions-build
-#         path: dist
+jobs:
+  # build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v3
+  #   - name: Use Node.js 16.x
+  #     uses: actions/setup-node@v3
+  #     with:
+  #       node-version: 16.x
+  #       cache: 'npm'
+  #   - run: npm ci
+  #   - run: DISABLE_ESLINT_PLUGIN=true npm run build
+  #   - name: Share artifact inside workflow
+  #     uses: actions/upload-artifact@v3
+  #     with:
+  #       name: react-github-actions-build
+  #       path: dist
   
-#   lint:
-#     runs-on: ubuntu-latest
-#     steps:
-#     - uses: actions/checkout@v3
-#     - name: Use Node.js 16.x
-#       uses: actions/setup-node@v3
-#       with:
-#         node-version: 16.x
-#         cache: 'npm'
-#     - run: npm ci
-#     - run: npm run lint
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js 16.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16.x
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run lint
     
-#   # deploy:
-#   #   runs-on: ubuntu-latest
-#   #   needs: [build, lint]
-#   #   if: github.ref == 'refs/heads/main'
-#   #   environment: Deploy
-#   #   steps:
-#   #   - name: Get artifact
-#   #     uses: actions/download-artifact@v3
-#   #     with:
-#   #       name: react-github-actions-build
-#   #       path: dist
-#   #   - name: Configure AWS Credentials
-#   #     uses: aws-actions/configure-aws-credentials@v1
-#   #     with:
-#   #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#   #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#   #       aws-region: ${{ secrets.AWS_REGION }}
-#   #   - name: Deploy app build to S3 bucket
-#   #     run: aws s3 sync ./dist/ s3://${{ secrets.S3_BUCKET_NAME }} --delete
-#   #   - name: Invalidate CloudFront
-#   #     uses: chetan/invalidate-cloudfront-action@v2
-#   #     env:
-#   #       DISTRIBUTION: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION }}
-#   #       PATHS: "/*"
-#   #       AWS_REGION: "us-east-1"
-#   #       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#   #       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: [build, lint]
+  #   if: github.ref == 'refs/heads/main'
+  #   environment: Deploy
+  #   steps:
+  #   - name: Get artifact
+  #     uses: actions/download-artifact@v3
+  #     with:
+  #       name: react-github-actions-build
+  #       path: dist
+  #   - name: Configure AWS Credentials
+  #     uses: aws-actions/configure-aws-credentials@v1
+  #     with:
+  #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #       aws-region: ${{ secrets.AWS_REGION }}
+  #   - name: Deploy app build to S3 bucket
+  #     run: aws s3 sync ./dist/ s3://${{ secrets.S3_BUCKET_NAME }} --delete
+  #   - name: Invalidate CloudFront
+  #     uses: chetan/invalidate-cloudfront-action@v2
+  #     env:
+  #       DISTRIBUTION: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION }}
+  #       PATHS: "/*"
+  #       AWS_REGION: "us-east-1"
+  #       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
