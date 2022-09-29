@@ -6,6 +6,7 @@
   "dependencies": {
     "@apollo/client": "^3.4.16",
     "@apollo/link-error": "^2.0.0-beta.3",
+    "@aws-amplify/ui-react": "^3.5.4",
     "@aws-sdk/client-timestream-query": "^3.171.0",
     "@aws-sdk/client-timestream-write": "^3.171.0",
     "@emotion/react": "^11.4.1",
@@ -30,6 +31,7 @@
     "@types/react-text-truncate": "^0.14.1",
     "apollo-link-error": "^1.1.13",
     "apollo-upload-client": "^16.0.0",
+    "aws-amplify": "^4.3.36",
     "aws-sdk": "^2.1219.0",
     "chart.js": "^3.9.1",
     "chartjs-adapter-moment": "^1.0.0",
@@ -74,8 +76,8 @@
     "dev": "next dev",
     "start": "next start",
     "build": "tsc && next build",
-    "lint": "eslint src/**/*.ts src/**/*.tsx",
-    "lint:fix": "eslint src/**/*.ts src/**/*.tsx --fix",
+    "lint": "eslint \"src/**/*.ts\" \"src/**/*.tsx\"",
+    "lint:fix": "eslint \"src/**/*.ts\" \"src/**/*.tsx\" --fix",
     "cypress:open": "cypress open"
   },
   "browserslist": {

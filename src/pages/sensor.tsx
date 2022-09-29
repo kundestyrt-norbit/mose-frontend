@@ -76,7 +76,9 @@ const SensorsPage = ({ data }: any): JSX.Element => {
     </PageLayoutWrapper>
   )
 }
-export async function getServerSideProps (): Promise<{props: {data: string[] } }> {
+export async function getServerSideProps (): Promise<{
+  props: { data: string[] }
+}> {
   // Fetch data from external API
   const data = await getSensorData(null, [], [])
   console.log(data)

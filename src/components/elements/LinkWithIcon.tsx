@@ -10,7 +10,11 @@ interface LinkWithIconProps extends HTMLProps<HTMLLinkElement> {
 /**
  * Link with icon displayed on the left.
  */
-const LinkWithIcon = ({ icon, href, children }: LinkWithIconProps): JSX.Element => {
+const LinkWithIcon = ({
+  icon,
+  href,
+  children
+}: LinkWithIconProps): JSX.Element => {
   return (
     <div>
       <LinkWithIconGrid href={href}>
