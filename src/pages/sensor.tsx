@@ -29,12 +29,19 @@ interface Params {
   MaxRows?: number
 
 }
+
+
 const params: Params = {
   QueryString: "SELECT time, temperature FROM SensorData.particleTest WHERE temperature IS NOT NULL and time between ago(5d) and now() ORDER BY time DESC",
   //MaxRows: 1
 
 }
+
+// const c: Params = {
+//   QueryString: "SELECT time, light FROM SensorData.particleTest WHERE light IS NOT NULL and time between ago(7d) and now() ORDER BY time DESC"
+// }
 const command = new QueryCommand(params)
+const v = new QueryCommand(params)
 
 async function getSensorData (nextToken: string | null, time: any, sensorData: any): Promise<any> {
   if (nextToken !== null) {
@@ -42,7 +49,7 @@ async function getSensorData (nextToken: string | null, time: any, sensorData: a
   }
 
   try {
-    const data = await queryClient.send(command)
+    const data = await queryClient.send(v)
     if (data !== undefined) {    
       data.Rows?.forEach((row: Row)  => {
         if (row.Data?.length == 2) {

@@ -20,26 +20,27 @@ ChartJS.register(
     Tooltip,
     Legend
   );
-  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  
+//   const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
-export const data2 = {
-  labels,
-  datasets: [
-    {
-      label: 'Dataset 1',
-      data: [1,2,3,2,10,4,4],
-      borderColor: 'rgb(255, 99, 132)',
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-    {
-      label: 'Dataset 2',
-      data: [1,2,3,2,10,4,4].reverse(),
+// export const data2 = {
+//   labels,
+//   datasets: [
+//     {
+//       label: 'Dataset 1',
+//       data: [1,2,3,2,10,4,4],
+//       borderColor: 'rgb(255, 99, 132)',
+//       backgroundColor: 'rgba(255, 99, 132, 0.5)',
+//     },
+//     {
+//       label: 'Dataset 2',
+//       data: [1,2,3,2,10,4,4].reverse(),
 
-      borderColor: 'rgb(53, 162, 235)',
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-  ],
-};
+//       borderColor: 'rgb(53, 162, 235)',
+//       backgroundColor: 'rgba(53, 162, 235, 0.5)',
+//     },
+//   ],
+// };
   
   export const options = {
     responsive: true,
@@ -55,10 +56,20 @@ export const data2 = {
             time: {
                 unit: 'day',
                 tooltipFormat: 'YYYY-MM-DD HH:mm',
+
+            },
+            grid: {
+              color: 'white'
             }
-            
-            
+                
+        },
+        y: {
+          grid: {
+            color: 'white'
+          }
         }
+
+
     },
     plugins: {
       legend: {
@@ -66,7 +77,7 @@ export const data2 = {
       },
       title: {
         display: true,
-        text: 'Chart.js Line Chart',
+        text: 'Temprature at parkinglot',
       },
     },
   };
@@ -86,7 +97,7 @@ export const data2 = {
           {
             label: 'Temperature',
             data: measurments,
-            borderColor: 'rgb(255, 99, 132)',
+            borderColor: 'blue',
             backgroundColor: 'white',
           },
         ],
@@ -94,3 +105,5 @@ export const data2 = {
     // @ts-ignore
     return <Line options={options} data={data} />;
   }
+
+  
