@@ -6,6 +6,35 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import { theme } from '../styles/theme'
 import createEmotionCache from '../utils/createEmotionCache'
+import Amplify, { withSSRContext } from 'aws-amplify'
+import { withAuthenticator } from '@aws-amplify/ui-react'
+import '@aws-amplify/ui-react/styles.css'
+import config from '../aws-exports'
+
+// Configure SSR with Amplify
+Amplify.configure({
+  ...config,
+  ssr: true
+})
+
+// Auth from SSR
+const { Auth } = withSSRContext()
+
+// Configure Auth
+Auth.configure({
+  region: process.env.AUTH_REGION,
+  userPoolId: process.env.AUTH_POOL,
+  userPoolWebClientId: process.env.AUTH_POOL_CLIENT,
+  mandatorySignIn: true,
+  // Set this only if you wish to use cookies to storage otherwise ignore it
+  cookieStorage: {
+    domain: process.env.COOKIE_STORAGE_DOMAIN,
+    // Set true if is a domain with https. For localhost set it to false
+    secure: process.env.COOKIE_STORAGE_SECURE,
+    path: '/',
+    expires: 2
+  }
+})
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
@@ -29,4 +58,4 @@ const MyApp = (props: MyAppProps): JSX.Element => {
     </CacheProvider>
   )
 }
-export default MyApp
+export default withAuthenticator(MyApp)
