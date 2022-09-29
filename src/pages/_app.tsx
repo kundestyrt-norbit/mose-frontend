@@ -44,7 +44,7 @@ interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache
 }
 
-const MyApp = (props: MyAppProps, { signOut, user }): JSX.Element => {
+const MyApp = (props: MyAppProps): JSX.Element => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
   return (
     <CacheProvider value={emotionCache}>
