@@ -20,7 +20,7 @@ ChartJS.register(
     Tooltip,
     Legend
   );
-  
+
 //   const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
 // export const data2 = {
@@ -41,7 +41,7 @@ ChartJS.register(
 //     },
 //   ],
 // };
-  
+
   export const options = {
     responsive: true,
     elements: {
@@ -51,7 +51,7 @@ ChartJS.register(
     },
     scales: {
         x: {
-            
+
             type: 'time',
             time: {
                 unit: 'day',
@@ -61,7 +61,7 @@ ChartJS.register(
             grid: {
               color: 'white'
             }
-                
+
         },
         y: {
           grid: {
@@ -81,15 +81,15 @@ ChartJS.register(
       },
     },
   };
-  
-  
-  
+
+
+
   interface SensorParams {
     time: string[]
     measurments: number[]
   }
   export function SensorGraph({time, measurments}: SensorParams) {
-    
+
     console.log(measurments)
     const data = {
         labels: time.map(t=>(new Date(t+"Z"))),
@@ -105,5 +105,3 @@ ChartJS.register(
     // @ts-ignore
     return <Line options={options} data={data} />;
   }
-
-  
