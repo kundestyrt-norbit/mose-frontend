@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import { SectionsWrapper } from '../../components/elements/Section'
 import PageLayoutWrapper from '../../components/layout/PageLayoutWrapper'
 import { useRouter } from 'next/router'
-import Haha from 'next/link'
+import Navigator from '../../components/elements/Dashboard/Navigator'
 
 /**
  * Does nothing. Just redirection to /sensors
@@ -15,9 +15,7 @@ const HomePage: NextPage = () => {
   return (
     <PageLayoutWrapper>
       <SectionsWrapper>
-        <p>
-          <Haha href={'/Kasper2/'}>Post: hei</Haha>
-        </p>
+        <Navigator></Navigator>
       </SectionsWrapper>
     </PageLayoutWrapper>
   )
