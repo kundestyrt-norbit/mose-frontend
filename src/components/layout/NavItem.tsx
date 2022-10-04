@@ -11,10 +11,7 @@ interface NavItemProps {
 const NavItem = ({ href, icon, title }: NavItemProps): JSX.Element => {
   return (
     <Link href={href}>
-      <Button
-      variant="contained"
-      startIcon={icon}
-      >
+      <Button variant='contained' startIcon={icon}>
         {title}
       </Button>
     </Link>

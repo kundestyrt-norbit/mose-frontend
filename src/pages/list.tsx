@@ -6,12 +6,12 @@ import PageLayoutWrapper from '../components/layout/PageLayoutWrapper'
  * Does nothing. Just redirection to /sensors
  * Natural page to have in the future
  */
-const HomePage: NextPage = () => {
+const ListPage: NextPage = () => {
   return (
     <PageLayoutWrapper>
-      <SectionsWrapper>Home</SectionsWrapper>
+      <SectionsWrapper>hei</SectionsWrapper>
     </PageLayoutWrapper>
   )
 }
 
-export default HomePage
+export default ListPage

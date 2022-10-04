@@ -1,72 +1,196 @@
-import {
-  AppBar,
-  Badge,
-  Box,
-  IconButton,
-  Toolbar,
-  Tooltip,
-  styled
-} from '@mui/material'
+import * as React from 'react'
+import AppBar from '@mui/material/AppBar'
+import Box from '@mui/material/Box'
+import Toolbar from '@mui/material/Toolbar'
+import IconButton from '@mui/material/IconButton'
+import Typography from '@mui/material/Typography'
+import Menu from '@mui/material/Menu'
 import MenuIcon from '@mui/icons-material/Menu'
-import NotificationsIcon from '@mui/icons-material/Notifications'
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import Container from '@mui/material/Container'
+import Avatar from '@mui/material/Avatar'
+import Button from '@mui/material/Button'
+import Tooltip from '@mui/material/Tooltip'
+import MenuItem from '@mui/material/MenuItem'
+import AdbIcon from '@mui/icons-material/Adb'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 
-interface NavbarProps {
-  onSidebarOpen: () => void
-}
+const pages = ['Map', 'Dashboard', 'List']
+const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
 
-const Navbar = ({ onSidebarOpen }: NavbarProps): JSX.Element => {
+const ResponsiveAppBar = (): JSX.Element => {
+  const router = useRouter()
+
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+    null
+  )
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  )
+
+  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>): void => {
+    setAnchorElNav(event.currentTarget)
+  }
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>): void => {
+    setAnchorElUser(event.currentTarget)
+  }
+
+  const handleCloseNavMenu = (): void => {
+    setAnchorElNav(null)
+  }
+
+  const handleCloseUserMenu = (): void => {
+    setAnchorElUser(null)
+  }
+
+  console.log(router.asPath)
+
   return (
-      <DashboardNavbarRoot
-        sx={{
-          left: {
-            lg: 280
-          },
-          width: {
-            lg: 'calc(100% - 280px)'
-          }
-        }}
-      >
-        <Toolbar
-          disableGutters
-          sx={{
-            minHeight: 64,
-            left: 0,
-            px: 2
-          }}
-        >
-          <IconButton
-         onClick={onSidebarOpen}
-        sx={{
-          display: {
-            xs: 'inline-flex',
-            lg: 'none'
-          }
-        }}
-        >
-          <MenuIcon fontSize="small" />
-        </IconButton>
-        <Box sx={{ flexGrow: 1 }} />
-        <Tooltip title="Notifications">
-          <IconButton sx={{ ml: 1 }}>
-            <Badge badgeContent={4} color="primary" variant="dot">
-              <NotificationsIcon fontSize="small" />
-          </Badge>
-        </IconButton>
-        </Tooltip>
-        <Tooltip title="Settings">
-          <IconButton sx={{ ml: 1 }}>
-            <AccountCircleIcon fontSize="large" />
-          </IconButton>
-        </Tooltip>
-      </Toolbar>
-    </DashboardNavbarRoot>
+    <AppBar position='static'>
+      <Container maxWidth={false}>
+        <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
+          <Link href='/' style={{ border: '1px solid blue' }}>
+            <div style={{ display: 'flex', border: '1px solid red' }}>
+              <AdbIcon sx={{ display: { xs: 'none', sm: 'flex' }, mr: 1 }} />
+              <Typography
+                variant='h6'
+                noWrap
+                component='a'
+                href='/'
+                sx={{
+                  mr: 2,
+                  display: { xs: 'none', sm: 'flex' },
+                  fontFamily: 'monospace',
+                  fontWeight: 700,
+                  letterSpacing: '.3rem',
+                  color: 'inherit',
+                  textDecoration: 'none'
+                }}
+              >
+                LOGO
+              </Typography>
+            </div>
+          </Link>
+
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', sm: 'none' } }}>
+            <IconButton
+              size='large'
+              aria-label='account of current user'
+              aria-controls='menu-appbar'
+              aria-haspopup='true'
+              onClick={handleOpenNavMenu}
+              color='inherit'
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id='menu-appbar'
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left'
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left'
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+              sx={{
+                display: { xs: 'block', sm: 'none' }
+              }}
+            >
+              {pages.map((page) => (
+                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                  <Link href={'/' + page.toLowerCase()}>
+                    <Typography textAlign='center'>{page}</Typography>
+                  </Link>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+          <AdbIcon sx={{ display: { xs: 'flex', sm: 'none' }, mr: 1 }} />
+          <Link href='/'>
+            <Typography
+              variant='h5'
+              noWrap
+              component='a'
+              sx={{
+                mr: 2,
+                display: { xs: 'flex', sm: 'none' },
+                flexGrow: 1,
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                letterSpacing: '.3rem',
+                color: 'inherit',
+                textDecoration: 'none'
+              }}
+            >
+              LOGO
+            </Typography>
+          </Link>
+          <Box
+            sx={{
+              display: { xs: 'none', sm: 'flex' },
+              border: '1px solid red',
+              position: 'absolute',
+              width: '50%',
+              left: '25%',
+              justifyContent: 'space-between',
+              zIndex: 2
+            }}
+          >
+            {pages.map((page) => (
+              <Link key={page} href={'/' + page.toLowerCase()}>
+                <Button
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    my: 2,
+                    display: 'block',
+                    color: router.asPath.includes(page.toLowerCase())
+                      ? 'red'
+                      : 'white'
+                  }}
+                >
+                  {page}
+                </Button>
+              </Link>
+            ))}
+          </Box>
+
+          <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title='Open settings'>
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: '45px' }}
+              id='menu-appbar'
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right'
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right'
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <Typography textAlign='center'>{setting}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+        </Toolbar>
+      </Container>
+    </AppBar>
   )
 }
-
-const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
-  backgroundColor: theme.palette.background.paper,
-  boxShadow: theme.shadows[3]
-}))
-
-export default Navbar
+export default ResponsiveAppBar

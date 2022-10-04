@@ -1,7 +1,6 @@
 import { SectionsWrapper } from '../components/elements/Section'
-import SensorPageTemplate from '../components/elements/SensorPageTemplate'
 import PageLayoutWrapper from '../components/layout/PageLayoutWrapper'
-import { TimestreamQueryClient, QueryCommand, QueryResponse, Row } from '@aws-sdk/client-timestream-query'
+import { TimestreamQueryClient, QueryCommand, Row } from '@aws-sdk/client-timestream-query'
 import { SensorGraph } from '../components/elements/SensorData/SensorGraph'
 
 /**
@@ -30,10 +29,9 @@ interface Params {
 
 }
 
-
 const params: Params = {
-  QueryString: "SELECT time, temperature FROM SensorData.particleTest WHERE temperature IS NOT NULL and time between ago(5d) and now() ORDER BY time DESC",
-  //MaxRows: 1
+  QueryString: 'SELECT time, temperature FROM SensorData.particleTest WHERE temperature IS NOT NULL and time between ago(5d) and now() ORDER BY time DESC'
+  // MaxRows: 1
 
 }
 
@@ -41,7 +39,6 @@ const params: Params = {
 //   QueryString: "SELECT time, light FROM SensorData.particleTest WHERE light IS NOT NULL and time between ago(7d) and now() ORDER BY time DESC"
 // }
 const command = new QueryCommand(params)
-const v = new QueryCommand(params)
 
 async function getSensorData (nextToken: string | null, time: any, sensorData: any): Promise<any> {
   if (nextToken !== null) {
@@ -49,15 +46,15 @@ async function getSensorData (nextToken: string | null, time: any, sensorData: a
   }
 
   try {
-    const data = await queryClient.send(v)
-    if (data !== undefined) {    
-      data.Rows?.forEach((row: Row)  => {
-        if (row.Data?.length == 2) {
+    const data = await queryClient.send(command)
+    if (data !== undefined) {
+      data.Rows?.forEach((row: Row) => {
+        if (row.Data?.length === 2) {
           time.push(row.Data[0].ScalarValue)
           sensorData.push(Number(row.Data[1].ScalarValue))
         }
-      }) 
- 
+      })
+
       if (data.NextToken !== undefined) {
         return await getSensorData(data.NextToken, time, sensorData)
       }
@@ -65,7 +62,7 @@ async function getSensorData (nextToken: string | null, time: any, sensorData: a
   } catch (error) {
     console.log('Error while listing databases', error)
   }
-  return {time: time, measurments: sensorData}
+  return { time, measurments: sensorData }
 }
 const SensorsPage = ({ data }: any): JSX.Element => {
   return (
@@ -87,4 +84,4 @@ export async function getServerSideProps (): Promise<{
 }
 export default SensorsPage
 
-//bin avarage, 
+// bin avarage,
