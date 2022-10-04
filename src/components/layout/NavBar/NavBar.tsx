@@ -14,9 +14,18 @@ import MenuItem from '@mui/material/MenuItem'
 import AdbIcon from '@mui/icons-material/Adb'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { Auth } from 'aws-amplify'
 
 const pages = ['Map', 'Dashboard', 'List']
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
+
+async function signOut (): Promise<void> {
+  try {
+    await Auth.signOut()
+  } catch (error) {
+    console.log('error signing out: ', error)
+  }
+}
 
 const ResponsiveAppBar = (): JSX.Element => {
   const router = useRouter()
@@ -181,11 +190,18 @@ const ResponsiveAppBar = (): JSX.Element => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign='center'>{setting}</Typography>
-                </MenuItem>
-              ))}
+              {settings.map(function (setting) {
+                if (setting === 'Logout') {
+                  return (<MenuItem key={setting} onClick={signOut}>
+                    <Typography textAlign='center'>{setting}</Typography>
+                  </MenuItem>)
+                } else {
+                  return (<MenuItem key={setting} onClick={handleCloseUserMenu}>
+                            <Typography textAlign='center'>{setting}</Typography>
+                          </MenuItem>)
+                }
+              }
+              )}
             </Menu>
           </Box>
         </Toolbar>
