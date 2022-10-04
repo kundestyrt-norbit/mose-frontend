@@ -19,12 +19,10 @@ import { Auth } from 'aws-amplify'
 const pages = ['Map', 'Dashboard', 'List']
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
 
-async function signOut (): Promise<void> {
-  try {
-    await Auth.signOut()
-  } catch (error) {
-    console.log('error signing out: ', error)
-  }
+function signOut (): void {
+  Auth.signOut()
+    .then(() => (console.log('Signing out')))
+    .catch(err => console.log(err))
 }
 
 const ResponsiveAppBar = (): JSX.Element => {
