@@ -1,8 +1,7 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
-import { Container } from '../Container'
 import Link from 'next/link'
-import { Button, styled } from '@mui/material'
+import { Button, Container, styled } from '@mui/material'
 import CheckboxesTags from '../Filter'
 
 const BootstrapButton = styled(Button)({
