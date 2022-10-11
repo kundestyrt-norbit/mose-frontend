@@ -1,6 +1,6 @@
 import { styled } from '@mui/system'
 import React, { useEffect } from 'react'
-import Navbar from './NavBar/NavBar'
+import Navbar from './NavBar'
 interface PageLayoutWrapperProps {
   children: React.ReactNode
 }

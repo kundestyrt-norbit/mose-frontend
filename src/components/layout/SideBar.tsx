@@ -13,7 +13,7 @@ import {
 } from '@mui/material'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import Group from '@mui/icons-material/Group'
-import NavItem from '../NavItem'
+import NavItem from './NavItem'
 import Link from 'next/link'
 
 interface SidebarProps {
