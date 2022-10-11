@@ -14,4 +14,8 @@
       "StartCommand": "npm run-script start"
     }
   }
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes
