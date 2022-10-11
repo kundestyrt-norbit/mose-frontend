@@ -33,13 +33,13 @@ const BoxWrapper = styled(Box)`
   border-radius: 3%;
   `
 
-const StyledFiter = styled(CheckboxesTags)`
+const StyledFilter = styled(CheckboxesTags)`
   margin: '2%';
   max-width: '30%';
 `
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export default function RowAndColumnSpacin() {
+export default function RowAndColumnSpacing() {
   return (
     <Container sx={{ flexDirection: 'row', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly', margin: '3%', maxWidth: '100%' }}>
       <Container sx={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-evenly', width: '100%' }}>
@@ -48,7 +48,7 @@ export default function RowAndColumnSpacin() {
             <BootstrapButton> Temperature </BootstrapButton>
           </Box>
         </BoxWrapper>
-        <StyledFiter />
+        <StyledFilter />
       </Container>
       <Container sx={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-evenly', margin: '2%', width: '100%' }}>
         <BoxWrapper boxShadow={2}>
@@ -58,7 +58,7 @@ export default function RowAndColumnSpacin() {
             </Link>
           </Box>
         </BoxWrapper>
-        <StyledFiter />
+        <StyledFilter />
       </Container>
       <Container sx={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-evenly', margin: '2%', width: '100%' }}>
         <BoxWrapper boxShadow={2}>
@@ -66,7 +66,7 @@ export default function RowAndColumnSpacin() {
             <BootstrapButton> Humidity</BootstrapButton>
           </Box>
         </BoxWrapper>
-        <StyledFiter />
+        <StyledFilter />
       </Container>
       <Container sx={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-evenly', margin: '2%', width: '100%' }}>
         <BoxWrapper boxShadow={2}>
@@ -74,7 +74,7 @@ export default function RowAndColumnSpacin() {
             <BootstrapButton> Particle-size</BootstrapButton>
           </Box>
         </BoxWrapper>
-        <StyledFiter />
+        <StyledFilter />
       </Container>
     </Container>
   )

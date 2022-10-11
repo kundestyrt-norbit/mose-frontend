@@ -21,7 +21,7 @@ export default function CheckboxesTags() {
                     <Checkbox
                         icon={icon}
                         checkedIcon={checkedIcon}
-                        style={{ marginRight: 8 }}
+                        style={{ marginRight: 8, color: 'white' }}
                         checked={selected}
                     />
                     {option.title}
