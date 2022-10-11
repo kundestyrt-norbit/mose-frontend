@@ -1,8 +1,7 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
-import { Container } from '../Container'
 import Link from 'next/link'
-import { Button, styled } from '@mui/material'
+import { Button, Container, styled } from '@mui/material'
 import CheckboxesTags from '../Filter'
 
 const BootstrapButton = styled(Button)({
@@ -37,7 +36,7 @@ const StyledFilter = styled(CheckboxesTags)`
 `
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export default function RowAndColumnSpacing () {
+export default function RowAndColumnSpacing() {
   return (
     <Container sx={{ flexDirection: 'row', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly', margin: '3%', maxWidth: '100%' }}>
       <Container sx={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-evenly', width: '100%' }}>
