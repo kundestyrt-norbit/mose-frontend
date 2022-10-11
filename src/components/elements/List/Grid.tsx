@@ -37,7 +37,7 @@ const StyledFilter = styled(CheckboxesTags)`
 `
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export default function RowAndColumnSpacing () {
+export default function RowAndColumnSpacing() {
   return (
     <Container sx={{ flexDirection: 'row', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly', margin: '3%', maxWidth: '100%' }}>
       <Container sx={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-evenly', width: '100%' }}>
@@ -48,7 +48,7 @@ export default function RowAndColumnSpacing () {
         </BoxWrapper>
         <StyledFilter />
       </Container>
-      <Container sx={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-evenly', margin: '2%', width: '100%' }}>
+      <Container sx={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-evenly', width: '100%' }}>
         <BoxWrapper boxShadow={2}>
           <Box>
             <Link href='/sensor'>
@@ -58,7 +58,7 @@ export default function RowAndColumnSpacing () {
         </BoxWrapper>
         <StyledFilter />
       </Container>
-      <Container sx={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-evenly', margin: '2%', width: '100%' }}>
+      <Container sx={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-evenly', width: '100%' }}>
         <BoxWrapper boxShadow={2}>
           <Box>
             <BootstrapButton> Humidity</BootstrapButton>
@@ -66,7 +66,7 @@ export default function RowAndColumnSpacing () {
         </BoxWrapper>
         <StyledFilter />
       </Container>
-      <Container sx={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-evenly', margin: '2%', width: '100%' }}>
+      <Container sx={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-evenly', width: '100%' }}>
         <BoxWrapper boxShadow={2}>
           <Box>
             <BootstrapButton> Particle-size</BootstrapButton>
