@@ -13,7 +13,7 @@ export default function CheckboxesTags() {
         <Autocomplete
             multiple
             id="checkboxes-tags-demo"
-            options={top100Films}
+            options={dashboards}
             disableCloseOnSelect
             getOptionLabel={(option) => option.title}
             renderOption={(props, option, { selected }) => (
@@ -35,8 +35,7 @@ export default function CheckboxesTags() {
     )
 }
 
-// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
-const top100Films = [
+const dashboards = [
     { title: 'Dashboard 1' },
     { title: 'Dashboard 2' },
     { title: 'Dashboard 3' }
