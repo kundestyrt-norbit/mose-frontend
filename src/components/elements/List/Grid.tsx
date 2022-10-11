@@ -37,7 +37,7 @@ const StyledFilter = styled(CheckboxesTags)`
 `
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export default function RowAndColumnSpacing() {
+export default function RowAndColumnSpacing () {
   return (
     <Container sx={{ flexDirection: 'row', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly', margin: '3%', maxWidth: '100%' }}>
       <Container sx={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-evenly', width: '100%' }}>
