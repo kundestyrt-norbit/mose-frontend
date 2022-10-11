@@ -13,7 +13,7 @@ const verifier = CognitoJwtVerifier.create({
   clientId: process.env.CLIENT_ID
 })
 
-async function verifyUserID(token: any): Promise<boolean> {
+async function verifyUserID (token: any): Promise<boolean> {
   try {
     await verifier.verify(token)
   } catch (err) {
@@ -26,7 +26,7 @@ async function verifyUserID(token: any): Promise<boolean> {
 
 type userID = String | null
 
-async function getVerifiedUserID(): Promise<userID> {
+async function getVerifiedUserID (): Promise<userID> {
   const userTokens = Auth.currentSession?.idToken?.payload
   if (await verifyUserID(userTokens)) {
     return userTokens?.sub

@@ -7,6 +7,7 @@
     "@apollo/client": "^3.4.16",
     "@apollo/link-error": "^2.0.0-beta.3",
     "@aws-amplify/ui-react": "^3.5.4",
+    "@aws-sdk/client-dynamodb": "^3.186.0",
     "@aws-sdk/client-timestream-query": "^3.171.0",
     "@aws-sdk/client-timestream-write": "^3.171.0",
     "@emotion/react": "^11.4.1",
