@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import { SectionsWrapper } from '../components/elements/Section'
+import { SectionsWrapper } from '../components/layout/Section'
 import PageLayoutWrapper from '../components/layout/PageLayoutWrapper'
 
 /**
