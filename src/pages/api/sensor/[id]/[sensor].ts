@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSensorData } from '../_queryClient'
 
+// Endpoint for fetching sensor data since a number of days
 export default function handler (req: NextApiRequest, res: NextApiResponse): void {
   const { id, sensor, days } = req.query
   const numDays = days ?? 1

@@ -1,14 +1,13 @@
 import { QueryCommand, QueryCommandOutput, TimestreamQueryClient } from '@aws-sdk/client-timestream-query'
 
-/**
- * Page for displaying information about a sensor.
- */
+// Env var definition for aws credentials
 declare const process: {
   env: {
     AWS_ACCESS_KEY_ID: string
     AWS_SECRET_ACCESS_KEY: string
   }
 }
+
 export const queryClient = new TimestreamQueryClient(
   {
     region: 'eu-west-1',
@@ -28,6 +27,9 @@ interface Sensor {
   column: string
 }
 
+/**
+ * Fetches a list of the current sensors in the database with records in the last hour.
+ */
 export async function getSensors (): Promise<Sensor[]> {
   const idQuery = 'SELECT DISTINCT tagId FROM "SensorData"."particleTest" WHERE time > ago(1h) ORDER BY 1'
   const ids = await queryDatabase(idQuery, (data) => data.Rows?.map((row) => row.Data?.[0].ScalarValue) as string[])
@@ -53,6 +55,12 @@ interface SensorMeasurements{
   measurements: string[]
 }
 
+/**
+ * Get all data from the sensor since som number of days.
+ * @param id sensor id
+ * @param column the database column to fetch
+ * @param daysAgo number of days ago from now to retrieve data from
+ */
 export async function getSensorData (id: string, column: string, daysAgo: number): Promise<SensorMeasurements> {
   const query = `SELECT tagId, gateway_id, time, ${column} FROM SensorData.particleTest WHERE tagId = '${id}' and time between ago(${daysAgo}d) and now() ORDER BY time DESC`
   const sensorData: SensorMeasurements = {
