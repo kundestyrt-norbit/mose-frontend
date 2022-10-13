@@ -24,7 +24,7 @@ async function verifyUserID (token: any): Promise<boolean> {
   return true
 }
 
-type userID = String | null
+type userID = string | null
 
 export default async function getVerifiedUserID (Auth: any): Promise<userID> {
   const userTokens = await Auth.currentSession()
