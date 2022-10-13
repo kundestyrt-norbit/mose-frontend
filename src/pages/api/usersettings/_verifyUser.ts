@@ -1,5 +1,4 @@
 import { CognitoJwtVerifier } from 'aws-jwt-verify'
-import { Auth } from 'aws-amplify'
 
 declare const process: {
   env: {
@@ -7,31 +6,31 @@ declare const process: {
     CLIENT_ID: string
   }
 }
-const verifier = CognitoJwtVerifier.create({
-  userPoolId: process.env.USER_POOL_ID,
-  tokenUse: 'id',
-  clientId: process.env.CLIENT_ID
-})
 
 async function verifyUserID (token: any): Promise<boolean> {
+  const verifier = CognitoJwtVerifier.create({
+    userPoolId: process.env.USER_POOL_ID,
+    tokenUse: 'id',
+    clientId: process.env.CLIENT_ID
+  })
+
   try {
-    await verifier.verify(token)
+    const payload = await verifier.verify(token.jwtToken)
+    console.log('Payload: ', payload)
   } catch (err) {
     console.log((err as Error).message)
     return false
   }
-  console.log(token)
   return true
 }
 
 type userID = String | null
 
-async function getVerifiedUserID (): Promise<userID> {
-  const userTokens = Auth.currentSession?.idToken?.payload
-  if (await verifyUserID(userTokens)) {
-    return userTokens?.sub
+export default async function getVerifiedUserID (Auth: any): Promise<userID> {
+  const userTokens = await Auth.currentSession()
+  if (await verifyUserID(userTokens?.getIdToken())) {
+    return userTokens?.getIdToken()?.payload?.sub
   } else {
     return null
   }
 }
-export default getVerifiedUserID
