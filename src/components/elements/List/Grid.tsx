@@ -2,7 +2,7 @@ import * as React from 'react'
 import Box from '@mui/material/Box'
 import Link from 'next/link'
 import { Button, Container, styled } from '@mui/material'
-import CheckboxesTags from '../Filter'
+import CheckboxesTags from '../AddToDash'
 
 const BootstrapButton = styled(Button)({
   fontWeight: 'bold',
