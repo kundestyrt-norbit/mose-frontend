@@ -14,18 +14,20 @@ declare module '@mui/material/styles/createPalette' {
  */
 export const theme = createTheme({
   palette: {
-    mode: 'dark',
-    primary: { main: '#ffbf00', dark: '#493d17' },
+    mode: 'light',
+    primary: { main: '#f8a477', dark: '#f50057' },
     border: {
-      main: '#000'
+      main: '#f8a477'
     },
     background: {
-      paper: '#202020',
-      default: '#151515' // '#151515',
+      paper: '#f8a477',
+      default: '#ffffed' // '#151515',
     },
-    text: {}
+    text: {
+    }
   },
   typography: {
     fontFamily: ['Lato', 'Sans'].join(',')
   }
+
 })

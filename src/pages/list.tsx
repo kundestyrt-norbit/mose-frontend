@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import { SectionsWrapper } from '../components/elements/Section'
+import RowAndColumnSpacing from '../components/elements/List/Grid'
 import PageLayoutWrapper from '../components/layout/PageLayoutWrapper'
 
 /**
@@ -9,7 +9,7 @@ import PageLayoutWrapper from '../components/layout/PageLayoutWrapper'
 const ListPage: NextPage = () => {
   return (
     <PageLayoutWrapper>
-      <SectionsWrapper>hei</SectionsWrapper>
+      <RowAndColumnSpacing></RowAndColumnSpacing>
     </PageLayoutWrapper>
   )
 }
