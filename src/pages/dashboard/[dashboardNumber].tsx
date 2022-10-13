@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import { SectionsWrapper } from '../../components/layout/Section'
 import PageLayoutWrapper from '../../components/layout/PageLayoutWrapper'
 import { useRouter } from 'next/router'
-import Navigator from '../../components/elements/dashboard/Navigator'
+import Navigator from '../../components/elements/Dashboard/Navigator'
 
 /**
  * Does nothing. Just redirection to /sensors

@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import PageLayoutWrapper from '../../components/layout/PageLayoutWrapper'
-import Navigator from '../../components/elements/dashboard/Navigator'
-import NorbitParking from '../../components/elements/dashboard/NorbitParking'
+import Navigator from '../../components/elements/Dashboard/Navigator'
+import NorbitParking from '../../components/elements/Dashboard/NorbitParking'
 
 /**
  * Does nothing. Just redirection to /sensors
