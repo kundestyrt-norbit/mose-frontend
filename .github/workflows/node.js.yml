@@ -20,6 +20,11 @@ jobs:
         node-version: 16.x
         cache: 'npm'
     - run: npm ci
+    - name: mock aws-exports
+      run: |
+          cd src
+          cat aws-exports-mock.js > aws-exports.js
+          cd ..
     - run: DISABLE_ESLINT_PLUGIN=true npm run build
   
   lint:
