@@ -45,12 +45,12 @@ export async function getSensors (): Promise<Sensor[]> {
   return sensors.flat()
 }
 
-interface SensorMeasurements{
+export interface SensorMeasurements{
   id: string
   gatewayId?: string
   name: string
   times: string[]
-  measurements: string[]
+  measurements: number[]
 }
 
 export async function getSensorData (id: string, column: string, daysAgo: number): Promise<SensorMeasurements> {
@@ -60,14 +60,14 @@ export async function getSensorData (id: string, column: string, daysAgo: number
     name: column,
     gatewayId: undefined,
     times: [] as string[],
-    measurements: [] as string[]
+    measurements: [] as number[]
   }
   await queryDatabase(query, data => {
     const firstRowGatewayId = data.Rows?.[0]?.Data?.[1].ScalarValue
     sensorData.gatewayId = firstRowGatewayId
     data.Rows?.forEach(row => {
       row.Data?.[2].ScalarValue !== undefined && sensorData.times.push(row.Data?.[2].ScalarValue)
-      row.Data?.[3].ScalarValue !== undefined && sensorData.measurements.push(row.Data?.[3].ScalarValue)
+      row.Data?.[3].ScalarValue !== undefined && sensorData.measurements.push(+row.Data?.[3].ScalarValue)
     })
   })
   return sensorData
