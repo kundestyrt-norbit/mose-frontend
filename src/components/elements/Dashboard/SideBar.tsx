@@ -67,7 +67,7 @@ export default function TemporaryDrawer (): JSX.Element {
       <List>
         {['Add Dashboard'].map((text) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton onClick={addDashboard}>
+            <ListItemButton onClick={(addDashboard)}>
               <ListItemIcon>
                 <DashboardCustomizeRoundedIcon />
               </ListItemIcon>
