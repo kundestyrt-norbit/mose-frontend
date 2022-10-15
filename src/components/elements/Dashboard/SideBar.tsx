@@ -16,7 +16,7 @@ type Anchor = 'top'
 
 const DashBoardList: String[] = ['Dashboard 1', 'Dashboard 2', 'Dashboard 3']
 
-export default function TemporaryDrawer(): JSX.Element {
+export default function TemporaryDrawer (): JSX.Element {
   const [state, setState] = React.useState({
     top: false
   })
