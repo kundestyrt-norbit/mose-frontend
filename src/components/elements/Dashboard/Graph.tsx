@@ -21,8 +21,6 @@ ChartJS.register(
   Legend
 )
 
-
-
 interface GraphParams {
   time: string[]
   measurments: number[]

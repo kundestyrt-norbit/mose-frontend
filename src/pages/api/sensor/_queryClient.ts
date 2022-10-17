@@ -23,7 +23,7 @@ async function queryDatabase<T> (query: string, queryDataProcessor: (data: Query
   return await queryClient.send(command).then(data => queryDataProcessor(data))
 }
 
-interface Sensor {
+export interface Sensor {
   id: string
   column: string
 }

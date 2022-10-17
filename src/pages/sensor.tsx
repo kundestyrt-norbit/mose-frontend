@@ -68,7 +68,7 @@ const SensorsPage = ({ data }: any): JSX.Element => {
   return (
     <PageLayoutWrapper>
       <SectionsWrapper>
-        <Graph measurments={data.measurments} time={data.time}/>
+        <Graph measurments={data.measurments} time={data.time} label="" title=''/>
       </SectionsWrapper>
     </PageLayoutWrapper>
   )
