@@ -13,5 +13,5 @@ export function SensorGraph ({ id, sensor }: SensorGraphProps): JSX.Element {
   const { data } = useSWR(`/api/sensor/${id}/${sensor}`, fetcher)
 
   const graphTitle = sensor.charAt(0).toUpperCase() + sensor.slice(1)
-  return (data != null) ? <Graph title={graphTitle} label="" time={data.times} measurments={data.measurements}/> : <CircularProgress/>
+  return (data != null) ? <Graph title={graphTitle} label="" time={data.times} measurments={data.measurements}/> : <CircularProgress size={100} sx={{ margin: 'auto' }}/>
 }

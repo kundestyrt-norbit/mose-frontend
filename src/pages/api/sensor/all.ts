@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSensors } from './_queryClient'
 
-export default function handler (req: NextApiRequest, res: NextApiResponse): void {
-  getSensors().then(sesnsors => res.end(JSON.stringify(sesnsors))).catch(error => {
+export default async function handler (req: NextApiRequest, res: NextApiResponse): Promise<NextApiResponse<any>> {
+  return await getSensors().then(sesnsors => res.end(JSON.stringify(sesnsors))).catch(error => {
     res.status(500)
-    res.end(JSON.stringify(error))
+    return res.end(JSON.stringify(error))
   })
 }

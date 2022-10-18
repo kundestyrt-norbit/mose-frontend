@@ -5,6 +5,7 @@ import useSWR from 'swr'
 import { SensorGraph } from '../components/elements/Dashboard/SensorGraph'
 import PageLayoutWrapper from '../components/layout/PageLayoutWrapper'
 import { Sensor } from './api/sensor/_queryClient'
+import Filter from '../components/elements/Dashboard/FilterDash'
 
 const fetcher = async (input: RequestInfo | URL, init?: RequestInit | undefined): Promise<Sensor[]> => await fetch(input, init).then(async (res) => await (res.json() as Promise<Sensor[]>))
 
@@ -18,6 +19,11 @@ const SensorWrapper = styled(Box)`
   margin: auto;
   background-color: white;
   border-radius: 5px;
+  display: flex;
+`
+const PageWrapper = styled(Box)`
+  width: 80%;
+  margin: auto;
 `
 
 const CollapsibleSensor = ({ id, name }: SensorModalProps): JSX.Element => {
@@ -25,10 +31,11 @@ const CollapsibleSensor = ({ id, name }: SensorModalProps): JSX.Element => {
 
   return (
     <ListItem sx={{ flexDirection: 'column', display: 'flex' }}>
-      <ListItemButton onClick={() => { setOpen(!open) }} sx={{ width: '100%' }}><span style={{ textAlign: 'center', width: '100%' }}>{name}</span></ListItemButton>
-      <SensorWrapper >
-        {open && <SensorGraph id={id} sensor={name}/>}
-      </SensorWrapper>
+      <ListItemButton onClick={() => { setOpen(!open) }} sx={{ width: '100%', backgroundColor: '#f8a477', borderRadius: '5px' }}><span style={{ textAlign: 'center', width: '100%' }}>{name}</span></ListItemButton>
+      {open && <SensorWrapper >
+        <SensorGraph id={id} sensor={name}/>
+        <Filter/>
+      </SensorWrapper>}
     </ListItem>
   )
 }
@@ -42,11 +49,13 @@ const ListPage: NextPage = () => {
 
   return (
     <PageLayoutWrapper>
-      <List>
-      {/* <RowAndColumnSpacing></RowAndColumnSpacing> */}
-      {data?.map((sensor) => <CollapsibleSensor key={sensor.id + sensor.column} id={sensor.id} name={sensor.column}/>
-      )}
-      </List>
+      <PageWrapper>
+        <List>
+        {/* <RowAndColumnSpacing></RowAndColumnSpacing> */}
+        {data?.map((sensor) => <CollapsibleSensor key={sensor.id + sensor.column} id={sensor.id} name={sensor.column}/>
+        )}
+        </List>
+      </PageWrapper>
     </PageLayoutWrapper>
   )
 }
