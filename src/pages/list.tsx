@@ -2,10 +2,10 @@ import { Box, List, ListItem, ListItemButton, styled } from '@mui/material'
 import type { NextPage } from 'next'
 import { useState } from 'react'
 import useSWR from 'swr'
-import { SensorGraph } from '../components/elements/Dashboard/SensorGraph'
+import { SensorGraph } from '../components/elements/dashboard/SensorGraph'
 import PageLayoutWrapper from '../components/layout/PageLayoutWrapper'
 import { Sensor } from './api/sensor/_queryClient'
-import Filter from '../components/elements/Dashboard/FilterDash'
+import Filter from '../components/elements/dashboard/FilterDash'
 
 const fetcher = async (input: RequestInfo | URL, init?: RequestInit | undefined): Promise<Sensor[]> => await fetch(input, init).then(async (res) => await (res.json() as Promise<Sensor[]>))
 

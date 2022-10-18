@@ -1,7 +1,7 @@
 import { SectionsWrapper } from '../components/layout/Section'
 import PageLayoutWrapper from '../components/layout/PageLayoutWrapper'
 import { TimestreamQueryClient, QueryCommand, Row } from '@aws-sdk/client-timestream-query'
-import { Graph } from '../components/elements/Dashboard/Graph'
+import { Graph } from '../components/elements/dashboard/Graph'
 
 /**
  * Page for displaying information about a sensor.

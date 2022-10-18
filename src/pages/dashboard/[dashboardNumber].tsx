@@ -1,8 +1,8 @@
 import type { NextPage } from 'next'
 import PageLayoutWrapper from '../../components/layout/PageLayoutWrapper'
 import { useRouter } from 'next/router'
-import TemporaryDrawer from '../../components/elements/Dashboard/SideBar'
-import FilterDash from '../../components/elements/Dashboard/FilterDash'
+import TemporaryDrawer from '../../components/elements/dashboard/SideBar'
+import FilterDash from '../../components/elements/dashboard/FilterDash'
 
 /**
  * Does nothing. Just redirection to /sensors
