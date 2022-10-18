@@ -31,7 +31,7 @@ const userDB = new DynamoDBClient(
 
 export async function saveDashboard (req: NextApiRequest, userId: string | null): Promise<PutItemCommandOutput> {
   const { dashboardId, dashboardName, sensors } = req.query
-  const Item = await userDB.send(new PutItemCommand({
+  const item = await userDB.send(new PutItemCommand({
     TableName: process.env.USER_DB_TABLE_NAME,
     Item: {
       userID: { S: userId ?? '' },
@@ -40,24 +40,24 @@ export async function saveDashboard (req: NextApiRequest, userId: string | null)
       sensors: { L: sensors as any[] }
     }
   }))
-  return Item
+  return item
 }
 
 export async function getDashboard (req: NextApiRequest, userId: string): Promise<GetItemCommandOutput> {
   const { dashboard } = req.query
   const dashboardId = dashboard as string
-  const Item = await userDB.send(new GetItemCommand({
+  const item = await userDB.send(new GetItemCommand({
     TableName: process.env.USER_DB_TABLE_NAME,
     Key: {
       userID: { S: userId ?? '' },
       dashboardID: { N: dashboardId }
     }
   }))
-  return Item
+  return item
 }
 
 export async function createDashboard (req: NextApiRequest, userId: string | null): Promise<PutItemCommandOutput> {
-  const Item = await userDB.send(new PutItemCommand({
+  const item = await userDB.send(new PutItemCommand({
     TableName: process.env.USER_DB_TABLE_NAME,
     Item: {
       userID: { S: userId ?? '' },
@@ -66,11 +66,11 @@ export async function createDashboard (req: NextApiRequest, userId: string | nul
     }
   })
   )
-  return Item
+  return item
 }
 
 export async function getDashboardNames (userId: string | null): Promise<QueryCommandOutput> {
-  const Item = await userDB.send(new QueryCommand({
+  const item = await userDB.send(new QueryCommand({
     TableName: process.env.USER_DB_TABLE_NAME,
     KeyConditionExpression: 'userID = :v1',
     ExpressionAttributeValues: {
@@ -78,5 +78,5 @@ export async function getDashboardNames (userId: string | null): Promise<QueryCo
     }
   })
   )
-  return Item
+  return item
 }
