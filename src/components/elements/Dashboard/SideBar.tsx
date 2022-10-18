@@ -10,7 +10,7 @@ import ListItemText from '@mui/material/ListItemText'
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded'
 import DashboardCustomizeRoundedIcon from '@mui/icons-material/DashboardCustomizeRounded'
 import Link from 'next/link'
-import React from 'react'
+import React, { Key } from 'react'
 
 type Anchor = 'top'
 
@@ -51,7 +51,7 @@ export default function TemporaryDrawer (): JSX.Element {
       <List onClick={toggleDrawer(anchor, false)}
         onKeyDown={toggleDrawer(anchor, false)}>
         {DashBoardList.map((text, index) => (
-          <ListItem key={text} disablePadding>
+          <ListItem key={text as Key} disablePadding>
             <Link href={'/dashboard/' + (index + 1).toString()} >
               <ListItemButton onClick={() => setHeader('Dashboard ' + (index + 1).toString())}> {/* Add Onclick-function that writes heading */}
                 <ListItemIcon>
