@@ -15,8 +15,7 @@ async function verifyUserID (token: any): Promise<boolean> {
   })
 
   try {
-    const payload = await verifier.verify(token.jwtToken)
-    console.log('Payload: ', payload)
+    await verifier.verify(token.jwtToken)
   } catch (err) {
     console.log((err as Error).message)
     return false

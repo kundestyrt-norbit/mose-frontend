@@ -30,13 +30,15 @@ const userDB = new DynamoDBClient(
   })
 
 export async function saveDashboard (req: NextApiRequest, userId: string | null): Promise<PutItemCommandOutput> {
-  const { dashboard } = req.query
+  const { dashboard, dashboardName, sensors } = req.query
   const dashboardId = dashboard as string
   const Item = await userDB.send(new PutItemCommand({
     TableName: process.env.USER_DB_TABLE_NAME,
     Item: {
       userID: { S: userId ?? '' },
-      dashboardID: { N: dashboardId }
+      dashboardID: { N: dashboardId },
+      dashboardName: { S: dashboardName },
+      sensors: { L: sensors }
     }
   }))
   return Item
