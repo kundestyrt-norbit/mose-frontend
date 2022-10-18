@@ -1,7 +1,7 @@
 import { SectionsWrapper } from '../components/layout/Section'
 import PageLayoutWrapper from '../components/layout/PageLayoutWrapper'
 import { TimestreamQueryClient, QueryCommand, Row } from '@aws-sdk/client-timestream-query'
-import { SensorGraph } from '../components/elements/Dashboard/SensorGraph'
+import { Graph } from '../components/elements/dashboard/Graph'
 
 /**
  * Page for displaying information about a sensor.
@@ -68,7 +68,7 @@ const SensorsPage = ({ data }: any): JSX.Element => {
   return (
     <PageLayoutWrapper>
       <SectionsWrapper>
-        <SensorGraph measurments={data.measurments} time={data.time}/>
+        <Graph measurments={data.measurments} time={data.time} label="" title=''/>
       </SectionsWrapper>
     </PageLayoutWrapper>
   )

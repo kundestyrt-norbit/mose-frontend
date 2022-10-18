@@ -23,7 +23,7 @@ async function queryDatabase<T> (query: string, queryDataProcessor: (data: Query
   return await queryClient.send(command).then(data => queryDataProcessor(data))
 }
 
-interface Sensor {
+export interface Sensor {
   id: string
   column: string
 }
@@ -45,29 +45,29 @@ export async function getSensors (): Promise<Sensor[]> {
   return sensors.flat()
 }
 
-interface SensorMeasurements{
+export interface SensorMeasurements{
   id: string
   gatewayId?: string
   name: string
   times: string[]
-  measurements: string[]
+  measurements: number[]
 }
 
 export async function getSensorData (id: string, column: string, daysAgo: number): Promise<SensorMeasurements> {
-  const query = `SELECT tagId, gateway_id, time, ${column} FROM SensorData.particleTest WHERE tagId = '${id}' and time between ago(${daysAgo}d) and now() ORDER BY time DESC`
+  const query = `SELECT tagId, gateway_id, BIN(time, 30m) as bin_time, ROUND(AVG(${column}), 2) FROM SensorData.particleTest WHERE tagId = '${id}' and time between ago(${daysAgo}d) and now() GROUP BY tagId, gateway_id, BIN(time, 30m) ORDER BY BIN(time, 30m) DESC`
   const sensorData: SensorMeasurements = {
     id,
     name: column,
     gatewayId: undefined,
     times: [] as string[],
-    measurements: [] as string[]
+    measurements: [] as number[]
   }
   await queryDatabase(query, data => {
     const firstRowGatewayId = data.Rows?.[0]?.Data?.[1].ScalarValue
     sensorData.gatewayId = firstRowGatewayId
     data.Rows?.forEach(row => {
       row.Data?.[2].ScalarValue !== undefined && sensorData.times.push(row.Data?.[2].ScalarValue)
-      row.Data?.[3].ScalarValue !== undefined && sensorData.measurements.push(row.Data?.[3].ScalarValue)
+      row.Data?.[3].ScalarValue !== undefined && sensorData.measurements.push(+row.Data?.[3].ScalarValue)
     })
   })
   return sensorData
