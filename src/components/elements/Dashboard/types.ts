@@ -1,6 +1,8 @@
+type TimeWindow = number | [Date, Date] | null
+
 interface Filter {
   type: string | null
-  timeWindow: string | null
+  timeWindow: TimeWindow
 }
 
 export interface Sensor {
