@@ -5,7 +5,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/images/marker-shadow.png'
 import 'leaflet/dist/images/marker-icon-2x.png'
 
-function useMyCustomHook<T extends HTMLElement> (): {ref: MutableRefObject<T | null>} {
+function useMyCustomHook<T extends HTMLElement> (): { ref: MutableRefObject<T | null> } {
   const myRef = useRef<T>(null)
   // do something with the ref, e.g. adding event listeners
   return { ref: myRef }
@@ -36,24 +36,24 @@ const Map = (): JSX.Element => {
   return (
     <PageLayoutWrapper>
       <div ref={boxRef} style={{ height: 'calc(100vh - ' + y.toString() + 'px)', width: '100%' }}>
-      {window !== undefined && y !== 0 &&
-      <MapContainer center={[63.443016, 10.429332]} zoom={13} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
-        <TileLayer
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <Marker position={[63.443016, 10.429332]}>
-          <Popup>
-            📡NORBIT <br />
-          </Popup>
-        </Marker>
-        <Marker position={[63.419728, 10.401713]}>
-          <Popup>
-            🏖GLØSHAUGEN <br />
-          </Popup>
-        </Marker>
-      </MapContainer>
-      }
+        {window !== undefined && y !== 0 &&
+          <MapContainer center={[63.443016, 10.429332]} zoom={13} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
+            <TileLayer
+              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <Marker position={[63.443016, 10.429332]}>
+              <Popup>
+                📡NORBIT <br />
+              </Popup>
+            </Marker>
+            <Marker position={[63.419728, 10.401713]}>
+              <Popup>
+                🏖GLØSHAUGEN <br />
+              </Popup>
+            </Marker>
+          </MapContainer>
+        }
       </div>
     </PageLayoutWrapper>
   )

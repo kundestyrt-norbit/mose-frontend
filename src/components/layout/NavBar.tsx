@@ -57,7 +57,7 @@ const ResponsiveAppBar = (): JSX.Element => {
       <Container maxWidth={false}>
         <Toolbar disableGutters sx={{ justifyContent: 'space-between', boxShadow: 'none' }}>
           <Link href='/' style={{ border: '1px solid blue' }}>
-            <div style={{ display: 'flex', border: '1px solid red' }}>
+            <div style={{ display: 'flex' }}>
               <AdbIcon sx={{ display: { xs: 'none', sm: 'flex' }, mr: 1 }} />
               <Typography
                 variant='h6'
@@ -140,7 +140,6 @@ const ResponsiveAppBar = (): JSX.Element => {
           <Box
             sx={{
               display: { xs: 'none', sm: 'flex' },
-              border: '1px solid red',
               position: 'absolute',
               width: '50%',
               left: '25%',
@@ -156,8 +155,8 @@ const ResponsiveAppBar = (): JSX.Element => {
                     my: 2,
                     display: 'block',
                     color: router.asPath.includes(page.toLowerCase())
-                      ? 'red'
-                      : 'white'
+                      ? 'white'
+                      : 'black'
                   }}
                 >
                   {page}
@@ -195,8 +194,8 @@ const ResponsiveAppBar = (): JSX.Element => {
                   </MenuItem>)
                 } else {
                   return (<MenuItem key={setting} onClick={handleCloseUserMenu}>
-                            <Typography textAlign='center'>{setting}</Typography>
-                          </MenuItem>)
+                    <Typography textAlign='center'>{setting}</Typography>
+                  </MenuItem>)
                 }
               }
               )}

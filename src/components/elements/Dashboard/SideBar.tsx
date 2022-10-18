@@ -46,9 +46,9 @@ export default function TemporaryDrawer (): JSX.Element {
     })
   }
 
-  const list = (anchor: Anchor): JSX.Element => (
+  const DropDownList = (anchor: Anchor): JSX.Element => (
     <Box
-      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+      sx={{ width: 'auto' }}
       role="presentation"
 
     >
@@ -69,35 +69,30 @@ export default function TemporaryDrawer (): JSX.Element {
       </List>
       <Divider />
       <List>
-        {['Add Dashboard'].map((text) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton onClick={(() => addDashboard(anchor))}>
-              <ListItemIcon>
-                <DashboardCustomizeRoundedIcon />
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        <ListItem key={'Add Dashboard'} disablePadding>
+          <ListItemButton onClick={(() => addDashboard(anchor))}>
+            <ListItemIcon>
+              <DashboardCustomizeRoundedIcon />
+            </ListItemIcon>
+            <ListItemText primary={'Add Dashboard'} />
+          </ListItemButton>
+        </ListItem>
       </List>
     </Box>
   )
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', maxWidth: '100%', justifyContent: 'center', alignItems: 'center', margin: '1% 3%', padding: '0' }}>
-      {(['top'] as const).map((anchor) => (
-        <React.Fragment key={anchor}>
-          <Button onClick={toggleDrawer(anchor, true)} style={{ width: '100%', height: '56px', borderRadius: '4px', border: '1px solid rgba(0, 0, 0, 0.229)' }}>Select Dashboard</Button>
-          <Drawer
-            anchor={anchor}
-            open={state[anchor]}
-            onClose={toggleDrawer(anchor, false)}
-          >
-            {list(anchor)}
-          </Drawer>
-        </React.Fragment>
-      ))
-      }
+      <React.Fragment key={'top'}>
+        <Button onClick={toggleDrawer('top', true)} style={{ width: '100%', height: '56px', borderRadius: '4px', border: '1px solid rgba(0, 0, 0, 0.229)' }}>Select Dashboard</Button>
+        <Drawer
+          anchor='top'
+          open={state.top}
+          onClose={toggleDrawer('top', false)}
+        >
+          {DropDownList('top')}
+        </Drawer>
+      </React.Fragment>
       <h1> {header} </h1>
     </div >
   )
