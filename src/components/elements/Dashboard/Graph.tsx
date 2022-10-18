@@ -28,7 +28,6 @@ interface GraphParams {
   title: string
 }
 export function Graph ({ time, measurments, label, title }: GraphParams): JSX.Element {
-  console.log(measurments)
   const options = {
     responsive: true,
     elements: {
