@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import PageLayoutWrapper from '../../components/layout/PageLayoutWrapper'
-import Navigator from '../../components/elements/Dashboard/Navigator'
-import NorbitParking from '../../components/elements/Dashboard/NorbitParking'
+import TemporaryDrawer from '../../components/elements/Dashboard/SideBar'
+import FilterDash from '../../components/elements/Dashboard/FilterDash'
 
 /**
  * Does nothing. Just redirection to /sensors
@@ -11,8 +11,8 @@ const hei: NextPage = () => {
   return (
     <div>
       <PageLayoutWrapper>
-            <Navigator />
-            <NorbitParking></NorbitParking>
+        <TemporaryDrawer />
+        <FilterDash />
       </PageLayoutWrapper>
     </div>
   )

@@ -1,8 +1,8 @@
 import type { NextPage } from 'next'
-import { SectionsWrapper } from '../../components/layout/Section'
 import PageLayoutWrapper from '../../components/layout/PageLayoutWrapper'
 import { useRouter } from 'next/router'
-import Navigator from '../../components/elements/Dashboard/Navigator'
+import TemporaryDrawer from '../../components/elements/Dashboard/SideBar'
+import FilterDash from '../../components/elements/Dashboard/FilterDash'
 
 /**
  * Does nothing. Just redirection to /sensors
@@ -14,9 +14,8 @@ const HomePage: NextPage = () => {
   console.log(id, dashboardNumber)
   return (
     <PageLayoutWrapper>
-      <SectionsWrapper>
-        <Navigator></Navigator>
-      </SectionsWrapper>
+      <TemporaryDrawer />
+      <FilterDash />
     </PageLayoutWrapper>
   )
 }
