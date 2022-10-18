@@ -35,7 +35,7 @@ export default function CheckboxesTags (): JSX.Element {
   )
 }
 
-const dashboards = [
+export const dashboards = [
   { title: 'Dashboard 1' },
   { title: 'Dashboard 2' },
   { title: 'Dashboard 3' }

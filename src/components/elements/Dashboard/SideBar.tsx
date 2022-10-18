@@ -11,6 +11,7 @@ import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded'
 import DashboardCustomizeRoundedIcon from '@mui/icons-material/DashboardCustomizeRounded'
 import Link from 'next/link'
 import React, { Key } from 'react'
+import { dashboards } from '../AddToDash'
 
 type Anchor = 'top'
 
@@ -40,6 +41,9 @@ export default function TemporaryDrawer (): JSX.Element {
   const addDashboard = (anchor: Anchor): void => {
     DashBoardList.push('Dashboard ' + (DashBoardList.length + 1).toString())
     setState({ ...state, [anchor]: true })
+    dashboards.push({
+      title: 'Dashboard ' + (dashboards.length + 1).toString()
+    })
   }
 
   const list = (anchor: Anchor): JSX.Element => (
