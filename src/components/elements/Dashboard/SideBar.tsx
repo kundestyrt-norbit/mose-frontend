@@ -12,10 +12,35 @@ import DashboardCustomizeRoundedIcon from '@mui/icons-material/DashboardCustomiz
 import Link from 'next/link'
 import React, { Key } from 'react'
 import { dashboards } from '../AddToDash'
+import { Dashboard, DashboardList, JSONToDashBoardList } from './types'
+import { v4 as uuidv4 } from 'uuid'
 
 type Anchor = 'top'
 
-const DashBoardList: String[] = ['Dashboard 1', 'Dashboard 2', 'Dashboard 3']
+const DashBoardList: DashboardList = {}
+
+async function getDashboards (): Promise<any> {
+  const response = await fetch('api/dashboard/list', {
+    method: 'GET',
+    headers: {
+      'Content-type': 'application/json'
+    }
+  })
+  const resData = await response.json()
+  return resData
+}
+
+async function createDashboard (dashboard: Dashboard): Promise<any> {
+  const response = await fetch('/api/dashboard/list', {
+    method: 'PUT',
+    headers: {
+      'Content-type': 'application/json'
+    },
+    body: JSON.stringify(dashboard)
+  })
+  const resData = await response.json()
+  return resData
+}
 
 export default function TemporaryDrawer (): JSX.Element {
   const [state, setState] = React.useState({
@@ -39,33 +64,49 @@ export default function TemporaryDrawer (): JSX.Element {
       }
 
   const addDashboard = (anchor: Anchor): void => {
-    DashBoardList.push('Dashboard ' + (DashBoardList.length + 1).toString())
-    setState({ ...state, [anchor]: true })
-    dashboards.push({
-      title: 'Dashboard ' + (dashboards.length + 1).toString()
+    const dashboard: Dashboard = {
+      dashboardId: uuidv4(),
+      dashboardName: 'New Dashboard',
+      sensors: []
+    }
+    void createDashboard(dashboard).then(res => {
+      console.log(res)
+      DashBoardList[dashboard.dashboardId] = dashboard.dashboardName
+      setState({ ...state, [anchor]: true })
+      dashboards.push({
+        title: dashboard.dashboardName
+      })
+    }
+
+    ).catch((error) => {
+      console.log(error)
+    })
+    void getDashboards().then(res => {
+      console.log(res)
+      console.log(JSONToDashBoardList(res))
+    }).catch((error) => {
+      console.log(error)
     })
   }
 
   const DropDownList = (anchor: Anchor): JSX.Element => (
     <Box
       sx={{ width: 'auto' }}
-      role="presentation"
-
-    >
+      role="presentation">
       <List onClick={toggleDrawer(anchor, false)}
         onKeyDown={toggleDrawer(anchor, false)}>
-        {DashBoardList.map((text, index) => (
-          <ListItem key={text as Key} disablePadding>
-            <Link href={'/dashboard/' + (index + 1).toString()} >
-              <ListItemButton onClick={() => setHeader('Dashboard ' + (index + 1).toString())}> {/* Add Onclick-function that writes heading */}
-                <ListItemIcon>
-                  <DashboardRoundedIcon />
-                </ListItemIcon >
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </Link>
-          </ListItem>
-        ))}
+        {
+          Object.entries(DashBoardList).map(([dashboardId, dashboardName], index) =>
+            (<ListItem key={dashboardId as Key} disablePadding>
+          <Link href={'/dashboard/' + dashboardId} >
+            <ListItemButton onClick={() => setHeader(dashboardName)}> {/* Add Onclick-function that writes heading */}
+              <ListItemIcon>
+                <DashboardRoundedIcon />
+              </ListItemIcon >
+              <ListItemText primary={dashboardName} />
+            </ListItemButton>
+          </Link>
+       </ListItem>))}
       </List>
       <Divider />
       <List>
@@ -80,7 +121,6 @@ export default function TemporaryDrawer (): JSX.Element {
       </List>
     </Box>
   )
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column', maxWidth: '100%', justifyContent: 'center', alignItems: 'center', margin: '1% 3%', padding: '0' }}>
       <React.Fragment key={'top'}>
