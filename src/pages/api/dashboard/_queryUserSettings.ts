@@ -15,8 +15,8 @@ Amplify.configure({ ...config, ssr: true })
 
 declare const process: {
   env: {
-    AWS_ACCESS_KEY_ID_DYNAMO_DB: string
-    AWS_SECRET_ACCESS_KEY_DYNAMO_DB: string
+    ACCESS_KEY_ID_DYNAMO_DB_AWS: string
+    SECRET_ACCESS_KEY_DYNAMO_DB_AWS: string
     USER_DB_TABLE_NAME: string
   }
 }
@@ -24,8 +24,8 @@ const userDB = new DynamoDBClient(
   {
     region: 'eu-north-1',
     credentials: {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID_DYNAMO_DB,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY_DYNAMO_DB
+      accessKeyId: process.env.ACCESS_KEY_ID_DYNAMO_DB_AWS,
+      secretAccessKey: process.env.SECRET_ACCESS_KEY_DYNAMO_DB_AWS
     }
   })
 

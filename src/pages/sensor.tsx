@@ -9,16 +9,16 @@ import { Graph } from '../components/elements/dashboard/Graph'
 declare const process: {
   env: {
     NODE_ENV: string
-    AWS_ACCESS_KEY_ID: string
-    AWS_SECRET_ACCESS_KEY: string
+    ACCESS_KEY_ID_AWS: string
+    SECRET_ACCESS_KEY_AWS: string
   }
 }
 const queryClient = new TimestreamQueryClient(
   {
     region: 'eu-west-1',
     credentials: {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+      accessKeyId: process.env.ACCESS_KEY_ID_AWS,
+      secretAccessKey: process.env.SECRET_ACCESS_KEY_AWS
     }
   })
 
