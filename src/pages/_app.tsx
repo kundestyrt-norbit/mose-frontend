@@ -24,7 +24,8 @@ Amplify.configure({
   oauth: {
     domain: 'moseauth.auth.eu-north-1.amazoncognito.com',
     scope: ['email', 'openid'],
-    redirectSignIn: 'http://localhost:3000/',
+    redirectSignIn: process.env.AUTH_REDIRECT,
+    redirectSignOut: process.env.AUTH_REDIRECT,
     responseType: 'code'
   },
   ssr: true
