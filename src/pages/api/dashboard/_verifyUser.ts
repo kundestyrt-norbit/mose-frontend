@@ -2,18 +2,17 @@ import { CognitoJwtVerifier } from 'aws-jwt-verify'
 
 declare const process: {
   env: {
-    USER_POOL_ID: string
-    CLIENT_ID: string
+    AUTH_POOL: string
+    AUTH_POOL_CLIENT: string
   }
 }
 
 async function verifyUserID (token: any): Promise<boolean> {
   const verifier = CognitoJwtVerifier.create({
-    userPoolId: process.env.USER_POOL_ID,
+    userPoolId: process.env.AUTH_POOL,
     tokenUse: 'id',
-    clientId: process.env.CLIENT_ID
+    clientId: process.env.AUTH_POOL_CLIENT
   })
-
   try {
     await verifier.verify(token.jwtToken)
   } catch (err) {

@@ -37,10 +37,16 @@ const { Auth } = withSSRContext()
 
 // Configure Auth
 Auth.configure({
-
   // region: process.env.AUTH_REGION,
   // userPoolId: process.env.AUTH_POOL,
   // userPoolWebClientId: process.env.AUTH_POOL_CLIENT,
+  // oauth: {
+  //   domain: 'moseauth.auth.eu-north-1.amazoncognito.com',
+  //   scope: ['email', 'openid'],
+  //   redirectSignIn: process.env.AUTH_REDIRECT,
+  //   redirectSignOut: process.env.AUTH_REDIRECT,
+  //   responseType: 'code'
+  // },
   mandatorySignIn: true,
   // Set this only if you wish to use cookies to storage otherwise ignore it
   cookieStorage: {

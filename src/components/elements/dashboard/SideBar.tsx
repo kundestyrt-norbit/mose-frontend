@@ -10,12 +10,35 @@ import ListItemText from '@mui/material/ListItemText'
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded'
 import DashboardCustomizeRoundedIcon from '@mui/icons-material/DashboardCustomizeRounded'
 import Link from 'next/link'
-import React, { Key } from 'react'
+import React, { Key, useEffect } from 'react'
 import { dashboards } from '../AddToDash'
+import { Dashboard, DashboardListItem } from './types'
+import { v4 as uuidv4 } from 'uuid'
 
 type Anchor = 'top'
 
-const DashBoardList: String[] = ['Dashboard 1', 'Dashboard 2', 'Dashboard 3']
+async function getDashboards (): Promise<DashboardListItem[]> {
+  const response = await fetch('/api/dashboard/list', {
+    method: 'GET',
+    headers: {
+      'Content-type': 'application/json'
+    }
+  })
+  const resData = await response.json()
+  return resData
+}
+
+async function createDashboard (dashboard: Dashboard): Promise<any> {
+  const response = await fetch('/api/dashboard/list', {
+    method: 'PUT',
+    headers: {
+      'Content-type': 'application/json'
+    },
+    body: JSON.stringify(dashboard)
+  })
+  const resData = await response.json()
+  return resData
+}
 
 export default function TemporaryDrawer (): JSX.Element {
   const [state, setState] = React.useState({
@@ -23,6 +46,11 @@ export default function TemporaryDrawer (): JSX.Element {
   })
 
   const [header, setHeader] = React.useState<string>('')
+
+  const [dashboardList, setDashboardList] = React.useState<DashboardListItem[]>([])
+  useEffect(() => {
+    getDashboards().then(res => setDashboardList(res)).catch(err => console.log(err))
+  }, [])
 
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
@@ -39,33 +67,42 @@ export default function TemporaryDrawer (): JSX.Element {
       }
 
   const addDashboard = (anchor: Anchor): void => {
-    DashBoardList.push('Dashboard ' + (DashBoardList.length + 1).toString())
-    setState({ ...state, [anchor]: true })
-    dashboards.push({
-      title: 'Dashboard ' + (dashboards.length + 1).toString()
+    const dashboard: Dashboard = {
+      dashboardId: uuidv4(),
+      dashboardName: 'New Dashboard',
+      sensors: []
+    }
+    createDashboard(dashboard).then(res => {
+      setDashboardList([...dashboardList, { dashboardId: dashboard.dashboardId, dashboardName: dashboard.dashboardName }])
+      setState({ ...state, [anchor]: true })
+      dashboards.push({
+        title: dashboard.dashboardName
+      })
+    }
+
+    ).catch((error) => {
+      console.log(error)
     })
   }
 
   const DropDownList = (anchor: Anchor): JSX.Element => (
     <Box
       sx={{ width: 'auto' }}
-      role="presentation"
-
-    >
+      role="presentation">
       <List onClick={toggleDrawer(anchor, false)}
         onKeyDown={toggleDrawer(anchor, false)}>
-        {DashBoardList.map((text, index) => (
-          <ListItem key={text as Key} disablePadding>
-            <Link href={'/dashboard/' + (index + 1).toString()} >
-              <ListItemButton onClick={() => setHeader('Dashboard ' + (index + 1).toString())}> {/* Add Onclick-function that writes heading */}
-                <ListItemIcon>
-                  <DashboardRoundedIcon />
-                </ListItemIcon >
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </Link>
-          </ListItem>
-        ))}
+        {
+          dashboardList.map((dashboardListItem, index) =>
+            (<ListItem key={dashboardListItem.dashboardId as Key} disablePadding>
+          <Link href={'/dashboard/' + dashboardListItem.dashboardId} >
+            <ListItemButton onClick={() => setHeader(dashboardListItem.dashboardName)}> {/* Add Onclick-function that writes heading */}
+              <ListItemIcon>
+                <DashboardRoundedIcon />
+              </ListItemIcon >
+              <ListItemText primary={dashboardListItem.dashboardName} />
+            </ListItemButton>
+          </Link>
+       </ListItem>))}
       </List>
       <Divider />
       <List>
@@ -80,7 +117,6 @@ export default function TemporaryDrawer (): JSX.Element {
       </List>
     </Box>
   )
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column', maxWidth: '100%', justifyContent: 'center', alignItems: 'center', margin: '1% 3%', padding: '0' }}>
       <React.Fragment key={'top'}>

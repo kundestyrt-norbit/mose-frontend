@@ -8,10 +8,6 @@ import {
   QueryCommandOutput
 } from '@aws-sdk/client-dynamodb'
 import { NextApiRequest } from 'next'
-import Amplify from 'aws-amplify'
-import config from '../../../aws-exports.js'
-
-Amplify.configure({ ...config, ssr: true })
 
 declare const process: {
   env: {
@@ -34,8 +30,8 @@ export async function saveDashboard (req: NextApiRequest, userId: string | null)
   const item = await userDB.send(new PutItemCommand({
     TableName: process.env.USER_DB_TABLE_NAME,
     Item: {
-      userID: { S: userId ?? '' },
-      dashboardID: { N: dashboardId as string },
+      userId: { S: userId ?? '' },
+      dashboardId: { S: dashboardId as string },
       dashboardName: { S: dashboardName as string },
       sensors: { L: sensors as any[] }
     }
@@ -49,20 +45,23 @@ export async function getDashboard (req: NextApiRequest, userId: string): Promis
   const item = await userDB.send(new GetItemCommand({
     TableName: process.env.USER_DB_TABLE_NAME,
     Key: {
-      userID: { S: userId ?? '' },
-      dashboardID: { N: dashboardId }
-    }
+      userId: { S: userId ?? '' },
+      dashboardId: { S: dashboardId }
+    },
+    ProjectionExpression: 'dashboardId, dashboardName, sensors'
   }))
   return item
 }
 
 export async function createDashboard (req: NextApiRequest, userId: string | null): Promise<PutItemCommandOutput> {
+  const { dashboardId, dashboardName, sensors } = req.body
   const item = await userDB.send(new PutItemCommand({
     TableName: process.env.USER_DB_TABLE_NAME,
     Item: {
-      userID: { S: userId ?? '' },
-      dashboardID: { N: req.body },
-      dashboardName: { S: 'New Dashboard' }
+      userId: { S: userId ?? '' },
+      dashboardId: { S: dashboardId },
+      dashboardName: { S: dashboardName },
+      sensors: { L: sensors }
     }
   })
   )
@@ -72,11 +71,13 @@ export async function createDashboard (req: NextApiRequest, userId: string | nul
 export async function getDashboardNames (userId: string | null): Promise<QueryCommandOutput> {
   const item = await userDB.send(new QueryCommand({
     TableName: process.env.USER_DB_TABLE_NAME,
-    KeyConditionExpression: 'userID = :v1',
+    KeyConditionExpression: 'userId = :v1',
     ExpressionAttributeValues: {
       ':v1': { S: userId ?? '' }
-    }
+    },
+    ProjectionExpression: 'dashboardId, dashboardName'
   })
   )
+
   return item
 }

@@ -1,17 +1,18 @@
-import type { NextPage } from 'next'
 import PageLayoutWrapper from '../../components/layout/PageLayoutWrapper'
-import { useRouter } from 'next/router'
 import TemporaryDrawer from '../../components/elements/dashboard/SideBar'
 import FilterDash from '../../components/elements/dashboard/FilterDash'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 
-/**
- * Does nothing. Just redirection to /sensors
- * Natural page to have in the future
- */
-const HomePage: NextPage = () => {
+const DashboardPage = (): JSX.Element => {
+  const [dashboard, setDashboard] = useState({})
   const router = useRouter()
-  const { dashboardNumber, id } = router.query
-  console.log(id, dashboardNumber)
+
+  useEffect(() => {
+    fetch(`/api/dashboard/${router.query.dashboardNumber as string}`).then(async res => await res.json()).then(res => setDashboard(res)).catch(err => console.log(err))
+  }, [])
+
+  console.log(dashboard)
   return (
     <PageLayoutWrapper>
       <TemporaryDrawer />
@@ -20,4 +21,4 @@ const HomePage: NextPage = () => {
   )
 }
 
-export default HomePage
+export default DashboardPage
