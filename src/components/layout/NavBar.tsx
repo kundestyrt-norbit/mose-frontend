@@ -11,10 +11,10 @@ import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
-import AdbIcon from '@mui/icons-material/Adb'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Auth } from 'aws-amplify'
+import NorbitExploreMore from './NorbitExploreMore'
 
 const pages = ['Map', 'Dashboard', 'List']
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
@@ -57,29 +57,13 @@ const ResponsiveAppBar = (): JSX.Element => {
       <Container maxWidth={false}>
         <Toolbar disableGutters sx={{ justifyContent: 'space-between', boxShadow: 'none' }}>
           <Link href='/' style={{ border: '1px solid blue' }}>
-            <div style={{ display: 'flex' }}>
-              <AdbIcon sx={{ display: { xs: 'none', sm: 'flex' }, mr: 1 }} />
-              <Typography
-                variant='h6'
-                noWrap
-                component='a'
-                href='/'
-                sx={{
-                  mr: 2,
-                  display: { xs: 'none', sm: 'flex' },
-                  fontFamily: 'monospace',
-                  fontWeight: 700,
-                  letterSpacing: '.3rem',
-                  color: 'inherit',
-                  textDecoration: 'none'
-                }}
-              >
-                LOGO
-              </Typography>
-            </div>
+            <NorbitExploreMore
+                sx={{ display: { xs: 'none', sm: 'flex' }, mr: 1, height: '4rem', width: '5rem', fontSize: '4rem' }}
+                viewBox='0 0 442 196'
+                />
           </Link>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', sm: 'none' } }}>
+          <Box sx={{ display: { xs: 'flex', sm: 'none' } }}>
             <IconButton
               size='large'
               aria-label='account of current user'
@@ -117,26 +101,10 @@ const ResponsiveAppBar = (): JSX.Element => {
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', sm: 'none' }, mr: 1 }} />
-          <Link href='/'>
-            <Typography
-              variant='h5'
-              noWrap
-              component='a'
-              sx={{
-                mr: 2,
-                display: { xs: 'flex', sm: 'none' },
-                flexGrow: 1,
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none'
-              }}
-            >
-              LOGO
-            </Typography>
-          </Link>
+          <NorbitExploreMore
+                sx={{ display: { xs: 'flex', sm: 'none' }, mr: 1, height: '3rem', width: '4rem', fontSize: '3rem' }}
+                viewBox='0 0 442 196'
+                 />
           <Box
             sx={{
               display: { xs: 'none', sm: 'flex' },
