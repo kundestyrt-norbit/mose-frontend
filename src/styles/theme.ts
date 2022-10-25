@@ -15,19 +15,23 @@ declare module '@mui/material/styles/createPalette' {
 export const theme = createTheme({
   palette: {
     mode: 'light',
-    primary: { main: '#f8a477', dark: '#f50057' },
+    primary: { main: '#7895a7', dark: '#f50057' },
     border: {
-      main: '#f8a477'
+      main: '#7895a7'
     },
     background: {
-      paper: '#f8a477',
-      default: '#ffffed' // '#151515',
+      paper: '#7895a7',
+      default: '#f4f2f0' // '#151515',
     },
     text: {
     }
   },
   typography: {
-    fontFamily: ['Lato', 'Sans'].join(',')
+    fontFamily: ['proxima-nova', 'sans-serif'].join(','),
+    fontSize: 16,
+    button: {
+      fontWeight: 'bolder'
+    }
   }
 
 })

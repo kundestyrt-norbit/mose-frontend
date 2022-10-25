@@ -4,6 +4,8 @@ import { MutableRefObject, useEffect, useRef, useState } from 'react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/images/marker-shadow.png'
 import 'leaflet/dist/images/marker-icon-2x.png'
+import Link from 'next/link'
+import { Button } from '@mui/material'
 
 function useMyCustomHook<T extends HTMLElement> (): { ref: MutableRefObject<T | null> } {
   const myRef = useRef<T>(null)
@@ -44,8 +46,11 @@ const Map = (): JSX.Element => {
             />
             <Marker position={[63.443016, 10.429332]}>
               <Popup>
-                📡NORBIT <br />
+                <Link href='/list'>
+                  <Button>📡NORBIT <br /> </Button>
+                </Link>
               </Popup>
+
             </Marker>
             <Marker position={[63.419728, 10.401713]}>
               <Popup>
