@@ -1,20 +1,18 @@
-import type { GetServerSideProps, NextPage } from 'next'
 import PageLayoutWrapper from '../../components/layout/PageLayoutWrapper'
 import TemporaryDrawer from '../../components/elements/Dashboard/SideBar'
 import FilterDash from '../../components/elements/Dashboard/FilterDash'
-import { Dashboard, JSONToDashBoard } from '../../components/elements/Dashboard/types'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 
-declare const process: {
-  env: {
-    BASE_URL: string
-  }
-}
+const DashboardPage = (): JSX.Element => {
+  const [dashboard, setDashboard] = useState({})
+  const router = useRouter()
 
-interface DashboardProps {
-  dashboard: Dashboard
-}
+  useEffect(() => {
+    fetch(`/api/dashboard/${router.query.dashboardNumber as string}`).then(async res => await res.json()).then(res => setDashboard(res)).catch(err => console.log(err))
+  }, [])
 
-const HomePage: NextPage<DashboardProps> = ({ dashboard: { dashboardId, dashboardName, sensors } }: DashboardProps) => {
+  console.log(dashboard)
   return (
     <PageLayoutWrapper>
       <TemporaryDrawer />
@@ -23,19 +21,4 @@ const HomePage: NextPage<DashboardProps> = ({ dashboard: { dashboardId, dashboar
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  if (context.params === undefined) {
-    return {
-      notFound: true
-    }
-  }
-  const dashboardId = context.params.dashboardNumber as string
-  const response = await fetch(process.env.BASE_URL + '/api/dashboard/' + dashboardId)
-  console.log(response)
-  const dashboard = JSONToDashBoard(await response.json())
-  return {
-    props: { dashboard }
-  }
-}
-
-export default HomePage
+export default DashboardPage

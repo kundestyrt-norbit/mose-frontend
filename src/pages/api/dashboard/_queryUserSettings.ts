@@ -50,8 +50,9 @@ export async function getDashboard (req: NextApiRequest, userId: string): Promis
     TableName: process.env.USER_DB_TABLE_NAME,
     Key: {
       userId: { S: userId ?? '' },
-      dashboardId: { N: dashboardId }
-    }
+      dashboardId: { S: dashboardId }
+    },
+    ProjectionExpression: 'dashboardId, dashboardName, sensors'
   }))
   return item
 }
@@ -77,8 +78,10 @@ export async function getDashboardNames (userId: string | null): Promise<QueryCo
     KeyConditionExpression: 'userId = :v1',
     ExpressionAttributeValues: {
       ':v1': { S: userId ?? '' }
-    }
+    },
+    ProjectionExpression: 'dashboardId, dashboardName'
   })
   )
+
   return item
 }
