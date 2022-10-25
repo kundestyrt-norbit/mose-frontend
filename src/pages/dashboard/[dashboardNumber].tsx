@@ -1,6 +1,6 @@
 import PageLayoutWrapper from '../../components/layout/PageLayoutWrapper'
-import TemporaryDrawer from '../../components/elements/Dashboard/SideBar'
-import FilterDash from '../../components/elements/Dashboard/FilterDash'
+import TemporaryDrawer from '../../components/elements/dashboard/SideBar'
+import FilterDash from '../../components/elements/dashboard/FilterDash'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 

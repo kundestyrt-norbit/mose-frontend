@@ -8,10 +8,6 @@ import {
   QueryCommandOutput
 } from '@aws-sdk/client-dynamodb'
 import { NextApiRequest } from 'next'
-import Amplify from 'aws-amplify'
-import config from '../../../aws-exports.js'
-
-Amplify.configure({ ...config, ssr: true })
 
 declare const process: {
   env: {

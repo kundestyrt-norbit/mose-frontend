@@ -1,11 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import Amplify, { withSSRContext } from 'aws-amplify'
+import { withSSRContext } from 'aws-amplify'
 import { createDashboard, getDashboardNames } from './_queryUserSettings'
 import { unmarshall } from '@aws-sdk/util-dynamodb'
 import getVerifiedUserID from './_verifyUser'
-import config from '../../../aws-exports.js'
-
-Amplify.configure({ ...config, ssr: true })
 
 export default async function handler (req: NextApiRequest, res: NextApiResponse): Promise<void> {
   const { Auth } = withSSRContext({ req })
