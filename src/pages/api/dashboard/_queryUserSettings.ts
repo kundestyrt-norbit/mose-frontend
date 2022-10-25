@@ -31,7 +31,7 @@ export async function saveDashboard (req: NextApiRequest, userId: string | null)
     TableName: process.env.USER_DB_TABLE_NAME,
     Item: {
       userId: { S: userId ?? '' },
-      dashboardId: { N: dashboardId as string },
+      dashboardId: { S: dashboardId as string },
       dashboardName: { S: dashboardName as string },
       sensors: { L: sensors as any[] }
     }
