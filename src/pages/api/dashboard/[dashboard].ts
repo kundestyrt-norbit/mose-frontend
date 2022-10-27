@@ -19,6 +19,12 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
 
       return res.status(200).json(unmarshall(item.Item ?? {}))
     }
+
+    if (req.method === 'DELETE') {
+      const item = await deleteDashboard(req, userId)
+
+      return res.status(204).json(item)
+    }
   } else {
     throw new Error('User ID not valid')
   }
