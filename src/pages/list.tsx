@@ -16,20 +16,13 @@ const SensorDialogContent = styled(DialogContent)({
   alignItems: 'center',
   justifyContent: 'center',
   flexDirection: 'column',
-  minHeight: '500px',
   width: '100%'
 })
 
 const SensorDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiPaper-root': {
     width: '100%',
-    maxWidth: '500px' // Set your width here
-  },
-  '& .MuiDialogContent-root': {
-    padding: theme.spacing(2)
-  },
-  '& .MuiDialogActions-root': {
-    padding: theme.spacing(1)
+    maxWidth: '500px'
   }
 }))
 const PageWrapper = styled(Box)`
@@ -55,7 +48,7 @@ const BootstrapDialogTitle = (props: DialogTitleProps & {onClose: () => void}): 
             position: 'absolute',
             right: 8,
             top: 8,
-            color: (theme) => theme.palette.grey[500]
+            color: (theme) => theme.palette.primary.light
           }}
         >
           <CloseIcon />
@@ -76,11 +69,11 @@ const SensorModal = ({ id, column, metaData }: Sensor): JSX.Element => {
         <span style={{ textAlign: 'center' }}>{metaData?.friendlyName ?? column}</span>
       </SensorModalButton>
       <SensorDialog open={open} onClose={() => setOpen(false)} >
-          <BootstrapDialogTitle id="customized-dialog-title" onClose={() => setOpen(false)}>
+          <BootstrapDialogTitle sx={{ color: (theme) => theme.palette.primary.light }} id="customized-dialog-title" onClose={() => setOpen(false)}>
             {metaData?.friendlyName}
           </BootstrapDialogTitle>
           <SensorDialogContent>
-            <SensorGraph id={id} sensor={column} />
+            <SensorGraph id={id} sensor={column} sx={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '20px' }} unit={metaData?.unit}/>
             {metaData?.description}
           </SensorDialogContent>
       </SensorDialog>
