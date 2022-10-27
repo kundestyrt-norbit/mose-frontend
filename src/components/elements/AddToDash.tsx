@@ -4,18 +4,24 @@ import TextField from '@mui/material/TextField'
 import Autocomplete from '@mui/material/Autocomplete'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
 import CheckBoxIcon from '@mui/icons-material/CheckBox'
+import { getDashboards } from '../../utils/dashboardUtils'
+import { DashboardListItem } from './dashboard/types'
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
 const checkedIcon = <CheckBoxIcon fontSize="small" />
 
-export default function CheckboxesTags (): JSX.Element {
+export default function CheckboxesTags(): JSX.Element {
+  const [dashboardList, setDashboardList] = React.useState<DashboardListItem[]>([])
+  React.useEffect(() => {
+    getDashboards().then(res => setDashboardList(res)).catch(err => console.log(err))
+  }, [])
   return (
     <Autocomplete
       multiple
       id="checkboxes-tags-demo"
-      options={dashboards}
+      options={dashboardList}
       disableCloseOnSelect
-      getOptionLabel={(option) => option.title}
+      getOptionLabel={(option) => option.dashboardName}
       renderOption={(props, option, { selected }) => (
         <li {...props}>
           <Checkbox
@@ -23,8 +29,15 @@ export default function CheckboxesTags (): JSX.Element {
             checkedIcon={checkedIcon}
             style={{ marginRight: 8, color: 'white' }}
             checked={selected}
+            onChange={() => {
+              if (checkedIcon) {
+
+              } else {
+
+              }
+            }}
           />
-          {option.title}
+          {option.dashboardName}
         </li>
       )}
       style={{ minWidth: '30%', margin: '3%' }}
@@ -34,9 +47,3 @@ export default function CheckboxesTags (): JSX.Element {
     />
   )
 }
-
-export const dashboards = [
-  { title: 'Dashboard 1' },
-  { title: 'Dashboard 2' },
-  { title: 'Dashboard 3' }
-]

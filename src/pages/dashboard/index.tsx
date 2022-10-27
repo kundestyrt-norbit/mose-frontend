@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import PageLayoutWrapper from '../../components/layout/PageLayoutWrapper'
-import TemporaryDrawer from '../../components/elements/dashboard/SideBar'
+import TemporaryDrawer from '../../components/elements/dashboard/TopBar'
 import FilterDash from '../../components/elements/dashboard/FilterDash'
 
 /**
@@ -12,7 +12,6 @@ const hei: NextPage = () => {
     <div>
       <PageLayoutWrapper>
         <TemporaryDrawer />
-        <FilterDash />
       </PageLayoutWrapper>
     </div>
   )

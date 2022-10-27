@@ -1,8 +1,8 @@
 import PageLayoutWrapper from '../../components/layout/PageLayoutWrapper'
-import TemporaryDrawer from '../../components/elements/dashboard/SideBar'
-import FilterDash from '../../components/elements/dashboard/FilterDash'
+import TemporaryDrawer from '../../components/elements/dashboard/TopBar'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import DashBoardView from '../../components/elements/dashboard/DashBoardView'
 
 const DashboardPage = (): JSX.Element => {
   const [dashboard, setDashboard] = useState({})
@@ -16,7 +16,7 @@ const DashboardPage = (): JSX.Element => {
   return (
     <PageLayoutWrapper>
       <TemporaryDrawer />
-      <FilterDash />
+      <DashBoardView dashboard={dashboard} />
     </PageLayoutWrapper>
   )
 }

@@ -1,7 +1,7 @@
-import getVerifiedUserID from './_verifyUser'
+import getVerifiedUserID from '../_verifyUser'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { withSSRContext } from 'aws-amplify'
-import { getDashboard, saveDashboard } from './_queryUserSettings'
+import { getDashboard, saveDashboard } from '../_queryUserSettings'
 import { unmarshall } from '@aws-sdk/util-dynamodb'
 
 export default async function handler (req: NextApiRequest, res: NextApiResponse): Promise<void> {
