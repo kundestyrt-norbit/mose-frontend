@@ -10,9 +10,9 @@ import AddToDash from '../components/elements/AddToDash'
 
 const fetcher = async (input: RequestInfo | URL, init?: RequestInit | undefined): Promise<Sensor[]> => await fetch(input, init).then(async (res) => await (res.json() as Promise<Sensor[]>))
 
-interface SensorModalProps {
-  id: string
-  name: string
+export interface SensorProps {
+  id: number
+  column: string
 }
 const SensorWrapper = styled(Box)`
   width: 50%;
@@ -27,16 +27,23 @@ const PageWrapper = styled(Box)`
   margin: auto;
 `
 
-const CollapsibleSensor = ({ id, name }: SensorModalProps): JSX.Element => {
+const CollapsibleSensor = ({ id, column }: SensorProps): JSX.Element => {
   const [open, setOpen] = useState(false)
-  console.log(id, name)
+  console.log(id, column)
 
   return (
     <ListItem sx={{ flexDirection: 'column', display: 'flex' }}>
-      <ListItemButton onClick={() => { setOpen(!open) }} sx={{ width: '100%', borderRadius: '5px', border: '0.5px solid', color: '#7895a7' }}><span style={{ textAlign: 'center', width: '100%' }}>{name}</span></ListItemButton>
+      <ListItemButton
+        onClick={() => { setOpen(!open) }}
+        sx={{ width: '100%', borderRadius: '5px', border: '0.5px solid', color: '#7895a7' }}
+      >
+        <span style={{ textAlign: 'center', width: '100%' }}>
+          {column}
+        </span>
+      </ListItemButton>
       {open && <SensorWrapper >
-        <SensorGraph id={id} sensor={name} />
-        <AddToDash />
+        <SensorGraph id={id} column={column} />
+        <AddToDash id={id} column={column} gatewayId={8}/>
       </SensorWrapper>}
     </ListItem>
   )
@@ -54,7 +61,7 @@ const ListPage: NextPage = () => {
       <PageWrapper>
         <List>
           {/* <RowAndColumnSpacing></RowAndColumnSpacing> */}
-          {data?.map((sensor) => <CollapsibleSensor key={sensor.id + sensor.column} id={sensor.id} name={sensor.column} />
+          {data?.map((sensor) => <CollapsibleSensor key={sensor.id + sensor.column} id={sensor.id} column={sensor.column} />
           )}
         </List>
       </PageWrapper>

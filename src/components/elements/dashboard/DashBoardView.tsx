@@ -2,7 +2,6 @@ import { SensorGraph } from './SensorGraph'
 import { Sensor } from '../../../pages/api/sensor/_queryClient'
 
 const DashBoardView = ({ dashboard }: any): JSX.Element => {
-  console.log(dashboard)
   return (
     <div style={{
       display: 'flex',
@@ -14,8 +13,8 @@ const DashBoardView = ({ dashboard }: any): JSX.Element => {
       padding: '0'
     }}>
       <h1>{dashboard.dashboardName}</h1>
-      {dashboard.sensors?.forEach((sensor: Sensor) => {
-        <SensorGraph id={sensor.id} sensor={sensor.column} />
+      {dashboard.sensors?.map((sensor: Sensor) => {
+        return <SensorGraph key={sensor.id.toString() + sensor.column} id={sensor.id} column={sensor.column} />
       })}
     </div>
 
