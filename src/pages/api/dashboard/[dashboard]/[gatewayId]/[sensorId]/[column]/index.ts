@@ -1,7 +1,7 @@
-import getVerifiedUserID from '../_verifyUser'
+import getVerifiedUserID from '../../../../_verifyUser'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { withSSRContext } from 'aws-amplify'
-import { addSensor } from './_queryUserSettings'
+import { addSensor, deleteSensor } from '../../../_query'
 
 export default async function handler (req: NextApiRequest, res: NextApiResponse): Promise<void> {
   const { Auth } = withSSRContext({ req })
@@ -9,8 +9,10 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
   if (userId != null) {
     if (req.method === 'PUT') {
       const item = await addSensor(req, userId)
-
       return res.status(201).json(item)
+    } else if (req.method === 'DELETE') {
+      const deletedSensor: boolean = await deleteSensor(req, userId)
+      if (deletedSensor) { return res.status(204).json({}) } else return res.status(404).json({})
     }
   }
 }

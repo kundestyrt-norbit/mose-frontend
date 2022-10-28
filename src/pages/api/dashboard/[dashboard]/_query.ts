@@ -1,19 +1,52 @@
-import { PutItemCommand, PutItemCommandOutput } from '@aws-sdk/client-dynamodb'
+import { GetCommand, UpdateCommand, UpdateCommandOutput } from '@aws-sdk/lib-dynamodb'
 import { NextApiRequest } from 'next'
+import { Sensor } from '../../sensor/_queryClient'
 import { userDB } from '../_queryUserSettings'
 
-export async function addSensor (req: NextApiRequest, userId: string | null): Promise<PutItemCommandOutput> {
-  const { dashboardId, sensorId, column, gatewayId } = req.query
-  const item = await userDB.send(new PutItemCommand({
+export async function addSensor (req: NextApiRequest, userId: string | null): Promise<UpdateCommandOutput> {
+  const { dashboard, sensorId, column, gatewayId } = req.query
+  console.log(dashboard, gatewayId, sensorId, column, userId)
+  const item = await userDB.send(new UpdateCommand({
     TableName: process.env.USER_DB_TABLE_NAME,
     Key: {
-      userId: { S: userId ?? '' },
-      dashboardId: { S: dashboardId }
+      userId,
+      dashboardId: dashboard
     },
-    UpdateExpression: 'set sensors= list_append(sensors, :sensor)',
+    UpdateExpression: 'SET sensors= list_append(sensors, :sensor)',
     ExpressionAttributeValues: {
-      ':sensor': { sensorId, gatewayId, column }
+      ':sensor': [{ id: Number(sensorId), gatewayId: Number(gatewayId), column }]
     }
   }))
   return item
+}
+
+export async function deleteSensor (req: NextApiRequest, userId: string | null): Promise<boolean> {
+  const { dashboard, sensorId, column, gatewayId } = req.query
+  console.log(dashboard, gatewayId, sensorId, column, userId)
+  const dashboardFromDb = (await userDB.send(new GetCommand({
+    TableName: process.env.USER_DB_TABLE_NAME,
+    Key: {
+      userId,
+      dashboardId: dashboard
+    },
+    ProjectionExpression: 'dashboardId, dashboardName, sensors'
+  }))).Item
+  // find the index
+  const indexToRemove: number = dashboardFromDb?.sensors
+    .findIndex((s: Sensor) => s.id === Number(sensorId) && s.column === column && s.gatewayId === Number(gatewayId))
+  if (indexToRemove === -1) {
+    // element not found
+    return false
+  }
+  await userDB.send(new UpdateCommand({
+    TableName: process.env.USER_DB_TABLE_NAME,
+    Key: {
+      userId,
+      dashboardId: dashboard
+    },
+    UpdateExpression: `
+      REMOVE sensors[${indexToRemove}]
+    `
+  }))
+  return true
 }
