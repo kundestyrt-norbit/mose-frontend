@@ -7,7 +7,9 @@ import {
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  ChartOptions,
+  ChartData
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
 
@@ -24,20 +26,20 @@ ChartJS.register(
 interface GraphParams {
   time: string[]
   measurments: number[]
-  label: string
-  title: string
+  label?: string
+  title?: string
+  unit?: string
 }
-export function Graph ({ time, measurments, label, title }: GraphParams): JSX.Element {
-  const options = {
+export function Graph ({ time, measurments, label, title, unit }: GraphParams): JSX.Element {
+  const options: ChartOptions = {
     responsive: true,
     elements: {
       point: {
-        radius: 0
+        radius: 3
       }
     },
     scales: {
       x: {
-
         type: 'time',
         time: {
           unit: 'day',
@@ -45,28 +47,38 @@ export function Graph ({ time, measurments, label, title }: GraphParams): JSX.El
 
         },
         grid: {
-          color: 'white'
+          color: 'gray'
         }
 
       },
       y: {
         grid: {
-          color: 'white'
+          color: 'gray'
+        },
+        ticks: {
+          callback: function (value, index, values) {
+            return `${value} ${unit ?? ''}`
+          }
         }
       }
 
     },
     plugins: {
-      legend: {
-        position: 'top' as const
-      },
       title: {
-        display: true,
+        display: title != null,
         text: title
+      },
+      legend: {
+        display: label != null
+      },
+      tooltip: {
+        callbacks: {
+          label: (tooltipItems) => `${tooltipItems.formattedValue}${unit ?? ''}`
+        }
       }
     }
   }
-  const data = {
+  const data: ChartData<'line'> = {
     labels: time.map(t => (new Date(t + 'Z'))),
     datasets: [
       {
