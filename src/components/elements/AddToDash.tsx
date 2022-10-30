@@ -65,7 +65,7 @@ export default function CheckboxesTags ({ id, column, gatewayId }: Sensor): JSX.
           {option.dashboardName}
         </li>
       )}
-      style={{ minWidth: '30%', margin: '3%' }}
+      style={{ minWidth: '47%', margin: '3%' }}
       renderInput={(params) => (
         <TextField {...params} label="Add to dashboard" placeholder="Dashboards" />
       )}

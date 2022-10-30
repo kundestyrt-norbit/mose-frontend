@@ -24,7 +24,7 @@ const BootstrapButton = styled(Button)({
 
 const BoxWrapper = styled(Box)`
   margin: 1%;
-  width: 80%;
+  width: 100%;
   height: 400px; 
   text-align: center;
   border-radius: 3%;

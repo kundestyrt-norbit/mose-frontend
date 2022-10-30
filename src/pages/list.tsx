@@ -5,7 +5,6 @@ import useSWR from 'swr'
 import { SensorGraph } from '../components/elements/dashboard/SensorGraph'
 import PageLayoutWrapper from '../components/layout/PageLayoutWrapper'
 import { Sensor } from './api/sensor/_queryClient'
-import Filter from '../components/elements/dashboard/FilterDash'
 import AddToDash from '../components/elements/AddToDash'
 
 const fetcher = async (input: RequestInfo | URL, init?: RequestInit | undefined): Promise<Sensor[]> => await fetch(input, init).then(async (res) => await (res.json() as Promise<Sensor[]>))
@@ -16,14 +15,11 @@ export interface SensorProps {
 }
 const SensorWrapper = styled(Box)`
   width: 50%;
-  text-align: center;
-  margin: auto;
-  background-color: white;
   border-radius: 5px;
   display: flex;
 `
 const PageWrapper = styled(Box)`
-  width: 80%;
+  width: 100%;
   margin: auto;
 `
 
@@ -43,7 +39,7 @@ const CollapsibleSensor = ({ id, column }: SensorProps): JSX.Element => {
       </ListItemButton>
       {open && <SensorWrapper >
         <SensorGraph id={id} column={column} />
-        <AddToDash id={id} column={column} gatewayId={8}/>
+        <AddToDash id={id} column={column} gatewayId={8} />
       </SensorWrapper>}
     </ListItem>
   )
@@ -61,7 +57,7 @@ const ListPage: NextPage = () => {
       <PageWrapper>
         <List>
           {/* <RowAndColumnSpacing></RowAndColumnSpacing> */}
-          {data?.map((sensor) => <CollapsibleSensor key={sensor.id + sensor.column} id={sensor.id} column={sensor.column} />
+          {data?.map((sensor) => <CollapsibleSensor key={sensor.id.toString() + sensor.column} id={sensor.id} column={sensor.column} />
           )}
         </List>
       </PageWrapper>

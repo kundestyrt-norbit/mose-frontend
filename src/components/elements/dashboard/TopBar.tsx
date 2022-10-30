@@ -14,10 +14,11 @@ import React, { Key, useEffect } from 'react'
 import { Dashboard, DashboardListItem } from './types'
 import { v4 as uuidv4 } from 'uuid'
 import { createDashboard, getDashboards } from '../../../utils/dashboardUtils'
+import { TextField } from '@mui/material'
 
 type Anchor = 'top'
 
-export default function TemporaryDrawer(): JSX.Element {
+export default function TemporaryDrawer (): JSX.Element {
   const [state, setState] = React.useState({
     top: false
   })
@@ -42,9 +43,10 @@ export default function TemporaryDrawer(): JSX.Element {
       }
 
   const addDashboard = (anchor: Anchor): void => {
+    const name: string = (document.getElementById('name') as HTMLInputElement).value
     const dashboard: Dashboard = {
       dashboardId: uuidv4(),
-      dashboardName: 'New Dashboard',
+      dashboardName: (document.getElementById('name') as HTMLInputElement).value === null ? 'New Dashboard' : name,
       sensors: []
     }
     createDashboard(dashboard).then(res => {
@@ -64,7 +66,7 @@ export default function TemporaryDrawer(): JSX.Element {
         onKeyDown={toggleDrawer(anchor, false)}>
         {
           dashboardList.map((dashboardListItem, index) =>
-          (<ListItem key={dashboardListItem.dashboardId as Key} disablePadding>
+            (<ListItem key={dashboardListItem.dashboardId as Key} disablePadding>
             <Link href={'/dashboard/' + dashboardListItem.dashboardId} >
               <ListItemButton> {/* Add Onclick-function that writes heading */}
                 <ListItemIcon>
@@ -76,8 +78,11 @@ export default function TemporaryDrawer(): JSX.Element {
           </ListItem>))}
       </List>
       <Divider />
-      <List>
-        <ListItem key={'Add Dashboard'} disablePadding>
+      <List sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+        <ListItem sx={{ justifyContent: 'center' }}>
+          <TextField id="name" label="DashboardName" variant="outlined" color='warning' sx={{ width: '100%' }} />
+        </ListItem>
+        <ListItem disablePadding>
           <ListItemButton onClick={(() => addDashboard(anchor))}>
             <ListItemIcon>
               <DashboardCustomizeRoundedIcon />
