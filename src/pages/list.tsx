@@ -6,6 +6,7 @@ import { SensorGraph } from '../components/elements/dashboard/SensorGraph'
 import PageLayoutWrapper from '../components/layout/PageLayoutWrapper'
 import { Sensor } from './api/sensor/_queryClient'
 import CloseIcon from '@mui/icons-material/Close'
+import AddToDash from '../components/elements/AddToDash'
 
 const fetcher = async (input: RequestInfo | URL, init?: RequestInit | undefined): Promise<Sensor[]> => await fetch(input, init).then(async (res) => await (res.json() as Promise<Sensor[]>))
 export interface SensorProps {
@@ -57,7 +58,7 @@ const BootstrapDialogTitle = (props: DialogTitleProps & { onClose: () => void })
           >
             <CloseIcon />
           </IconButton>
-          )
+        )
         : null}
     </DialogTitle>
   )
@@ -79,6 +80,7 @@ const SensorModal = ({ id, column, metaData }: Sensor): JSX.Element => {
         <SensorDialogContent>
           <SensorGraph id={id} column={column} sx={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '20px' }} unit={metaData?.unit} />
           {metaData?.description}
+          <AddToDash id={id} column={column} gatewayId={8} />
         </SensorDialogContent>
       </SensorDialog>
     </Box>
