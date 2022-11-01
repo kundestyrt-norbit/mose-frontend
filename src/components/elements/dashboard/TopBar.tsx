@@ -14,7 +14,7 @@ import React, { Key, useEffect } from 'react'
 import { Dashboard, DashboardListItem } from './types'
 import { v4 as uuidv4 } from 'uuid'
 import { createDashboard, getDashboards } from '../../../utils/dashboardUtils'
-import { TextField } from '@mui/material'
+import { IconButton, TextField } from '@mui/material'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 
 type Anchor = 'top'
@@ -62,7 +62,7 @@ export default function TemporaryDrawer(): JSX.Element {
   }
 
   const removeDashboard = (dashboard: Dashboard): void => { // WORK IN PROGRESS
-    dashboardList.pop(dashboard)
+    delete dashboardList[dashboard.dashboardId]
   }
   const DropDownList = (anchor: Anchor): JSX.Element => (
     <Box
@@ -81,7 +81,9 @@ export default function TemporaryDrawer(): JSX.Element {
                 <ListItemText primary={dashboardListItem.dashboardName} />
               </ListItemButton>
             </Link>
-            <DeleteForeverIcon sx={{ marginRight: '25px' }} />
+            <IconButton sx={{ marginRight: '25px' }} onClick={removeDashboard(dashboardListItem)}>
+              <DeleteForeverIcon />
+            </IconButton>
           </ListItem>))}
       </List>
       <Divider />
