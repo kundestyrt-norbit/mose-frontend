@@ -78,7 +78,7 @@ const SensorModal = ({ id, column, metaData }: Sensor): JSX.Element => {
           {metaData?.friendlyName}
         </BootstrapDialogTitle>
         <SensorDialogContent>
-          <SensorGraph id={id} sensor={column} sx={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '20px' }} unit={metaData?.unit} />
+          <SensorGraph id={id} column={column} sx={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '20px' }} unit={metaData?.unit} />
           {metaData?.description}
         </SensorDialogContent>
       </SensorDialog>
@@ -94,7 +94,7 @@ const ListPage: NextPage = () => {
       <PageWrapper>
         <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', marginTop: '30px' }}>
           {/* <RowAndColumnSpacing></RowAndColumnSpacing> */}
-          {data?.map((sensor) => <SensorModal key={sensor.id.toString() + sensor.column} id={sensor.id} column={sensor.column} metaData={sensor.metaData} />
+          {data?.map((sensor) => <SensorModal key={sensor.id.toString() + sensor.column} id={sensor.id} column={sensor.column} metaData={sensor.metaData} gatewayId={8} />
           )}
         </Box>
       </PageWrapper>

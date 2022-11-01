@@ -15,10 +15,11 @@ import { Dashboard, DashboardListItem } from './types'
 import { v4 as uuidv4 } from 'uuid'
 import { createDashboard, getDashboards } from '../../../utils/dashboardUtils'
 import { TextField } from '@mui/material'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 
 type Anchor = 'top'
 
-export default function TemporaryDrawer (): JSX.Element {
+export default function TemporaryDrawer(): JSX.Element {
   const [state, setState] = React.useState({
     top: false
   })
@@ -43,7 +44,7 @@ export default function TemporaryDrawer (): JSX.Element {
         setState({ ...state, [anchor]: open })
       }
 
-  const addDashboard = (anchor: Anchor): void => {
+  const addDashboard = (): void => {
     const dashboard: Dashboard = {
       dashboardId: uuidv4(),
       dashboardName: dashboardName ?? 'New Dashboard',
@@ -60,6 +61,9 @@ export default function TemporaryDrawer (): JSX.Element {
     })
   }
 
+  const removeDashboard = (dashboard: Dashboard): void => { // WORK IN PROGRESS
+    dashboardList.pop(dashboard)
+  }
   const DropDownList = (anchor: Anchor): JSX.Element => (
     <Box
       sx={{ width: 'auto' }}
@@ -68,7 +72,7 @@ export default function TemporaryDrawer (): JSX.Element {
         onKeyDown={toggleDrawer(anchor, false)}>
         {
           dashboardList.map((dashboardListItem, index) =>
-            (<ListItem key={dashboardListItem.dashboardId as Key} disablePadding>
+          (<ListItem key={dashboardListItem.dashboardId as Key} disablePadding>
             <Link href={'/dashboard/' + dashboardListItem.dashboardId} >
               <ListItemButton> {/* Add Onclick-function that writes heading */}
                 <ListItemIcon>
@@ -77,6 +81,7 @@ export default function TemporaryDrawer (): JSX.Element {
                 <ListItemText primary={dashboardListItem.dashboardName} />
               </ListItemButton>
             </Link>
+            <DeleteForeverIcon sx={{ marginRight: '25px' }} />
           </ListItem>))}
       </List>
       <Divider />
@@ -85,7 +90,7 @@ export default function TemporaryDrawer (): JSX.Element {
           <TextField id="name" label="DashboardName" variant="outlined" color='warning' sx={{ width: '100%' }} onChange={(e) => setDashboardName(e.target.value)}>{dashboardName}</TextField>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton onClick={(() => addDashboard(anchor))}>
+          <ListItemButton onClick={(() => addDashboard())}>
             <ListItemIcon>
               <DashboardCustomizeRoundedIcon />
             </ListItemIcon>

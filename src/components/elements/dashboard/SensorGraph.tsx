@@ -2,10 +2,9 @@ import { Box, CircularProgress } from '@mui/material'
 import { SxProps, Theme } from '@mui/system'
 import useSWR from 'swr'
 import { SensorMeasurements } from '../../../pages/api/sensor/_queryClient'
-import { SensorProps } from '../../../pages/list'
 import { Graph } from './Graph'
 interface SensorGraphProps {
-  id: string
+  id: number
   column: string
   friendlyName?: string
   sx?: SxProps<Theme>
@@ -16,6 +15,7 @@ const fetcher = async (input: RequestInfo | URL, init?: RequestInit | undefined)
 
 export function SensorGraph({ id, column, sx, friendlyName, unit }: SensorGraphProps): JSX.Element {
   const { data } = useSWR(`/api/sensor/${id}/${column}`, fetcher)
+  console.log(data)
   return (
     <Box sx={sx}>
       {(data != null) ? <Graph time={data.times} measurments={data.measurements} unit={unit} /> : <CircularProgress size={100} />}
