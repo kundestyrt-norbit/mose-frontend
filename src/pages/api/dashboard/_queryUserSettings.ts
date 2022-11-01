@@ -8,7 +8,9 @@ import {
   PutCommandOutput,
   GetCommandOutput,
   QueryCommand,
-  QueryCommandOutput
+  QueryCommandOutput,
+  DeleteItemCommandOutput,
+  DeleteItemCommand
 } from '@aws-sdk/lib-dynamodb'
 import { NextApiRequest } from 'next'
 
@@ -70,6 +72,18 @@ export async function createDashboard (req: NextApiRequest, userId: string | nul
     }
   })
   )
+  return item
+}
+
+export async function deleteDashboard (req: NextApiRequest, userId: string | null): Promise<DeleteItemCommandOutput> {
+  const { dashboardId } = req.body
+  const item = await userDB.send(new DeleteItemCommand({
+    TableName: process.env.USER_DB_TABLE_NAME,
+    Key: {
+      userId: { S: userId ?? '' },
+      dashboardId: { S: dashboardId }
+    }
+  }))
   return item
 }
 
