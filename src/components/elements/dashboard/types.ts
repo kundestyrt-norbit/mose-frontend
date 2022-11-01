@@ -12,18 +12,30 @@ interface Filter {
   timeWindow: TimeWindow
 }
 
+export interface Sensor {
+  id: number
+  gatewayId: number
+  metaData: SensorMetaData
+  filter?: Filter
+  column: string
+  alarms?: Map<ALARM_TYPE, Alarm>
+}
+
+export enum ALARM_TYPE {
+  LOWER = 'Lower',
+  UPPER = 'Upper'
+}
+
+export interface Alarm {
+  value: number
+  name?: string
+  type: ALARM_TYPE
+}
+
 export interface Dashboard {
   dashboardId: string
   dashboardName: string
   sensors: Sensor[]
-}
-
-export interface Sensor {
-  id: number
-  column: string
-  metaData: SensorMetaData
-  gatewayId: number
-  filter?: Filter
 }
 
 export interface SensorIncludeDashboard extends Sensor{
