@@ -40,7 +40,7 @@ const params: Params = {
 // }
 const command = new QueryCommand(params)
 
-async function getSensorData(nextToken: string | null, time: any, sensorData: any): Promise<any> {
+async function getSensorData (nextToken: string | null, time: any, sensorData: any): Promise<any> {
   if (nextToken !== null) {
     params.NextToken = nextToken
   }
@@ -73,7 +73,7 @@ const SensorsPage = ({ data }: any): JSX.Element => {
     </PageLayoutWrapper>
   )
 }
-export async function getServerSideProps(): Promise<{
+export async function getServerSideProps (): Promise<{
   props: { data: string[] }
 }> {
   // Fetch data from external API

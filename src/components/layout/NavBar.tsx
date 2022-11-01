@@ -19,7 +19,7 @@ import NorbitExploreMore from './NorbitExploreMore'
 const pages = ['Map', 'Dashboard', 'List']
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
 
-function signOut(): void {
+function signOut (): void {
   Auth.signOut()
     .then(() => (console.log('Signing out')))
     .catch(err => console.log(err))
