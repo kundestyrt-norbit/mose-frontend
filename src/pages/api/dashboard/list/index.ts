@@ -1,10 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import Amplify, { withSSRContext } from 'aws-amplify'
-import { createDashboard, getDashboardNames } from './_queryUserSettings'
-import getVerifiedUserID from './_verifyUser'
-import config from '../../../aws-exports.js'
-
-Amplify.configure({ ...config, ssr: true })
+import { withSSRContext } from 'aws-amplify'
+import { createDashboard, getDashboardNames } from '../_queryUserSettings'
+import getVerifiedUserID from '../_verifyUser'
 
 export default async function handler (req: NextApiRequest, res: NextApiResponse): Promise<void> {
   const { Auth } = withSSRContext({ req })
@@ -17,8 +14,14 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
     }
     if (req.method === 'GET') {
       const item = await getDashboardNames(userId)
-
-      return res.status(200).json(item)
+      return res.status(200).json(item.Items?.sort((a, b) => {
+        const left: string = a.dashboardName.toString()
+        const right: string = b.dashboardName.toString()
+        if (left === right) {
+          return 0
+        }
+        return left > right ? 1 : -1
+      }))
     }
   } else {
     throw new Error('UserId not valid')

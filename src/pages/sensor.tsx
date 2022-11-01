@@ -68,7 +68,7 @@ const SensorsPage = ({ data }: any): JSX.Element => {
   return (
     <PageLayoutWrapper>
       <SectionsWrapper>
-        <Graph measurments={data.measurments} time={data.time} label="" title=''/>
+        <Graph measurments={data.measurments} time={data.time} label="" title='' />
       </SectionsWrapper>
     </PageLayoutWrapper>
   )
@@ -78,7 +78,7 @@ export async function getServerSideProps (): Promise<{
 }> {
   // Fetch data from external API
   const data = await getSensorData(null, [], [])
-  console.log(data)
+
   // Pass data to the page via props
   return { props: { data } }
 }
