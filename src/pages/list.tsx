@@ -58,7 +58,7 @@ const BootstrapDialogTitle = (props: DialogTitleProps & { onClose: () => void })
           >
             <CloseIcon />
           </IconButton>
-        )
+          )
         : null}
     </DialogTitle>
   )
