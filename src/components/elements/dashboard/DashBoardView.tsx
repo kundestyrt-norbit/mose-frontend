@@ -1,8 +1,95 @@
-import { SensorMetaDataMap } from '../../../pages/api/sensor/_sensorMetaData'
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, MenuItem, TextField } from '@mui/material'
+import React from 'react'
 import { SensorGraph } from './SensorGraph'
-import { Dashboard, Sensor } from './types'
+import { ALARM_TYPE, Dashboard, Sensor } from './types'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import { SensorMetaDataMap } from '../../../pages/api/sensor/_sensorMetaData'
 
-const DashBoardView = ({ dashboard }: { dashboard: Dashboard }): JSX.Element => {
+interface FormValues {
+  name: string
+  value: number | string
+  type: ALARM_TYPE
+}
+
+const AlarmFormDialog = ({ column, id, gatewayId }: Sensor): JSX.Element => {
+  const [open, setOpen] = React.useState(false)
+
+  const handleClickOpen = (): void => {
+    setOpen(true)
+  }
+
+  const handleClose = (): void => {
+    setOpen(false)
+  }
+
+  const { control, handleSubmit } = useForm<FormValues>({
+    defaultValues: {
+      name: '',
+      value: '',
+      type: ALARM_TYPE.LOWER
+    }
+  })
+
+  const onSubmit: SubmitHandler<FormValues> = data => console.log(data)
+  return (
+    <div>
+      <Button variant="outlined" onClick={handleClickOpen}>
+        Add alarm
+      </Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Alarm</DialogTitle>
+        <form onSubmit={(e) => { handleSubmit(onSubmit)(e).catch(e => console.log(e)) }}>
+        <DialogContent sx={(theme) => (
+          {
+            backgroundColor: theme.palette.background.default
+          })
+        }>
+          <DialogContentText>
+            Choose an alarm to attach to the dashboard sensor
+          </DialogContentText>
+          <Box sx={{
+            display: 'flex',
+            flexDirection: 'column'
+          }}>
+            <Controller control={control}
+            name={'name'} render={({ field: { onChange, value } }) => {
+              return <TextField onChange={onChange} value={value} required id="name" aria-describedby="my-helper-text" label="Name" />
+            }} />
+            <Controller control={control}
+            name={'value'} render={({ field: { onChange, value } }) => {
+              return <TextField value={value} onChange={onChange} sx={{ marginTop: '20px' }} id="value" aria-describedby="my-helper-text" type="number" label="Value" required />
+            }} />
+            <Controller control={control}
+            name={'type'} render={({ field: { onChange, value } }) => {
+              return (<TextField value={value} onChange={onChange} required select id='select' sx={{ marginTop: '20px' }}>
+              {Object.values(ALARM_TYPE).map((type, i) => <MenuItem key={type} value={type}>{type}</MenuItem>)}
+              </TextField>)
+            }} />
+
+          </Box>
+        </DialogContent>
+        <DialogActions sx={theme => ({ backgroundColor: theme.palette.background.default })}>
+          <Button type='button' onClick={() => handleClose()}>Cancel</Button><Button type='submit'>Add</Button>
+        </DialogActions>
+
+          </form>
+      </Dialog>
+    </div>
+  )
+}
+
+const DashboardSensorView = ({ sensor, unit }: {sensor: Sensor, unit: string}): JSX.Element => {
+  const { column, id, alarms } = sensor
+  return (
+    <Box>
+      <SensorGraph column={column} id={id} unit={unit}/>
+      {alarms != null && Array.from(alarms).map(([key, value]) => <>{value.name}</>)}
+      <AlarmFormDialog {...sensor}/>
+    </Box>
+  )
+}
+
+const DashBoardView = ({ dashboard }: {dashboard: Dashboard}): JSX.Element => {
   return (
     <div style={{
       display: 'flex',
@@ -19,7 +106,7 @@ const DashBoardView = ({ dashboard }: { dashboard: Dashboard }): JSX.Element => 
         return (
           <div key={sensor.id.toString() + sensor.column} style={{ flexDirection: 'column', textAlign: 'center', width: '45%', minWidth: '400px', border: '1px solid rgba(0, 0, 0, 0.229)', borderRadius: '4px', margin: '1% 0' }}>
             <h2 style={{ height: '3rem' }}>{SensorMetaDataMap[sensor.column].friendlyName ?? sensor.column}</h2>
-            <SensorGraph id={sensor.id} column={sensor.column} unit={SensorMetaDataMap[sensor.column].unit}></SensorGraph>
+            <DashboardSensorView sensor={sensor} unit={SensorMetaDataMap[sensor.column].unit} />
           </div>
         )
       })}
