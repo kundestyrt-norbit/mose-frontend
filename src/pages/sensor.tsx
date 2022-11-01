@@ -40,7 +40,7 @@ const params: Params = {
 // }
 const command = new QueryCommand(params)
 
-async function getSensorData (nextToken: string | null, time: any, sensorData: any): Promise<any> {
+async function getSensorData(nextToken: string | null, time: any, sensorData: any): Promise<any> {
   if (nextToken !== null) {
     params.NextToken = nextToken
   }
@@ -68,17 +68,17 @@ const SensorsPage = ({ data }: any): JSX.Element => {
   return (
     <PageLayoutWrapper>
       <SectionsWrapper>
-        <Graph measurments={data.measurments} time={data.time} label="" title=''/>
+        <Graph measurments={data.measurments} time={data.time} label="" title='' />
       </SectionsWrapper>
     </PageLayoutWrapper>
   )
 }
-export async function getServerSideProps (): Promise<{
+export async function getServerSideProps(): Promise<{
   props: { data: string[] }
 }> {
   // Fetch data from external API
   const data = await getSensorData(null, [], [])
-  console.log(data)
+
   // Pass data to the page via props
   return { props: { data } }
 }

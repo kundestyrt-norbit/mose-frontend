@@ -19,7 +19,7 @@ import NorbitExploreMore from './NorbitExploreMore'
 const pages = ['Map', 'Dashboard', 'List']
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
 
-function signOut (): void {
+function signOut(): void {
   Auth.signOut()
     .then(() => (console.log('Signing out')))
     .catch(err => console.log(err))
@@ -50,17 +50,15 @@ const ResponsiveAppBar = (): JSX.Element => {
     setAnchorElUser(null)
   }
 
-  console.log(router.asPath)
-
   return (
     <AppBar position='static' sx={{ boxShadow: 'none' }}>
       <Container maxWidth={false}>
         <Toolbar disableGutters sx={{ justifyContent: 'space-between', boxShadow: 'none' }}>
           <Link href='/' style={{ border: '1px solid blue' }}>
             <NorbitExploreMore
-                sx={{ display: { xs: 'none', sm: 'flex' }, mr: 1, height: '4rem', width: '5rem', fontSize: '4rem' }}
-                viewBox='0 0 442 196'
-                />
+              sx={{ display: { xs: 'none', sm: 'flex' }, mr: 1, height: '4rem', width: '5rem', fontSize: '4rem' }}
+              viewBox='0 0 442 196'
+            />
           </Link>
 
           <Box sx={{ display: { xs: 'flex', sm: 'none' } }}>
@@ -102,9 +100,9 @@ const ResponsiveAppBar = (): JSX.Element => {
             </Menu>
           </Box>
           <NorbitExploreMore
-                sx={{ display: { xs: 'flex', sm: 'none' }, mr: 1, height: '3rem', width: '4rem', fontSize: '3rem' }}
-                viewBox='0 0 442 196'
-                 />
+            sx={{ display: { xs: 'flex', sm: 'none' }, mr: 1, height: '3rem', width: '4rem', fontSize: '3rem' }}
+            viewBox='0 0 442 196'
+          />
           <Box
             sx={{
               display: { xs: 'none', sm: 'flex' },

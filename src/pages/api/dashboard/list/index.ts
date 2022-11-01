@@ -14,8 +14,14 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
     }
     if (req.method === 'GET') {
       const item = await getDashboardNames(userId)
-
-      return res.status(200).json(item.Items)
+      return res.status(200).json(item.Items?.sort((a, b) => {
+        const left: string = a.dashboardName.toString()
+        const right: string = b.dashboardName.toString()
+        if (left === right) {
+          return 0
+        }
+        return left > right ? 1 : -1
+      }))
     }
   } else {
     throw new Error('UserId not valid')

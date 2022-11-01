@@ -10,7 +10,7 @@ import { DashboardListItem, Sensor } from './dashboard/types'
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
 const checkedIcon = <CheckBoxIcon fontSize="small" />
 
-export default function CheckboxesTags ({ id, column, gatewayId }: Sensor): JSX.Element {
+export default function CheckboxesTags({ id, column, gatewayId }: Sensor): JSX.Element {
   const [dashboardList, setDashboardList] = React.useState<DashboardListItem[]>([])
   const [value, setValue] = React.useState<DashboardListItem[]>([])
   React.useEffect(() => {
@@ -20,7 +20,6 @@ export default function CheckboxesTags ({ id, column, gatewayId }: Sensor): JSX.
   React.useEffect(() => {
     setValue(dashboardList.filter(d => d.hasSensor))
   }, [dashboardList])
-  console.log(dashboardList)
 
   return (
     <Autocomplete

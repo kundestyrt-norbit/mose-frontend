@@ -83,7 +83,6 @@ export async function getDashboardNames (userId: string | null): Promise<QueryCo
     ProjectionExpression: 'dashboardId, dashboardName'
   })
   )
-
   return item
 }
 

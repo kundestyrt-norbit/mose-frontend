@@ -18,10 +18,11 @@ import { TextField } from '@mui/material'
 
 type Anchor = 'top'
 
-export default function TemporaryDrawer (): JSX.Element {
+export default function TemporaryDrawer(): JSX.Element {
   const [state, setState] = React.useState({
     top: false
   })
+  const [dashboardName, setDashboardName] = React.useState<string>('')
 
   const [dashboardList, setDashboardList] = React.useState<DashboardListItem[]>([])
   useEffect(() => {
@@ -43,15 +44,16 @@ export default function TemporaryDrawer (): JSX.Element {
       }
 
   const addDashboard = (anchor: Anchor): void => {
-    const name: string = (document.getElementById('name') as HTMLInputElement).value
     const dashboard: Dashboard = {
       dashboardId: uuidv4(),
-      dashboardName: (document.getElementById('name') as HTMLInputElement).value === null ? 'New Dashboard' : name,
+      dashboardName: dashboardName ?? 'New Dashboard',
       sensors: []
     }
+    console.log(dashboardList)
+
     createDashboard(dashboard).then(res => {
       setDashboardList([...dashboardList, { dashboardId: dashboard.dashboardId, dashboardName: dashboard.dashboardName }])
-      setState({ ...state, [anchor]: true })
+      // setState({ ...state, [anchor]: true })
     }
     ).catch((error) => {
       console.log(error)
@@ -66,7 +68,7 @@ export default function TemporaryDrawer (): JSX.Element {
         onKeyDown={toggleDrawer(anchor, false)}>
         {
           dashboardList.map((dashboardListItem, index) =>
-            (<ListItem key={dashboardListItem.dashboardId as Key} disablePadding>
+          (<ListItem key={dashboardListItem.dashboardId as Key} disablePadding>
             <Link href={'/dashboard/' + dashboardListItem.dashboardId} >
               <ListItemButton> {/* Add Onclick-function that writes heading */}
                 <ListItemIcon>
@@ -80,7 +82,7 @@ export default function TemporaryDrawer (): JSX.Element {
       <Divider />
       <List sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
         <ListItem sx={{ justifyContent: 'center' }}>
-          <TextField id="name" label="DashboardName" variant="outlined" color='warning' sx={{ width: '100%' }} />
+          <TextField id="name" label="DashboardName" variant="outlined" color='warning' sx={{ width: '100%' }} onChange={(e) => setDashboardName(e.target.value)}>{dashboardName}</TextField>
         </ListItem>
         <ListItem disablePadding>
           <ListItemButton onClick={(() => addDashboard(anchor))}>

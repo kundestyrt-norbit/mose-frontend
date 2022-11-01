@@ -8,7 +8,7 @@ export async function getDashboards (): Promise<DashboardListItem[]> {
     }
   })
   const resData = await response.json()
-  console.log(resData)
+
   return resData
 }
 
@@ -20,7 +20,7 @@ export async function getDashboardsIncludeHasSensor (gatewayId: number, sensorId
     }
   })
   const resData = await response.json()
-  console.log(resData)
+
   return resData
 }
 
