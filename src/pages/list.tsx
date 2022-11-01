@@ -8,6 +8,10 @@ import { Sensor } from './api/sensor/_queryClient'
 import CloseIcon from '@mui/icons-material/Close'
 
 const fetcher = async (input: RequestInfo | URL, init?: RequestInit | undefined): Promise<Sensor[]> => await fetch(input, init).then(async (res) => await (res.json() as Promise<Sensor[]>))
+export interface SensorProps {
+  id: number
+  column: string
+}
 
 const SensorDialogContent = styled(DialogContent)({
   margin: 'auto',
@@ -26,14 +30,14 @@ const SensorDialog = styled(Dialog)(({ theme }) => ({
   }
 }))
 const PageWrapper = styled(Box)`
-  width: 80%;
+  width: 100%;
   margin: auto;
 `
 
 const SensorModalButton = styled(Button)`
   background-color: ${({ theme }) => theme.palette.background.default};
 `
-const BootstrapDialogTitle = (props: DialogTitleProps & {onClose: () => void}): JSX.Element => {
+const BootstrapDialogTitle = (props: DialogTitleProps & { onClose: () => void }): JSX.Element => {
   const { children, onClose, ...other } = props
 
   return (
@@ -41,18 +45,18 @@ const BootstrapDialogTitle = (props: DialogTitleProps & {onClose: () => void}): 
       {children}
       {onClose !== null
         ? (
-        <IconButton
-          aria-label="close"
-          onClick={onClose}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.primary.light
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
+          <IconButton
+            aria-label="close"
+            onClick={onClose}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.primary.light
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
           )
         : null}
     </DialogTitle>
@@ -69,13 +73,13 @@ const SensorModal = ({ id, column, metaData }: Sensor): JSX.Element => {
         <span style={{ textAlign: 'center' }}>{metaData?.friendlyName ?? column}</span>
       </SensorModalButton>
       <SensorDialog open={open} onClose={() => setOpen(false)} >
-          <BootstrapDialogTitle sx={{ color: (theme) => theme.palette.primary.light }} id="customized-dialog-title" onClose={() => setOpen(false)}>
-            {metaData?.friendlyName}
-          </BootstrapDialogTitle>
-          <SensorDialogContent>
-            <SensorGraph id={id} sensor={column} sx={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '20px' }} unit={metaData?.unit}/>
-            {metaData?.description}
-          </SensorDialogContent>
+        <BootstrapDialogTitle sx={{ color: (theme) => theme.palette.primary.light }} id="customized-dialog-title" onClose={() => setOpen(false)}>
+          {metaData?.friendlyName}
+        </BootstrapDialogTitle>
+        <SensorDialogContent>
+          <SensorGraph id={id} column={column} sx={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '20px' }} unit={metaData?.unit} />
+          {metaData?.description}
+        </SensorDialogContent>
       </SensorDialog>
     </Box>
   )
@@ -89,7 +93,7 @@ const ListPage: NextPage = () => {
       <PageWrapper>
         <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', marginTop: '30px' }}>
           {/* <RowAndColumnSpacing></RowAndColumnSpacing> */}
-          {data?.map((sensor) => <SensorModal key={sensor.id + sensor.column} id={sensor.id} column={sensor.column} metaData={sensor.metaData} />
+          {data?.map((sensor) => <SensorModal key={sensor.id.toString() + sensor.column} id={sensor.id} column={sensor.column} metaData={sensor.metaData} gatewayId={8} />
           )}
         </Box>
       </PageWrapper>

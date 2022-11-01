@@ -1,22 +1,22 @@
 import PageLayoutWrapper from '../../components/layout/PageLayoutWrapper'
-import TemporaryDrawer from '../../components/elements/dashboard/SideBar'
-import FilterDash from '../../components/elements/dashboard/FilterDash'
+import TemporaryDrawer from '../../components/elements/dashboard/TopBar'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import DashBoardView from '../../components/elements/dashboard/DashBoardView'
 
 const DashboardPage = (): JSX.Element => {
   const [dashboard, setDashboard] = useState({})
   const router = useRouter()
 
   useEffect(() => {
-    fetch(`/api/dashboard/${router.query.dashboardNumber as string}`).then(async res => await res.json()).then(res => setDashboard(res)).catch(err => console.log(err))
-  }, [])
+    fetch(`/api/dashboard/${router.query.dashboardNumber as string}`).then(async res => await res.json()).then(res => setDashboard(res)).catch(async () => await router.push('/dashboard'))
+  }, [router.query.dashboardNumber])
 
   console.log(dashboard)
   return (
     <PageLayoutWrapper>
       <TemporaryDrawer />
-      <FilterDash />
+      <DashBoardView dashboard={dashboard} />
     </PageLayoutWrapper>
   )
 }

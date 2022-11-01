@@ -25,9 +25,10 @@ async function queryDatabase<T> (query: string, queryDataProcessor: (data: Query
 }
 
 export interface Sensor {
-  id: string
+  id: number
   column: string
   metaData: SensorMetaData | undefined
+  gatewayId: number
 }
 
 export async function getSensors (): Promise<Sensor[]> {
@@ -39,7 +40,7 @@ export async function getSensors (): Promise<Sensor[]> {
     const columnNames = columns?.map(sensor => sensor.Name)
     const measurementNames = columnNames as string[]
     return measurementNames.map((measurementName) => {
-      const sensor: Sensor = { id, column: measurementName, metaData: SensorMetaDataMap[measurementName] }
+      const sensor: Sensor = { id: Number(id), column: measurementName, gatewayId: 8, metaData: SensorMetaDataMap[measurementName] }
       return sensor
     })
   }
@@ -72,5 +73,6 @@ export async function getSensorData (id: string, column: string, daysAgo: number
       row.Data?.[3].ScalarValue !== undefined && sensorData.measurements.push(+row.Data?.[3].ScalarValue)
     })
   })
+  console.log(sensorData)
   return sensorData
 }

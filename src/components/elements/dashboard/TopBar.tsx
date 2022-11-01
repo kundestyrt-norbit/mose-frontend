@@ -11,46 +11,27 @@ import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded'
 import DashboardCustomizeRoundedIcon from '@mui/icons-material/DashboardCustomizeRounded'
 import Link from 'next/link'
 import React, { Key, useEffect } from 'react'
-import { dashboards } from '../AddToDash'
 import { Dashboard, DashboardListItem } from './types'
 import { v4 as uuidv4 } from 'uuid'
+import { createDashboard, deleteDashboard, getDashboards } from '../../../utils/dashboardUtils'
+import { IconButton, TextField } from '@mui/material'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import { useRouter } from 'next/router'
 
 type Anchor = 'top'
-
-async function getDashboards (): Promise<DashboardListItem[]> {
-  const response = await fetch('/api/dashboard/list', {
-    method: 'GET',
-    headers: {
-      'Content-type': 'application/json'
-    }
-  })
-  const resData = await response.json()
-  return resData
-}
-
-async function createDashboard (dashboard: Dashboard): Promise<any> {
-  const response = await fetch('/api/dashboard/list', {
-    method: 'PUT',
-    headers: {
-      'Content-type': 'application/json'
-    },
-    body: JSON.stringify(dashboard)
-  })
-  const resData = await response.json()
-  return resData
-}
 
 export default function TemporaryDrawer (): JSX.Element {
   const [state, setState] = React.useState({
     top: false
   })
-
-  const [header, setHeader] = React.useState<string>('')
+  const [dashboardName, setDashboardName] = React.useState<string>('')
 
   const [dashboardList, setDashboardList] = React.useState<DashboardListItem[]>([])
   useEffect(() => {
     getDashboards().then(res => setDashboardList(res)).catch(err => console.log(err))
-  }, [])
+  }, [state])
+
+  const router = useRouter()
 
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
@@ -66,25 +47,36 @@ export default function TemporaryDrawer (): JSX.Element {
         setState({ ...state, [anchor]: open })
       }
 
-  const addDashboard = (anchor: Anchor): void => {
+  const addDashboard = (): void => {
     const dashboard: Dashboard = {
       dashboardId: uuidv4(),
-      dashboardName: 'New Dashboard',
+      dashboardName: dashboardName ?? 'New Dashboard',
       sensors: []
     }
+    console.log(dashboardList)
+
     createDashboard(dashboard).then(res => {
       setDashboardList([...dashboardList, { dashboardId: dashboard.dashboardId, dashboardName: dashboard.dashboardName }])
-      setState({ ...state, [anchor]: true })
-      dashboards.push({
-        title: dashboard.dashboardName
-      })
+      // setState({ ...state, [anchor]: true })
     }
-
     ).catch((error) => {
       console.log(error)
     })
   }
 
+  const removeDashboard = (e: React.MouseEvent<HTMLButtonElement>, dashboard: DashboardListItem): void => { // WORK IN PROGRESS
+    e.stopPropagation()
+    console.log('HEI', dashboard.dashboardId)
+    deleteDashboard(dashboard.dashboardId).then(async res => {
+      const newDashboardList = dashboardList.filter((item) => item.dashboardId !== dashboard.dashboardId)
+      setDashboardList(newDashboardList)
+      if (router.asPath.includes(dashboard.dashboardId)) {
+        await router.push('/dashboard')
+      }
+    }).catch((error) => {
+      console.log(error)
+    })
+  }
   const DropDownList = (anchor: Anchor): JSX.Element => (
     <Box
       sx={{ width: 'auto' }}
@@ -94,20 +86,26 @@ export default function TemporaryDrawer (): JSX.Element {
         {
           dashboardList.map((dashboardListItem, index) =>
             (<ListItem key={dashboardListItem.dashboardId as Key} disablePadding>
-          <Link href={'/dashboard/' + dashboardListItem.dashboardId} >
-            <ListItemButton onClick={() => setHeader(dashboardListItem.dashboardName)}> {/* Add Onclick-function that writes heading */}
-              <ListItemIcon>
-                <DashboardRoundedIcon />
-              </ListItemIcon >
-              <ListItemText primary={dashboardListItem.dashboardName} />
-            </ListItemButton>
-          </Link>
-       </ListItem>))}
+            <Link href={'/dashboard/' + dashboardListItem.dashboardId} >
+              <ListItemButton> {/* Add Onclick-function that writes heading */}
+                <ListItemIcon>
+                  <DashboardRoundedIcon />
+                </ListItemIcon >
+                <ListItemText primary={dashboardListItem.dashboardName} />
+              </ListItemButton>
+            </Link>
+            <IconButton sx={{ marginRight: '25px' }} onClick={(e) => removeDashboard(e, dashboardListItem)}>
+              <DeleteForeverIcon />
+            </IconButton>
+          </ListItem>))}
       </List>
       <Divider />
-      <List>
-        <ListItem key={'Add Dashboard'} disablePadding>
-          <ListItemButton onClick={(() => addDashboard(anchor))}>
+      <List sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+        <ListItem sx={{ justifyContent: 'center' }}>
+          <TextField id="name" label="Name of new dashboard" variant="outlined" color='warning' sx={{ width: '100%' }} onChange={(e) => setDashboardName(e.target.value)}>{dashboardName}</TextField>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton onClick={(() => addDashboard())}>
             <ListItemIcon>
               <DashboardCustomizeRoundedIcon />
             </ListItemIcon>
@@ -129,7 +127,6 @@ export default function TemporaryDrawer (): JSX.Element {
           {DropDownList('top')}
         </Drawer>
       </React.Fragment>
-      <h1> {header} </h1>
     </div >
   )
 }
