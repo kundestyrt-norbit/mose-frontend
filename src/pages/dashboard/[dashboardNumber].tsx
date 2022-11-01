@@ -9,7 +9,7 @@ const DashboardPage = (): JSX.Element => {
   const router = useRouter()
 
   useEffect(() => {
-    fetch(`/api/dashboard/${router.query.dashboardNumber as string}`).then(async res => await res.json()).then(res => setDashboard(res)).catch(err => console.log(err))
+    fetch(`/api/dashboard/${router.query.dashboardNumber as string}`).then(async res => await res.json()).then(res => setDashboard(res)).catch(async () => await router.push('/dashboard'))
   }, [router.query.dashboardNumber])
 
   console.log(dashboard)

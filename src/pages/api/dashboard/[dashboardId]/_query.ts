@@ -4,12 +4,12 @@ import { Sensor } from '../../sensor/_queryClient'
 import { userDB } from '../_queryUserSettings'
 
 export async function addSensor (req: NextApiRequest, userId: string | null): Promise<UpdateCommandOutput> {
-  const { dashboard, sensorId, column, gatewayId } = req.query
+  const { dashboardId, sensorId, column, gatewayId } = req.query
   const item = await userDB.send(new UpdateCommand({
     TableName: process.env.USER_DB_TABLE_NAME,
     Key: {
       userId,
-      dashboardId: dashboard
+      dashboardId
     },
     UpdateExpression: 'SET sensors= list_append(sensors, :sensor)',
     ExpressionAttributeValues: {
@@ -20,12 +20,12 @@ export async function addSensor (req: NextApiRequest, userId: string | null): Pr
 }
 
 export async function deleteSensor (req: NextApiRequest, userId: string | null): Promise<boolean> {
-  const { dashboard, sensorId, column, gatewayId } = req.query
+  const { dashboardId, sensorId, column, gatewayId } = req.query
   const dashboardFromDb = (await userDB.send(new GetCommand({
     TableName: process.env.USER_DB_TABLE_NAME,
     Key: {
       userId,
-      dashboardId: dashboard
+      dashboardId
     },
     ProjectionExpression: 'dashboardId, dashboardName, sensors'
   }))).Item
@@ -40,7 +40,7 @@ export async function deleteSensor (req: NextApiRequest, userId: string | null):
     TableName: process.env.USER_DB_TABLE_NAME,
     Key: {
       userId,
-      dashboardId: dashboard
+      dashboardId
     },
     UpdateExpression: `
       REMOVE sensors[${indexToRemove}]

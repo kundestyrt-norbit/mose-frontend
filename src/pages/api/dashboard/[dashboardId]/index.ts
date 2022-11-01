@@ -1,7 +1,7 @@
 import getVerifiedUserID from '../_verifyUser'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { withSSRContext } from 'aws-amplify'
-import { getDashboard, saveDashboard } from '../_queryUserSettings'
+import { deleteDashboard, getDashboard, saveDashboard } from '../_queryUserSettings'
 
 export default async function handler (req: NextApiRequest, res: NextApiResponse): Promise<void> {
   const { Auth } = withSSRContext({ req })

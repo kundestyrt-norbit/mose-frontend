@@ -35,3 +35,13 @@ export async function createDashboard (dashboard: Dashboard): Promise<any> {
   const resData = await response.json()
   return resData
 }
+
+export async function deleteDashboard (dashboardId: string): Promise<any> {
+  const response = await fetch(`/api/dashboard/${dashboardId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-type': 'application/json'
+    }
+  })
+  return response.ok
+}

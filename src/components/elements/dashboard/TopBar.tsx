@@ -13,13 +13,14 @@ import Link from 'next/link'
 import React, { Key, useEffect } from 'react'
 import { Dashboard, DashboardListItem } from './types'
 import { v4 as uuidv4 } from 'uuid'
-import { createDashboard, getDashboards } from '../../../utils/dashboardUtils'
+import { createDashboard, deleteDashboard, getDashboards } from '../../../utils/dashboardUtils'
 import { IconButton, TextField } from '@mui/material'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import { useRouter } from 'next/router'
 
 type Anchor = 'top'
 
-export default function TemporaryDrawer(): JSX.Element {
+export default function TemporaryDrawer (): JSX.Element {
   const [state, setState] = React.useState({
     top: false
   })
@@ -29,6 +30,8 @@ export default function TemporaryDrawer(): JSX.Element {
   useEffect(() => {
     getDashboards().then(res => setDashboardList(res)).catch(err => console.log(err))
   }, [state])
+
+  const router = useRouter()
 
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
@@ -61,8 +64,18 @@ export default function TemporaryDrawer(): JSX.Element {
     })
   }
 
-  const removeDashboard = (dashboard: Dashboard): void => { // WORK IN PROGRESS
-    delete dashboardList[dashboard.dashboardId]
+  const removeDashboard = (e: React.MouseEvent<HTMLButtonElement>, dashboard: DashboardListItem): void => { // WORK IN PROGRESS
+    e.stopPropagation()
+    console.log('HEI', dashboard.dashboardId)
+    deleteDashboard(dashboard.dashboardId).then(async res => {
+      const newDashboardList = dashboardList.filter((item) => item.dashboardId !== dashboard.dashboardId)
+      setDashboardList(newDashboardList)
+      if (router.asPath.includes(dashboard.dashboardId)) {
+        await router.push('/dashboard')
+      }
+    }).catch((error) => {
+      console.log(error)
+    })
   }
   const DropDownList = (anchor: Anchor): JSX.Element => (
     <Box
@@ -72,7 +85,7 @@ export default function TemporaryDrawer(): JSX.Element {
         onKeyDown={toggleDrawer(anchor, false)}>
         {
           dashboardList.map((dashboardListItem, index) =>
-          (<ListItem key={dashboardListItem.dashboardId as Key} disablePadding>
+            (<ListItem key={dashboardListItem.dashboardId as Key} disablePadding>
             <Link href={'/dashboard/' + dashboardListItem.dashboardId} >
               <ListItemButton> {/* Add Onclick-function that writes heading */}
                 <ListItemIcon>
@@ -81,7 +94,7 @@ export default function TemporaryDrawer(): JSX.Element {
                 <ListItemText primary={dashboardListItem.dashboardName} />
               </ListItemButton>
             </Link>
-            <IconButton sx={{ marginRight: '25px' }} onClick={removeDashboard(dashboardListItem)}>
+            <IconButton sx={{ marginRight: '25px' }} onClick={(e) => removeDashboard(e, dashboardListItem)}>
               <DeleteForeverIcon />
             </IconButton>
           </ListItem>))}
@@ -89,7 +102,7 @@ export default function TemporaryDrawer(): JSX.Element {
       <Divider />
       <List sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
         <ListItem sx={{ justifyContent: 'center' }}>
-          <TextField id="name" label="DashboardName" variant="outlined" color='warning' sx={{ width: '100%' }} onChange={(e) => setDashboardName(e.target.value)}>{dashboardName}</TextField>
+          <TextField id="name" label="Name of new dashboard" variant="outlined" color='warning' sx={{ width: '100%' }} onChange={(e) => setDashboardName(e.target.value)}>{dashboardName}</TextField>
         </ListItem>
         <ListItem disablePadding>
           <ListItemButton onClick={(() => addDashboard())}>
