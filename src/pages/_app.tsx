@@ -6,7 +6,7 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import { theme } from '../styles/theme'
 import createEmotionCache from '../utils/createEmotionCache'
-import Amplify, { withSSRContext } from 'aws-amplify'
+import Amplify from 'aws-amplify'
 import {
   Authenticator,
   Button,
@@ -29,34 +29,6 @@ Amplify.configure({
     responseType: 'code'
   },
   ssr: true
-})
-
-// // Auth from SSR
-const { Auth } = withSSRContext()
-// Auth.federatedSignIn({ customProvider: 'providerName' })
-
-// Configure Auth
-Auth.configure({
-  // region: process.env.AUTH_REGION,
-  // userPoolId: process.env.AUTH_POOL,
-  // userPoolWebClientId: process.env.AUTH_POOL_CLIENT,
-  // oauth: {
-  //   domain: 'moseauth.auth.eu-north-1.amazoncognito.com',
-  //   scope: ['email', 'openid'],
-  //   redirectSignIn: process.env.AUTH_REDIRECT,
-  //   redirectSignOut: process.env.AUTH_REDIRECT,
-  //   responseType: 'code'
-  // },
-  mandatorySignIn: true,
-  // Set this only if you wish to use cookies to storage otherwise ignore it
-  cookieStorage: {
-    domain: process.env.COOKIE_STORAGE_DOMAIN,
-    // Set true if is a domain with https. For localhost set it to false
-    secure: process.env.COOKIE_STORAGE_SECURE,
-    path: '/',
-    expires: 2
-  }
-
 })
 
 // Client-side cache, shared for the whole session of the user in the browser.

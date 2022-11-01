@@ -1,65 +1,102 @@
-import { Box, List, ListItem, ListItemButton, styled } from '@mui/material'
+import { Box, Button, Dialog, DialogContent, DialogTitle, DialogTitleProps, IconButton, styled } from '@mui/material'
 import type { NextPage } from 'next'
 import { useState } from 'react'
 import useSWR from 'swr'
 import { SensorGraph } from '../components/elements/dashboard/SensorGraph'
 import PageLayoutWrapper from '../components/layout/PageLayoutWrapper'
 import { Sensor } from './api/sensor/_queryClient'
+import CloseIcon from '@mui/icons-material/Close'
 import AddToDash from '../components/elements/AddToDash'
 
 const fetcher = async (input: RequestInfo | URL, init?: RequestInit | undefined): Promise<Sensor[]> => await fetch(input, init).then(async (res) => await (res.json() as Promise<Sensor[]>))
-
 export interface SensorProps {
   id: number
   column: string
 }
-const SensorWrapper = styled(Box)`
-  width: 50%;
-  border-radius: 5px;
-  display: flex;
-`
+
+const SensorDialogContent = styled(DialogContent)({
+  margin: 'auto',
+  backgroundColor: 'white',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'column',
+  width: '100%'
+})
+
+const SensorDialog = styled(Dialog)(({ theme }) => ({
+  '& .MuiPaper-root': {
+    width: '100%',
+    maxWidth: '500px'
+  }
+}))
 const PageWrapper = styled(Box)`
   width: 100%;
   margin: auto;
 `
 
-const CollapsibleSensor = ({ id, column }: SensorProps): JSX.Element => {
-  const [open, setOpen] = useState(false)
-  console.log(id, column)
+const SensorModalButton = styled(Button)`
+  background-color: ${({ theme }) => theme.palette.background.default};
+`
+const BootstrapDialogTitle = (props: DialogTitleProps & { onClose: () => void }): JSX.Element => {
+  const { children, onClose, ...other } = props
 
   return (
-    <ListItem sx={{ flexDirection: 'column', display: 'flex' }}>
-      <ListItemButton
-        onClick={() => { setOpen(!open) }}
-        sx={{ width: '100%', borderRadius: '5px', border: '0.5px solid', color: '#7895a7' }}
-      >
-        <span style={{ textAlign: 'center', width: '100%' }}>
-          {column}
-        </span>
-      </ListItemButton>
-      {open && <SensorWrapper >
-        <SensorGraph id={id} column={column} />
-        <AddToDash id={id} column={column} gatewayId={8} />
-      </SensorWrapper>}
-    </ListItem>
+    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+      {children}
+      {onClose !== null
+        ? (
+          <IconButton
+            aria-label="close"
+            onClick={onClose}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.primary.light
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        )
+        : null}
+    </DialogTitle>
   )
 }
 
-/**
- * Does nothing. Just redirection to /sensors
- * Natural page to have in the future
- */
+const SensorModal = ({ id, column, metaData }: Sensor): JSX.Element => {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <Box sx={{ flexDirection: 'column', display: 'flex', minWidth: '300px', maxWidth: '50%', width: '100%', margin: 'auto' }}>
+      <SensorModalButton onClick={() => { setOpen(!open) }}
+        sx={{ backgroundColor: 'primary', borderRadius: '5px' }}>
+        <span style={{ textAlign: 'center' }}>{metaData?.friendlyName ?? column}</span>
+      </SensorModalButton>
+      <SensorDialog open={open} onClose={() => setOpen(false)} >
+        <BootstrapDialogTitle sx={{ color: (theme) => theme.palette.primary.light }} id="customized-dialog-title" onClose={() => setOpen(false)}>
+          {metaData?.friendlyName}
+        </BootstrapDialogTitle>
+        <SensorDialogContent>
+          <SensorGraph id={id} sensor={column} sx={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '20px' }} unit={metaData?.unit} />
+          {metaData?.description}
+        </SensorDialogContent>
+      </SensorDialog>
+    </Box>
+  )
+}
+
 const ListPage: NextPage = () => {
   const { data } = useSWR('/api/sensor/all', fetcher)
 
   return (
     <PageLayoutWrapper>
       <PageWrapper>
-        <List>
+        <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', marginTop: '30px' }}>
           {/* <RowAndColumnSpacing></RowAndColumnSpacing> */}
-          {data?.map((sensor) => <CollapsibleSensor key={sensor.id.toString() + sensor.column} id={sensor.id} column={sensor.column} />
+          {data?.map((sensor) => <SensorModal key={sensor.id.toString() + sensor.column} id={sensor.id} column={sensor.column} metaData={sensor.metaData} />
           )}
-        </List>
+        </Box>
       </PageWrapper>
     </PageLayoutWrapper>
   )

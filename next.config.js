@@ -4,7 +4,7 @@ module.exports = {
         SECRET_ACCESS_KEY_AWS: process.env.SECRET_ACCESS_KEY_AWS,
         COOKIE_STORAGE_DOMAIN: process.env.COOKIE_STORAGE_DOMAIN,
         COOKIE_STORAGE_SECURE: process.env.COOKIE_STORAGE_SECURE,
-        AUTH_POO: process.env.AUTH_POO,
+        AUTH_POOL: process.env.AUTH_POOL,
         AUTH_REGION: process.env.AUTH_REGION,
         AUTH_POOL_CLIENT: process.env.AUTH_POOL_CLIENT,
         USER_DB_TABLE_NAME: process.env.USER_DB_TABLE_NAME,

@@ -1,4 +1,5 @@
 import { QueryCommand, QueryCommandOutput, TimestreamQueryClient } from '@aws-sdk/client-timestream-query'
+import { SensorMetaData, SensorMetaDataMap } from './_sensorMetaData'
 
 /**
  * Page for displaying information about a sensor.
@@ -26,6 +27,7 @@ async function queryDatabase<T> (query: string, queryDataProcessor: (data: Query
 export interface Sensor {
   id: number
   column: string
+  metaData: SensorMetaData | undefined
   gatewayId: number
 }
 
@@ -38,7 +40,7 @@ export async function getSensors (): Promise<Sensor[]> {
     const columnNames = columns?.map(sensor => sensor.Name)
     const measurementNames = columnNames as string[]
     return measurementNames.map((measurementName) => {
-      const sensor: Sensor = { id: Number(id), column: measurementName, gatewayId: 8 }
+      const sensor: Sensor = { id: Number(id), column: measurementName, gatewayId: 8, metaData: SensorMetaDataMap[measurementName] }
       return sensor
     })
   }
