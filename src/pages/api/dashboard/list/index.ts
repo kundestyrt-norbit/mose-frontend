@@ -3,18 +3,18 @@ import { withSSRContext } from 'aws-amplify'
 import { createDashboard, getDashboardNames } from '../_queryUserSettings'
 import getVerifiedUserID from '../_verifyUser'
 
-export default async function handler (req: NextApiRequest, res: NextApiResponse): Promise<void> {
+export default async function handler (req: NextApiRequest, res: NextApiResponse): Promise<NextApiResponse<void>> {
   const { Auth } = withSSRContext({ req })
   const userId: string | null = await getVerifiedUserID(Auth)
   if (userId != null) {
     if (req.method === 'PUT') {
       const item = await createDashboard(req, userId)
 
-      return res.status(201).json(item)
+      return res.status(201).end(JSON.stringify(item))
     }
     if (req.method === 'GET') {
       const item = await getDashboardNames(userId)
-      return res.status(200).json(item.Items?.sort((a, b) => {
+      return res.status(200).end(item.Items?.sort((a, b) => {
         const left: string = a.dashboardName.toString()
         const right: string = b.dashboardName.toString()
         if (left === right) {
@@ -23,7 +23,8 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
         return left > right ? 1 : -1
       }))
     }
+    return res.status(404).end()
   } else {
-    throw new Error('UserId not valid')
+    return res.status(401).end()
   }
 }
