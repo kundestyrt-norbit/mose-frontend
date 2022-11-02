@@ -1,17 +1,11 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, MenuItem, TextField } from '@mui/material'
 import React from 'react'
-import { SensorGraph } from './SensorGraph'
-import { ALARM_TYPE, Dashboard, Sensor } from './types'
-import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import { SensorAlarmGraph } from './SensorAlarmGraph'
+import { Alarm, ALARM_TYPE, Dashboard, Sensor } from './types'
+import { Controller, useForm } from 'react-hook-form'
 import { SensorMetaDataMap } from '../../../pages/api/sensor/_sensorMetaData'
 
-interface FormValues {
-  name: string
-  value: number | string
-  type: ALARM_TYPE
-}
-
-const AlarmFormDialog = ({ column, id, gatewayId }: Sensor): JSX.Element => {
+const AlarmFormDialog = ({ sensor, dashboardId }: {sensor: Sensor, dashboardId: string}): JSX.Element => {
   const [open, setOpen] = React.useState(false)
 
   const handleClickOpen = (): void => {
@@ -22,15 +16,28 @@ const AlarmFormDialog = ({ column, id, gatewayId }: Sensor): JSX.Element => {
     setOpen(false)
   }
 
-  const { control, handleSubmit } = useForm<FormValues>({
+  const addAlarm = (alarm: Alarm): void => {
+    const endpoint = `/api/dashboard/${dashboardId}/${sensor.gatewayId}/${sensor.id}/${sensor.column}/alarm`
+    const formBody = {
+      ...alarm
+    }
+    fetch(endpoint, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(formBody)
+    }).catch(e => console.log(e))
+  }
+
+  const { control, handleSubmit } = useForm<Alarm>({
     defaultValues: {
       name: '',
-      value: '',
+      value: undefined,
       type: ALARM_TYPE.LOWER
     }
   })
 
-  const onSubmit: SubmitHandler<FormValues> = data => console.log(data)
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
@@ -38,58 +45,66 @@ const AlarmFormDialog = ({ column, id, gatewayId }: Sensor): JSX.Element => {
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Alarm</DialogTitle>
-        <form onSubmit={(e) => { handleSubmit(onSubmit)(e).catch(e => console.log(e)) }}>
-        <DialogContent sx={(theme) => (
-          {
-            backgroundColor: theme.palette.background.default
-          })
-        }>
-          <DialogContentText>
-            Choose an alarm to attach to the dashboard sensor
-          </DialogContentText>
-          <Box sx={{
-            display: 'flex',
-            flexDirection: 'column'
-          }}>
-            <Controller control={control}
-            name={'name'} render={({ field: { onChange, value } }) => {
-              return <TextField onChange={onChange} value={value} required id="name" aria-describedby="my-helper-text" label="Name" />
-            }} />
-            <Controller control={control}
-            name={'value'} render={({ field: { onChange, value } }) => {
-              return <TextField value={value} onChange={onChange} sx={{ marginTop: '20px' }} id="value" aria-describedby="my-helper-text" type="number" label="Value" required />
-            }} />
-            <Controller control={control}
-            name={'type'} render={({ field: { onChange, value } }) => {
-              return (<TextField value={value} onChange={onChange} required select id='select' sx={{ marginTop: '20px' }}>
-              {Object.values(ALARM_TYPE).map((type, i) => <MenuItem key={type} value={type}>{type}</MenuItem>)}
-              </TextField>)
-            }} />
+        <form onSubmit={(e) => { handleSubmit(addAlarm)(e).catch(e => console.log(e)) }}>
+          <DialogContent sx={(theme) => (
+            {
+              backgroundColor: theme.palette.background.default
+            })
+          }>
+            <DialogContentText>
+              Choose an alarm to attach to the dashboard sensor
+            </DialogContentText>
+            <Box sx={{
+              display: 'flex',
+              flexDirection: 'column'
+            }}>
+              <Controller control={control}
+                name={'name'} render={({ field: { onChange, value } }) => {
+                  return <TextField onChange={onChange} value={value} required id="name" aria-describedby="my-helper-text" label="Name" />
+                }} />
+              <Controller control={control}
+                name={'value'} render={({ field: { onChange, value } }) => {
+                  return <TextField
+                    value={value ?? ''}
+                    onChange={onChange}
+                    sx={{ marginTop: '20px' }}
+                    id="value"
+                    aria-describedby="my-helper-text"
+                    type="number"
+                    label="Value"
+                    required />
+                }} />
+              <Controller control={control}
+                name={'type'} render={({ field: { onChange, value } }) => {
+                  return (<TextField value={value} onChange={onChange} required select id='select' sx={{ marginTop: '20px' }}>
+                    {Object.values(ALARM_TYPE).map((type, i) => <MenuItem key={type} value={type}>{type}</MenuItem>)}
+                  </TextField>)
+                }} />
 
-          </Box>
-        </DialogContent>
-        <DialogActions sx={theme => ({ backgroundColor: theme.palette.background.default })}>
-          <Button type='button' onClick={() => handleClose()}>Cancel</Button><Button type='submit'>Add</Button>
-        </DialogActions>
+            </Box>
+          </DialogContent>
+          <DialogActions sx={theme => ({ backgroundColor: theme.palette.background.default })}>
+            <Button type='button' onClick={() => handleClose()}>Cancel</Button><Button type='submit'>Add</Button>
+          </DialogActions>
 
-          </form>
+        </form>
       </Dialog>
     </div>
   )
 }
 
-const DashboardSensorView = ({ sensor, unit }: {sensor: Sensor, unit: string}): JSX.Element => {
+const DashboardSensorView = ({ dashboardId, sensor, unit }: {sensor: Sensor, dashboardId: string, unit: string}): JSX.Element => {
   const { column, id, alarms } = sensor
   return (
     <Box>
-      <SensorGraph column={column} id={id} unit={unit}/>
-      {alarms != null && Array.from(alarms).map(([key, value]) => <>{value.name}</>)}
-      <AlarmFormDialog {...sensor}/>
+      <SensorAlarmGraph column={column} id={id} alarms={sensor.alarms} unit={unit} />
+      {alarms != null && Object.values(alarms).map((alarm) => <>{alarm.name}</>)}
+      <AlarmFormDialog sensor={sensor} dashboardId={dashboardId} />
     </Box>
   )
 }
 
-const DashBoardView = ({ dashboard }: {dashboard: Dashboard}): JSX.Element => {
+const DashBoardView = ({ dashboardName, dashboardId, sensors }: Dashboard): JSX.Element => {
   return (
     <div style={{
       display: 'flex',
@@ -101,12 +116,12 @@ const DashBoardView = ({ dashboard }: {dashboard: Dashboard}): JSX.Element => {
       padding: '0',
       justifyContent: 'space-evenly'
     }}>
-      <h1 style={{ width: '100%', textAlign: 'center', margin: '1% 3%' }}>{dashboard.dashboardName}</h1>
-      {dashboard.sensors?.map((sensor: Sensor) => {
+      <h1 style={{ width: '100%', textAlign: 'center', margin: '1% 3%' }}>{dashboardName}</h1>
+      {sensors?.map((sensor: Sensor) => {
         return (
           <div key={sensor.id.toString() + sensor.column} style={{ flexDirection: 'column', textAlign: 'center', width: '45%', minWidth: '400px', border: '1px solid rgba(0, 0, 0, 0.229)', borderRadius: '4px', margin: '1% 0' }}>
             <h2 style={{ height: '3rem' }}>{SensorMetaDataMap[sensor.column].friendlyName ?? sensor.column}</h2>
-            <DashboardSensorView sensor={sensor} unit={SensorMetaDataMap[sensor.column].unit} />
+            <DashboardSensorView dashboardId={dashboardId} sensor={sensor} unit={SensorMetaDataMap[sensor.column].unit} />
           </div>
         )
       })}

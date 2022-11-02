@@ -1,11 +1,11 @@
 import { GetCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb'
 import { NextApiRequest } from 'next'
-import { Sensor } from '../../../../../../../components/elements/dashboard/types'
+import { Alarm, Sensor } from '../../../../../../../components/elements/dashboard/types'
 import { userDB } from '../../../../_queryUserSettings'
 
 export async function addAlarm (req: NextApiRequest, userId: string): Promise<Boolean> {
   const { dashboardId, column, sensorId, gatewayId } = req.query
-  const { alarm } = req.body
+  const { name, type, value } = req.body
   const dashboardFromDb = (await userDB.send(new GetCommand({
     TableName: process.env.USER_DB_TABLE_NAME,
     Key: {
@@ -20,6 +20,11 @@ export async function addAlarm (req: NextApiRequest, userId: string): Promise<Bo
     // element not found
     return false
   }
+
+  const alarm: Alarm = {
+    name, value, type
+  }
+
   await userDB.send(new UpdateCommand({
     TableName: process.env.USER_DB_TABLE_NAME,
     Key: {
@@ -28,10 +33,10 @@ export async function addAlarm (req: NextApiRequest, userId: string): Promise<Bo
     },
     UpdateExpression: `SET sensors[${sensorIndex}].alarms.#type = :alarm`,
     ExpressionAttributeNames: {
-      '#type': alarm.type
+      '#type': type
     },
     ExpressionAttributeValues: {
-      ':alarm': [alarm]
+      ':alarm': alarm
     }
   }))
   return true

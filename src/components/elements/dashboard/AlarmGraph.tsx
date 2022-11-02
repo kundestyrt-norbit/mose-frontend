@@ -9,9 +9,11 @@ import {
   Tooltip,
   Legend,
   ChartOptions,
-  ChartData
+  ChartData,
+  Plugin
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
+import { Alarm, ALARM_TYPE } from './types'
 
 ChartJS.register(
   TimeScale,
@@ -29,8 +31,9 @@ interface GraphParams {
   label?: string
   title?: string
   unit?: string
+  alarms?: {[key in ALARM_TYPE]: Alarm}
 }
-export function Graph ({ time, measurments, label, title, unit }: GraphParams): JSX.Element {
+export function AlarmGraph ({ time, measurments, label, title, unit, alarms }: GraphParams): JSX.Element {
   const options: ChartOptions<'line'> = {
     responsive: true,
     elements: {
@@ -90,5 +93,36 @@ export function Graph ({ time, measurments, label, title, unit }: GraphParams): 
     ]
   }
 
-  return <Line options={options} data={data} />
+  const plugin: Plugin<'line'> = {
+    id: 'test',
+    beforeDraw: (chartInstance, easing) => {
+      const yAxis = chartInstance.scales.y
+      const xAxis = chartInstance.scales.x
+      const ctx = chartInstance.ctx
+      ctx.save()
+      console.log('Should have alarms', alarms)
+      if (alarms != null) {
+        Object.entries(alarms).forEach(([alarmType, alarm]) => {
+          const yValueStart = yAxis.getPixelForValue(alarm.value)// yAxis.getPixelForValue(testLine[0])
+          const yValueEnd = yValueStart
+          const xValueStart = xAxis.left
+          const xValueEnd = xAxis.right
+
+          ctx.font = '18 px sans-serif'
+          ctx.fillStyle = 'rgba(50, 155, 255, 0.85)'
+          ctx.fillText((alarm.name != null) ? `${alarmType}:${alarm.name}` : '', 40, yValueStart + 10)
+          ctx.setLineDash([15, 15])
+          ctx.strokeStyle = 'rgba(50, 155, 255, 0.85)'
+          ctx.lineWidth = 2.5
+          ctx.beginPath()
+          ctx.moveTo(xValueStart, yValueStart)
+          ctx.lineTo(xValueEnd, yValueEnd)
+          ctx.stroke()
+          ctx.restore()
+        })
+      }
+    }
+  }
+
+  return <Line options={options} data={data} plugins={[plugin]} />
 }
