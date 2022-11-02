@@ -34,6 +34,15 @@ interface GraphParams {
   alarms?: {[key in ALARM_TYPE]: Alarm}
 }
 export function AlarmGraph ({ time, measurments, label, title, unit, alarms }: GraphParams): JSX.Element {
+  const maxMeasurement = Math.max(...measurments)
+  const minMeasurement = Math.min(...measurments)
+  const alarmValues = (alarms != null) ? Object.values(alarms).map(alarm => alarm.value) : null
+  const maxAlarm = (alarmValues != null) ? Math.max(...alarmValues) : 0
+  const minAlarm = (alarmValues != null) ? Math.min(...alarmValues) : Infinity
+
+  const min = minAlarm < minMeasurement ? minAlarm : minMeasurement
+  const max = maxAlarm > maxMeasurement ? maxAlarm : maxMeasurement
+
   const options: ChartOptions<'line'> = {
     responsive: true,
     elements: {
@@ -62,7 +71,9 @@ export function AlarmGraph ({ time, measurments, label, title, unit, alarms }: G
           callback: function (value, index, values) {
             return `${value} ${unit ?? ''}`
           }
-        }
+        },
+        max: Math.ceil(max + (max - min) / 10),
+        min: Math.floor(min - (max - min) / 10)
       }
 
     },
@@ -100,7 +111,6 @@ export function AlarmGraph ({ time, measurments, label, title, unit, alarms }: G
       const xAxis = chartInstance.scales.x
       const ctx = chartInstance.ctx
       ctx.save()
-      console.log('Should have alarms', alarms)
       if (alarms != null) {
         Object.entries(alarms).forEach(([alarmType, alarm]) => {
           const yValueStart = yAxis.getPixelForValue(alarm.value)// yAxis.getPixelForValue(testLine[0])
