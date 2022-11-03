@@ -13,7 +13,6 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
     }
 
     if (req.method === 'DELETE') {
-      console.log('deleting')
       const deleteRes = await deleteAlarm(req, userId)
       deleteRes ? res.status(204).end() : res.status(400).end()
     }

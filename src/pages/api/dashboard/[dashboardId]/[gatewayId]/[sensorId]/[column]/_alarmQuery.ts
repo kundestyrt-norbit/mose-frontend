@@ -44,8 +44,7 @@ export async function addAlarm (req: NextApiRequest, userId: string): Promise<Bo
 
 export async function deleteAlarm (req: NextApiRequest, userId: string | null): Promise<boolean> {
   const { dashboardId, sensorId, column, gatewayId } = req.query
-  const { alarmType } = req.body
-  console.log(alarmType)
+  const { type } = req.body
   const dashboardFromDb = (await userDB.send(new GetCommand({
     TableName: process.env.USER_DB_TABLE_NAME,
     Key: {
@@ -61,7 +60,7 @@ export async function deleteAlarm (req: NextApiRequest, userId: string | null): 
     // element not found
     return false
   }
-  const res = await userDB.send(new UpdateCommand({
+  await userDB.send(new UpdateCommand({
     TableName: process.env.USER_DB_TABLE_NAME,
     Key: {
       userId,
@@ -71,9 +70,8 @@ export async function deleteAlarm (req: NextApiRequest, userId: string | null): 
       REMOVE sensors[${indexToRemove}].alarms.#alarmType
     `,
     ExpressionAttributeNames: {
-      '#alarmType': alarmType
+      '#alarmType': type
     }
   }))
-  console.log(res)
   return true
 }

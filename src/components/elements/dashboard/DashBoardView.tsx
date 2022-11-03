@@ -15,7 +15,6 @@ const AlarmFormDialog = ({ sensor, dashboardId, onAddAlarm }: {sensor: Sensor, d
   const handleClose = (): void => {
     setOpen(false)
   }
-  console.log(sensor)
 
   const addAlarm = (alarm: Alarm): void => {
     const endpoint = `/api/dashboard/${dashboardId}/${sensor.gatewayId}/${sensor.id}/${sensor.column}/alarm`
@@ -28,18 +27,35 @@ const AlarmFormDialog = ({ sensor, dashboardId, onAddAlarm }: {sensor: Sensor, d
     }).then(() => onAddAlarm(alarm)).then(() => handleClose()).catch(e => console.log(e))
   }
 
+  const deleteAlarm = (alarm: Alarm): void => {
+    const endpoint = `/api/dashboard/${dashboardId}/${sensor.gatewayId}/${sensor.id}/${sensor.column}/alarm`
+    fetch(endpoint, {
+      method: 'DELETE',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(alarm)
+    }).then(() => onAddAlarm(alarm)).then(() => handleClose()).catch(e => console.log(e))
+  }
+
+  const defaultAlarm = sensor.alarms?.[ALARM_TYPE.LOWER] ?? sensor.alarms?.[ALARM_TYPE.UPPER]
+
   const { control, handleSubmit, getValues } = useForm<Alarm>({
     defaultValues: {
-      name: '',
-      value: undefined,
-      type: ALARM_TYPE.LOWER
+      ...(defaultAlarm ?? {
+        name: '',
+        value: 0,
+        type: ALARM_TYPE.LOWER
+      })
     }
   })
+
+  const currentAlarm = sensor.alarms?.[getValues().type]
 
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
-        Add alarm
+        Configure alarm
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Alarm</DialogTitle>
@@ -83,7 +99,9 @@ const AlarmFormDialog = ({ sensor, dashboardId, onAddAlarm }: {sensor: Sensor, d
             </Box>
           </DialogContent>
           <DialogActions sx={theme => ({ backgroundColor: theme.palette.background.default })}>
-            <Button type='button' onClick={() => handleClose()}>Cancel</Button><Button type='submit'>{sensor.alarms?.[getValues().type] != null ? 'Change' : 'Add'}</Button>
+            <Button type='button' onClick={() => handleClose()}>Cancel</Button>
+            <Button type='submit'>{sensor.alarms?.[getValues().type] != null ? 'Change' : 'Add'}</Button>
+            {currentAlarm != null && <Button type='button' onClick={() => deleteAlarm(currentAlarm)}>Delete</Button>}
           </DialogActions>
 
         </form>
@@ -96,8 +114,7 @@ const DashboardSensorView = ({ dashboardId, sensor, onAddAlarm, unit }: {sensor:
   const { column, id, alarms } = sensor
   return (
     <Box>
-      <SensorAlarmGraph column={column} id={id} alarms={sensor.alarms} unit={unit} />
-      {alarms != null && Object.values(alarms).map((alarm) => <>{alarm.name}</>)}
+      <SensorAlarmGraph column={column} id={id} alarms={alarms} unit={unit} />
       <AlarmFormDialog sensor={sensor} dashboardId={dashboardId} onAddAlarm={onAddAlarm} />
     </Box>
   )
@@ -118,7 +135,7 @@ const DashBoardView = ({ dashboardName, dashboardId, sensors, onAddAlarm }: Dash
       <h1 style={{ width: '100%', textAlign: 'center', margin: '1% 3%' }}>{dashboardName}</h1>
       {sensors?.map((sensor: Sensor) => {
         return (
-          <div key={sensor.id.toString() + sensor.column} style={{ flexDirection: 'column', textAlign: 'center', width: '45%', minWidth: '400px', border: '1px solid rgba(0, 0, 0, 0.229)', borderRadius: '4px', margin: '1% 0' }}>
+          <div key={sensor.id.toString() + sensor.column} style={{ flexDirection: 'column', textAlign: 'center', width: '45%', minWidth: '320px', border: '1px solid rgba(0, 0, 0, 0.229)', borderRadius: '4px', margin: '1% 0' }}>
             <h2 style={{ height: '3rem' }}>{SensorMetaDataMap[sensor.column].friendlyName ?? sensor.column}</h2>
             <DashboardSensorView onAddAlarm={onAddAlarm} dashboardId={dashboardId} sensor={sensor} unit={SensorMetaDataMap[sensor.column].unit} />
           </div>
