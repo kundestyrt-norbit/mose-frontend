@@ -5,7 +5,7 @@ import Autocomplete from '@mui/material/Autocomplete'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
 import CheckBoxIcon from '@mui/icons-material/CheckBox'
 import { getSensorsIncludeDashboard } from '../../../utils/dashboardUtils'
-import { SensorIncludeDashboard } from '../../../pages/api/sensor/_queryClient'
+import { SensorIncludeDashboard } from './types'
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
 const checkedIcon = <CheckBoxIcon fontSize="small" />

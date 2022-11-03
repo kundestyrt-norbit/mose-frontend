@@ -31,7 +31,7 @@ export const SensorMetaDataMap: {[key: string]: SensorMetaData} = {
     description: 'Mass concentration of particles with size 0.3 to 4 μm'
   },
   nc_10_0: {
-    friendlyName: 'PM 10',
+    friendlyName: 'PM 10 Number concentration',
     unit: '#/m³',
     description: 'Number concentration of particles with size 0.3 to 10 μm.'
   },
@@ -41,22 +41,22 @@ export const SensorMetaDataMap: {[key: string]: SensorMetaData} = {
     description: 'Mass concentration of particles with size 0.3 to 1μm.'
   },
   nc_0_5: {
-    friendlyName: 'PM 0.5',
+    friendlyName: 'PM 0.5 Number concentration',
     unit: '#/m³',
     description: 'Number concentration of particles with size 0.3 to 0.5 μm.'
   },
   nc_2_5: {
-    friendlyName: 'PM 2.5',
+    friendlyName: 'PM 2.5 Number concentration',
     unit: '#/m³',
     description: 'Number concentration of particles with size 0.3 to 2.5 μm.'
   },
   nc_1_0: {
-    friendlyName: 'PM 1',
+    friendlyName: 'PM 1 Number concentration',
     unit: '#/m³',
     description: 'Number concentration of particles with size 0.3 to 1 μm.'
   },
   nc_4_0: {
-    friendlyName: 'PM 4',
+    friendlyName: 'PM 4 Number concentration',
     unit: '#/m³',
     description: 'Number concentration of particles with size 0.3 to 4 μm.'
   },

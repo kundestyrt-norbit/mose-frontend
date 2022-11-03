@@ -1,7 +1,9 @@
+import { SensorMetaDataMap } from '../../../pages/api/sensor/_sensorMetaData'
 import { SensorGraph } from './SensorGraph'
-import { Sensor } from '../../../pages/api/sensor/_queryClient'
+import { Dashboard, Sensor } from './types'
 
-const DashBoardView = ({ dashboard }: any): JSX.Element => {
+const DashBoardView = ({ dashboard }: { dashboard: Dashboard }): JSX.Element => {
+  console.log(dashboard.sensors)
   return (
     <div style={{
       display: 'flex',
@@ -17,8 +19,8 @@ const DashBoardView = ({ dashboard }: any): JSX.Element => {
       {dashboard.sensors?.map((sensor: Sensor) => {
         return (
           <div key={sensor.id.toString() + sensor.column} style={{ flexDirection: 'column', textAlign: 'center', width: '45%', minWidth: '350px', border: '1px solid rgba(0, 0, 0, 0.229)', borderRadius: '4px', margin: '1% 0' }}>
-            <h2>{sensor.metaData?.friendlyName ?? sensor.column}</h2>
-            <SensorGraph id={sensor.id} column={sensor.column} />
+            <h2 style={{ height: '3rem' }}>{SensorMetaDataMap[sensor.column].friendlyName ?? sensor.column}</h2>
+            <SensorGraph id={sensor.id} column={sensor.column} ></SensorGraph>
           </div>
         )
       })}

@@ -4,7 +4,7 @@ import { useState } from 'react'
 import useSWR from 'swr'
 import { SensorGraph } from '../components/elements/dashboard/SensorGraph'
 import PageLayoutWrapper from '../components/layout/PageLayoutWrapper'
-import { Sensor } from './api/sensor/_queryClient'
+import { Sensor } from '../components/elements/dashboard/types'
 import CloseIcon from '@mui/icons-material/Close'
 import AddToDash from '../components/elements/AddToDash'
 

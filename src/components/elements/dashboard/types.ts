@@ -1,3 +1,5 @@
+import { SensorMetaData } from '../../../pages/api/sensor/_sensorMetaData'
+
 type TimeWindow = number | [Date, Date] | null
 
 export interface DashboardListItem {
@@ -10,15 +12,20 @@ interface Filter {
   timeWindow: TimeWindow
 }
 
-export interface Sensor {
-  id: number
-  gatewayId: number
-  filter?: Filter
-  column: string
-}
-
 export interface Dashboard {
   dashboardId: string
   dashboardName: string
   sensors: Sensor[]
+}
+
+export interface Sensor {
+  id: number
+  column: string
+  metaData: SensorMetaData
+  gatewayId: number
+  filter?: Filter
+}
+
+export interface SensorIncludeDashboard extends Sensor{
+  sensorIncludedInDashboard?: boolean
 }

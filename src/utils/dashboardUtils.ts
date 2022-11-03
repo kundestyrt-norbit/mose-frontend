@@ -1,5 +1,4 @@
-import { Dashboard, DashboardListItem } from '../components/elements/dashboard/types'
-import { SensorIncludeDashboard } from '../pages/api/sensor/_queryClient'
+import { Dashboard, DashboardListItem, SensorIncludeDashboard } from '../components/elements/dashboard/types'
 
 export async function getDashboards (): Promise<DashboardListItem[]> {
   const response = await fetch('/api/dashboard/list', {
