@@ -18,15 +18,13 @@ const AlarmFormDialog = ({ sensor, dashboardId }: {sensor: Sensor, dashboardId: 
 
   const addAlarm = (alarm: Alarm): void => {
     const endpoint = `/api/dashboard/${dashboardId}/${sensor.gatewayId}/${sensor.id}/${sensor.column}/alarm`
-    const formBody = {
-      ...alarm
-    }
+    console.log(alarm)
     fetch(endpoint, {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json'
       },
-      body: JSON.stringify(formBody)
+      body: JSON.stringify(alarm)
     }).catch(e => console.log(e))
   }
 
@@ -63,10 +61,12 @@ const AlarmFormDialog = ({ sensor, dashboardId }: {sensor: Sensor, dashboardId: 
                   return <TextField onChange={onChange} value={value} required id="name" aria-describedby="my-helper-text" label="Name" />
                 }} />
               <Controller control={control}
-                name={'value'} render={({ field: { onChange, value } }) => {
+                name={'value'}
+                rules={{}}
+                render={({ field: { onChange, value } }) => {
                   return <TextField
                     value={value ?? ''}
-                    onChange={onChange}
+                    onChange={(event) => onChange(+event.target.value)}
                     sx={{ marginTop: '20px' }}
                     id="value"
                     aria-describedby="my-helper-text"

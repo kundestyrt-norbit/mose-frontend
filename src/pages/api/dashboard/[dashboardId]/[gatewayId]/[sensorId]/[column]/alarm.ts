@@ -6,7 +6,6 @@ import { addAlarm, deleteAlarm } from './_alarmQuery'
 export default async function handler (req: NextApiRequest, res: NextApiResponse): Promise<void> {
   const { Auth } = withSSRContext({ req })
   const userId: string | null = await getVerifiedUserID(Auth)
-  console.log(req.method)
   if (userId != null) {
     if (req.method === 'PUT') {
       const item = await addAlarm(req, userId)

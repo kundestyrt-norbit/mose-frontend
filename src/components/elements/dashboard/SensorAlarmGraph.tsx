@@ -4,7 +4,7 @@ import useSWR from 'swr'
 import { SensorMeasurements } from '../../../pages/api/sensor/_queryClient'
 import { AlarmGraph } from './AlarmGraph'
 import { Alarm, ALARM_TYPE } from './types'
-interface SensorGraphProps {
+interface SensorAlarmGraphProps {
   id: number
   column: string
   friendlyName?: string
@@ -15,7 +15,8 @@ interface SensorGraphProps {
 
 const fetcher = async (input: RequestInfo | URL, init?: RequestInit | undefined): Promise<SensorMeasurements> => await fetch(input, init).then(async (res) => await (res.json() as Promise<SensorMeasurements>))
 
-export function SensorAlarmGraph ({ id, column, sx, friendlyName, unit, alarms }: SensorGraphProps): JSX.Element {
+export function SensorAlarmGraph ({ id, column, sx, friendlyName, unit, alarms }: SensorAlarmGraphProps): JSX.Element {
+  console.log(alarms)
   const { data } = useSWR(`/api/sensor/${id}/${column}`, fetcher)
   console.log(data)
   return (

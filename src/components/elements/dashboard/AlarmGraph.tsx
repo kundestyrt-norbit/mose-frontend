@@ -99,14 +99,18 @@ export function AlarmGraph ({ time, measurments, label, title, unit, alarms }: G
         label,
         data: measurments,
         borderColor: 'blue',
-        backgroundColor: 'white'
+        pointBackgroundColor: (ctx, option) => {
+          const index = ctx.dataIndex
+          const value = ctx.dataset.data[index]
+          return (alarms != null) ? alarmBackgroundColor(value as number, alarms) : 'white'
+        }
       }
     ]
   }
 
   const plugin: Plugin<'line'> = {
     id: 'test',
-    beforeDraw: (chartInstance, easing) => {
+    afterDatasetDraw: (chartInstance, easing) => {
       const yAxis = chartInstance.scales.y
       const xAxis = chartInstance.scales.x
       const ctx = chartInstance.ctx
@@ -135,4 +139,10 @@ export function AlarmGraph ({ time, measurments, label, title, unit, alarms }: G
   }
 
   return <Line options={options} data={data} plugins={[plugin]} />
+}
+
+function alarmBackgroundColor (value: Number, alarms: {[key in ALARM_TYPE]: Alarm}): string {
+  const lowerAlarm = (alarms.Lower !== undefined ? value <= alarms.Lower.value : false)
+  const upperAlarm = alarms.Upper !== undefined ? value >= alarms.Upper.value : false
+  return lowerAlarm || upperAlarm ? 'red' : 'white'
 }
