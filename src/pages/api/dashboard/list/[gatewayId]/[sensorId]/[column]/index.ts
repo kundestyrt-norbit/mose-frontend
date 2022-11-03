@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { withSSRContext } from 'aws-amplify'
 import { getDashboards } from '../../../../_queryUserSettings'
 import getVerifiedUserID from '../../../../_verifyUser'
-import { Sensor } from '../../../../../sensor/_queryClient'
+import { Sensor } from '../../../../../../../components/elements/dashboard/types'
 
 export default async function handler (req: NextApiRequest, res: NextApiResponse): Promise<void> {
   const { gatewayId, sensorId, column } = req.query

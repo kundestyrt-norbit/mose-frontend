@@ -10,7 +10,7 @@ import { SensorIncludeDashboard } from './types'
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
 const checkedIcon = <CheckBoxIcon fontSize="small" />
 
-export default function CheckboxesTags({ dashboardId, updateDashboard }: { dashboardId: string, updateDashboard: () => void }): JSX.Element {
+export default function CheckboxesTags ({ dashboardId, updateDashboard }: { dashboardId: string, updateDashboard: () => void }): JSX.Element {
   const [sensorList, setSensorList] = React.useState<SensorIncludeDashboard[]>([])
   const [value, setValue] = React.useState<SensorIncludeDashboard[]>([])
   React.useEffect(() => {

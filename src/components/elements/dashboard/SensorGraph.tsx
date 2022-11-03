@@ -13,7 +13,7 @@ interface SensorGraphProps {
 
 const fetcher = async (input: RequestInfo | URL, init?: RequestInit | undefined): Promise<SensorMeasurements> => await fetch(input, init).then(async (res) => await (res.json() as Promise<SensorMeasurements>))
 
-export function SensorGraph({ id, column, sx, friendlyName, unit }: SensorGraphProps): JSX.Element {
+export function SensorGraph ({ id, column, sx, friendlyName, unit }: SensorGraphProps): JSX.Element {
   const { data } = useSWR(`/api/sensor/${id}/${column}`, fetcher)
   return (
     <Box sx={sx}>

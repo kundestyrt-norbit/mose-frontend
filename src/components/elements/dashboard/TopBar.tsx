@@ -20,7 +20,7 @@ import { useRouter } from 'next/router'
 
 type Anchor = 'top'
 
-export default function TemporaryDrawer(): JSX.Element {
+export default function TemporaryDrawer (): JSX.Element {
   const [state, setState] = React.useState({
     top: false
   })
@@ -83,7 +83,7 @@ export default function TemporaryDrawer(): JSX.Element {
         onKeyDown={toggleDrawer(anchor, false)}>
         {
           dashboardList.map((dashboardListItem, index) =>
-          (<ListItem key={dashboardListItem.dashboardId as Key} disablePadding>
+            (<ListItem key={dashboardListItem.dashboardId as Key} disablePadding>
             <Link href={'/dashboard/' + dashboardListItem.dashboardId} >
               <ListItemButton> {/* Add Onclick-function that writes heading */}
                 <ListItemIcon>
