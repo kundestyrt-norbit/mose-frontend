@@ -1,7 +1,20 @@
 import getVerifiedUserID from '../_verifyUser'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { withSSRContext } from 'aws-amplify'
+import Amplify, { withSSRContext } from 'aws-amplify'
 import { deleteDashboard, getDashboard, saveDashboard } from '../_queryUserSettings'
+import config from '../../../../aws-exports'
+
+Amplify.configure({
+  ...config,
+  oauth: {
+    domain: 'moseauth.auth.eu-north-1.amazoncognito.com',
+    scope: ['email', 'openid'],
+    redirectSignIn: process.env.AUTH_REDIRECT,
+    redirectSignOut: process.env.AUTH_REDIRECT,
+    responseType: 'code'
+  },
+  ssr: true
+})
 
 export default async function handler (req: NextApiRequest, res: NextApiResponse): Promise<NextApiResponse<any>> {
   const { Auth } = withSSRContext({ req })
