@@ -1,10 +1,23 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { withSSRContext } from 'aws-amplify'
+import Amplify, { withSSRContext } from 'aws-amplify'
 import { getDashboards } from '../../../../_queryUserSettings'
 import getVerifiedUserID from '../../../../_verifyUser'
 import { Sensor } from '../../../../../../../components/elements/dashboard/types'
+import config from '../../../../../../../aws-exports'
 
-export default async function handler (req: NextApiRequest, res: NextApiResponse): Promise<void> {
+Amplify.configure({
+  ...config,
+  oauth: {
+    domain: 'moseauth.auth.eu-north-1.amazoncognito.com',
+    scope: ['email', 'openid'],
+    redirectSignIn: process.env.AUTH_REDIRECT,
+    redirectSignOut: process.env.AUTH_REDIRECT,
+    responseType: 'code'
+  },
+  ssr: true
+})
+
+export default async function handler (req: NextApiRequest, res: NextApiResponse): Promise<NextApiResponse<any>> {
   const { gatewayId, sensorId, column } = req.query
   const { Auth } = withSSRContext({ req })
   const userId: string | null = await getVerifiedUserID(Auth)
@@ -20,9 +33,10 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
           ))
         delete item.sensors
       })
-      return res.status(200).json(item.Items)
+      return res.status(200).end(JSON.stringify(item.Items))
     }
+    return res.status(404).end()
   } else {
-    throw new Error('UserId not valid')
+    return res.status(401).end()
   }
 }
