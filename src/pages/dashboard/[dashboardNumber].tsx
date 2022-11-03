@@ -26,8 +26,8 @@ const DashboardPage = (): JSX.Element => {
       {(dashboard != null) &&
         <>
           <TemporaryDrawer />
-          <DashBoardView dashboard={dashboard} />
           <AddSensor dashboardId={dashboard.dashboardId} updateDashboard={updateDashboard} />
+          <DashBoardView dashboard={dashboard} />
         </>
       }
     </PageLayoutWrapper>

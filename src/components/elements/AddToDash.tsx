@@ -10,7 +10,7 @@ import { DashboardListItem, Sensor } from './dashboard/types'
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
 const checkedIcon = <CheckBoxIcon fontSize="small" />
 
-export default function CheckboxesTags ({ id, column, gatewayId }: Sensor): JSX.Element {
+export default function CheckboxesTags({ id, column, gatewayId }: Sensor): JSX.Element {
   const [dashboardList, setDashboardList] = React.useState<DashboardListItem[]>([])
   const [value, setValue] = React.useState<DashboardListItem[]>([])
   React.useEffect(() => {
@@ -22,52 +22,56 @@ export default function CheckboxesTags ({ id, column, gatewayId }: Sensor): JSX.
   }, [dashboardList])
 
   return (
-    <Autocomplete
-      multiple
-      id="checkboxes-tags-demo"
-      options={dashboardList}
-      disableCloseOnSelect
-      value={value}
-      onChange={(event, newValue, reason, detail) => {
-        setValue(newValue)
-        if (detail != null) {
-          if (reason === 'removeOption') {
-            fetch(`/api/dashboard/${detail.option.dashboardId}/${gatewayId}/${id}/${column}`,
-              {
-                method: 'DELETE',
-                headers: {
-                  'Content-type': 'application/json'
-                }
-              })
-              .then(res => console.log(res)).catch(err => console.log(err))
-          } else if (reason === 'selectOption') {
-            fetch(`/api/dashboard/${detail.option.dashboardId}/${gatewayId}/${id}/${column}`,
-              {
-                method: 'PUT',
-                headers: {
-                  'Content-type': 'application/json'
-                }
-              })
-              .then(async res => await res.json()).then(res => console.log(res)).catch(err => console.log(err))
-          }
-        }
-      }}
-      getOptionLabel={(option) => option.dashboardName}
-      renderOption={(props, option, { selected }) => (
-        <li {...props}>
-          <Checkbox
-            icon={icon}
-            checkedIcon={checkedIcon}
-            style={{ marginRight: 8, color: 'white' }}
-            checked={selected}
-          />
-          {option.dashboardName}
-        </li>
-      )}
-      style={{ minWidth: '47%', margin: '3%' }}
-      renderInput={(params) => (
-        <TextField {...params} label="Add to dashboard" placeholder="Dashboards" />
-      )}
-    />
+    <>
+      {dashboardList.length > 0 &&
+        <Autocomplete
+          multiple
+          id="checkboxes-tags-demo"
+          options={dashboardList}
+          disableCloseOnSelect
+          value={value}
+          onChange={(event, newValue, reason, detail) => {
+            setValue(newValue)
+            if (detail != null) {
+              if (reason === 'removeOption') {
+                fetch(`/api/dashboard/${detail.option.dashboardId}/${gatewayId}/${id}/${column}`,
+                  {
+                    method: 'DELETE',
+                    headers: {
+                      'Content-type': 'application/json'
+                    }
+                  })
+                  .then(res => console.log(res)).catch(err => console.log(err))
+              } else if (reason === 'selectOption') {
+                fetch(`/api/dashboard/${detail.option.dashboardId}/${gatewayId}/${id}/${column}`,
+                  {
+                    method: 'PUT',
+                    headers: {
+                      'Content-type': 'application/json'
+                    }
+                  })
+                  .then(async res => await res.json()).then(res => console.log(res)).catch(err => console.log(err))
+              }
+            }
+          }}
+          getOptionLabel={(option) => option.dashboardName}
+          renderOption={(props, option, { selected }) => (
+            <li {...props}>
+              <Checkbox
+                icon={icon}
+                checkedIcon={checkedIcon}
+                style={{ marginRight: 8, color: 'white' }}
+                checked={selected}
+              />
+              {option.dashboardName}
+            </li>
+          )}
+          style={{ minWidth: '100%', margin: '3%' }}
+          renderInput={(params) => (
+            <TextField {...params} label="Add to dashboard" placeholder="Dashboards" />
+          )}
+        />
+      }
+    </>
   )
 }

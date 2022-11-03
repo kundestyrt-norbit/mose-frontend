@@ -26,8 +26,7 @@ const SensorDialogContent = styled(DialogContent)({
 
 const SensorDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiPaper-root': {
-    width: '100%',
-    maxWidth: '500px'
+    width: '100%'
   }
 }))
 const PageWrapper = styled(Box)`
