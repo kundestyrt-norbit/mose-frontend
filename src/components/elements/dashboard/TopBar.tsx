@@ -53,7 +53,6 @@ export default function TemporaryDrawer (): JSX.Element {
       dashboardName: dashboardName ?? 'New Dashboard',
       sensors: []
     }
-    console.log(dashboardList)
 
     createDashboard(dashboard).then(res => {
       setDashboardList([...dashboardList, { dashboardId: dashboard.dashboardId, dashboardName: dashboard.dashboardName }])
