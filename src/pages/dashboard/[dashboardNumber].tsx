@@ -12,7 +12,10 @@ const DashboardPage = (): JSX.Element => {
 
   const updateDashboard = (): void => {
     if (router.query.dashboardNumber !== undefined) {
-      fetch(`/api/dashboard/${router.query.dashboardNumber as string}`).then(async res => await res.json()).then(res => setDashboard(res)).catch(async () => await router.push('/dashboard'))
+      fetch(`/api/dashboard/${router.query.dashboardNumber as string}`)
+        .then(async res => await res.json())
+        .then(res => setDashboard(res))
+        .catch(async () => await router.push('/dashboard'))
     }
   }
 
@@ -26,7 +29,7 @@ const DashboardPage = (): JSX.Element => {
         <>
           <TemporaryDrawer />
           <AddSensor dashboardId={dashboard.dashboardId} updateDashboard={updateDashboard} />
-          <DashBoardView dashboard={dashboard} />
+          <DashBoardView {...dashboard} onAddAlarm={updateDashboard} />
         </>
       }
     </PageLayoutWrapper>

@@ -13,7 +13,7 @@ export async function addSensor (req: NextApiRequest, userId: string | null): Pr
     },
     UpdateExpression: 'SET sensors= list_append(sensors, :sensor)',
     ExpressionAttributeValues: {
-      ':sensor': [{ id: Number(sensorId), gatewayId: Number(gatewayId), column }]
+      ':sensor': [{ id: Number(sensorId), gatewayId: Number(gatewayId), column, alarms: {} }] as Sensor[]
     }
   }))
   return item
