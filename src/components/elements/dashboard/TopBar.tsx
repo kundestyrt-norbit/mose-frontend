@@ -10,7 +10,7 @@ import ListItemText from '@mui/material/ListItemText'
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded'
 import DashboardCustomizeRoundedIcon from '@mui/icons-material/DashboardCustomizeRounded'
 import Link from 'next/link'
-import React, { Key, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Dashboard, DashboardListItem } from './types'
 import { v4 as uuidv4 } from 'uuid'
 import { createDashboard, deleteDashboard, getDashboards } from '../../../utils/dashboardUtils'
@@ -83,7 +83,7 @@ export default function TemporaryDrawer (): JSX.Element {
         onKeyDown={toggleDrawer(anchor, false)}>
         {
           dashboardList.map((dashboardListItem, index) =>
-            (<ListItem key={dashboardListItem.dashboardId as Key} disablePadding>
+            (<ListItem key={dashboardListItem.dashboardId} disablePadding>
             <Link href={'/dashboard/' + dashboardListItem.dashboardId} >
               <ListItemButton> {/* Add Onclick-function that writes heading */}
                 <ListItemIcon>

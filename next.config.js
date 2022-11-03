@@ -12,6 +12,5 @@ module.exports = {
         SECRET_ACCESS_KEY_DYNAMO_DB_AWS: process.env.SECRET_ACCESS_KEY_DYNAMO_DB_AWS,
         BASE_URL: process.env.BASE_URL,
         AUTH_REDIRECT: process.env.AUTH_REDIRECT,
-        webpack5: false
     }
 }
