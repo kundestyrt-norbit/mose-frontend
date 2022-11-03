@@ -65,7 +65,7 @@ const AlarmFormDialog = ({ sensor, dashboardId, onAddAlarm }: {sensor: Sensor, d
                 render={({ field: { onChange, value } }) => {
                   return <TextField
                     value={value ?? ''}
-                    onChange={(event) => onChange(+event.target.value)}
+                    onChange={(event) => onChange((event.target.value.length > 0) ? +event.target.value : '')}
                     sx={{ marginTop: '20px' }}
                     id="value"
                     aria-describedby="my-helper-text"

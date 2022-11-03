@@ -41,7 +41,7 @@ export default function CheckboxesTags ({ id, column, gatewayId }: Pick<Sensor, 
                       'Content-type': 'application/json'
                     }
                   })
-                  .then(res => console.log(res)).catch(err => console.log(err))
+                  .catch(err => console.log(err))
               } else if (reason === 'selectOption') {
                 fetch(`/api/dashboard/${detail.option.dashboardId}/${gatewayId}/${id}/${column}`,
                   {
@@ -50,7 +50,7 @@ export default function CheckboxesTags ({ id, column, gatewayId }: Pick<Sensor, 
                       'Content-type': 'application/json'
                     }
                   })
-                  .then(async res => await res.json()).then(res => console.log(res)).catch(err => console.log(err))
+                  .then(async res => await res.json()).catch(err => console.log(err))
               }
             }
           }}

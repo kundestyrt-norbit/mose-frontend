@@ -43,7 +43,7 @@ export function AlarmGraph ({ time, measurments, label, title, unit, alarms }: G
   const min = minAlarm < minMeasurement ? minAlarm : minMeasurement
   const max = maxAlarm > maxMeasurement ? maxAlarm : maxMeasurement
 
-  const options: ChartOptions<'line'> = {
+  const options: ChartOptions<'line'> & {plugins: {alarmLines: {[key in ALARM_TYPE]?: Alarm}}} = {
     responsive: true,
     elements: {
       point: {
@@ -89,6 +89,9 @@ export function AlarmGraph ({ time, measurments, label, title, unit, alarms }: G
         callbacks: {
           label: (tooltipItems) => `${tooltipItems.formattedValue}${unit ?? ''}`
         }
+      },
+      alarmLines: {
+        ...alarms
       }
     }
   }
@@ -108,15 +111,15 @@ export function AlarmGraph ({ time, measurments, label, title, unit, alarms }: G
     ]
   }
 
-  const plugin: Plugin<'line'> = {
-    id: 'test',
-    afterDatasetDraw: (chartInstance, easing) => {
+  const plugin: Plugin<'line', {[key in ALARM_TYPE]: Alarm}> = {
+    id: 'alarmLines',
+    afterDatasetDraw: (chartInstance, args, options) => {
       const yAxis = chartInstance.scales.y
       const xAxis = chartInstance.scales.x
       const ctx = chartInstance.ctx
       ctx.save()
-      if (alarms != null) {
-        Object.entries(alarms).forEach(([alarmType, alarm]) => {
+      if (options != null) {
+        Object.entries(options).forEach(([alarmType, alarm]) => {
           const yValueStart = yAxis.getPixelForValue(alarm.value)// yAxis.getPixelForValue(testLine[0])
           const yValueEnd = yValueStart
           const xValueStart = xAxis.left
