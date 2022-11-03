@@ -1,6 +1,6 @@
 import { GetCommand, UpdateCommand, UpdateCommandOutput } from '@aws-sdk/lib-dynamodb'
 import { NextApiRequest } from 'next'
-import { Sensor } from '../../sensor/_queryClient'
+import { Sensor } from '../../../../components/elements/dashboard/types'
 import { userDB } from '../_queryUserSettings'
 
 export async function addSensor (req: NextApiRequest, userId: string | null): Promise<UpdateCommandOutput> {
@@ -13,7 +13,7 @@ export async function addSensor (req: NextApiRequest, userId: string | null): Pr
     },
     UpdateExpression: 'SET sensors= list_append(sensors, :sensor)',
     ExpressionAttributeValues: {
-      ':sensor': [{ id: Number(sensorId), gatewayId: Number(gatewayId), column }]
+      ':sensor': [{ id: Number(sensorId), gatewayId: Number(gatewayId), column, alarms: {} }] as Sensor[]
     }
   }))
   return item

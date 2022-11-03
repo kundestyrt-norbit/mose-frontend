@@ -4,7 +4,7 @@ import { useState } from 'react'
 import useSWR from 'swr'
 import { SensorGraph } from '../components/elements/dashboard/SensorGraph'
 import PageLayoutWrapper from '../components/layout/PageLayoutWrapper'
-import { Sensor } from './api/sensor/_queryClient'
+import { Sensor } from '../components/elements/dashboard/types'
 import CloseIcon from '@mui/icons-material/Close'
 import AddToDash from '../components/elements/AddToDash'
 
@@ -26,8 +26,7 @@ const SensorDialogContent = styled(DialogContent)({
 
 const SensorDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiPaper-root': {
-    width: '100%',
-    maxWidth: '500px'
+    width: '100%'
   }
 }))
 const PageWrapper = styled(Box)`
@@ -68,7 +67,7 @@ const SensorModal = ({ id, column, metaData }: Sensor): JSX.Element => {
   const [open, setOpen] = useState(false)
 
   return (
-    <Box sx={{ flexDirection: 'column', display: 'flex', minWidth: '300px', maxWidth: '50%', width: '100%', margin: 'auto' }}>
+    <Box sx={{ flexDirection: 'column', display: 'flex', minWidth: '300px', maxWidth: '50%', width: '100%', margin: 'auto', borderRadius: '3px' }}>
       <SensorModalButton onClick={() => { setOpen(!open) }}
         sx={{ backgroundColor: 'primary', borderRadius: '5px' }}>
         <span style={{ textAlign: 'center' }}>{metaData?.friendlyName ?? column}</span>

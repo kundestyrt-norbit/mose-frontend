@@ -54,7 +54,7 @@ export async function getDashboard (req: NextApiRequest, userId: string): Promis
       userId,
       dashboardId
     },
-    ProjectionExpression: 'dashboardId, dashboardName, sensors'
+    ProjectionExpression: 'dashboardId, dashboardName, sensors, alarms'
   }))
   return item
 }
@@ -106,7 +106,7 @@ export async function getDashboards (userId: string | null): Promise<QueryComman
     ExpressionAttributeValues: {
       ':v1': userId
     },
-    ProjectionExpression: 'dashboardId, dashboardName, sensors'
+    ProjectionExpression: 'dashboardId, dashboardName, sensors, alarms'
   })
   )
 

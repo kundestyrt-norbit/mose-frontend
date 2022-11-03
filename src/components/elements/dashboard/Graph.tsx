@@ -31,7 +31,7 @@ interface GraphParams {
   unit?: string
 }
 export function Graph ({ time, measurments, label, title, unit }: GraphParams): JSX.Element {
-  const options: ChartOptions = {
+  const options: ChartOptions<'line'> = {
     responsive: true,
     elements: {
       point: {
@@ -89,6 +89,6 @@ export function Graph ({ time, measurments, label, title, unit }: GraphParams): 
       }
     ]
   }
-  // @ts-expect-error
+
   return <Line options={options} data={data} />
 }
