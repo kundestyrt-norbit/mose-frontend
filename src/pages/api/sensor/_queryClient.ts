@@ -73,6 +73,5 @@ export async function getSensorData (id: string, column: string, daysAgo: number
       row.Data?.[3].ScalarValue !== undefined && sensorData.measurements.push(+row.Data?.[3].ScalarValue)
     })
   })
-  console.log(sensorData)
   return sensorData
 }

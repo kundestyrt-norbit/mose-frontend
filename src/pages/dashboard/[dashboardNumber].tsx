@@ -12,7 +12,6 @@ const DashboardPage = (): JSX.Element => {
     fetch(`/api/dashboard/${router.query.dashboardNumber as string}`).then(async res => await res.json()).then(res => setDashboard(res)).catch(async () => await router.push('/dashboard'))
   }, [router.query.dashboardNumber])
 
-  console.log(dashboard)
   return (
     <PageLayoutWrapper>
       <TemporaryDrawer />
