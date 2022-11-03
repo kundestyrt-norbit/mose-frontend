@@ -66,7 +66,6 @@ export default function TemporaryDrawer (): JSX.Element {
 
   const removeDashboard = (e: React.MouseEvent<HTMLButtonElement>, dashboard: DashboardListItem): void => { // WORK IN PROGRESS
     e.stopPropagation()
-    console.log('HEI', dashboard.dashboardId)
     deleteDashboard(dashboard.dashboardId).then(async res => {
       const newDashboardList = dashboardList.filter((item) => item.dashboardId !== dashboard.dashboardId)
       setDashboardList(newDashboardList)
