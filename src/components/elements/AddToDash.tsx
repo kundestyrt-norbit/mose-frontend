@@ -56,6 +56,7 @@ export default function CheckboxesTags ({ id, column, gatewayId }: Sensor): JSX.
       renderOption={(props, option, { selected }) => (
         <li {...props}>
           <Checkbox
+            key={option.dashboardId}
             icon={icon}
             checkedIcon={checkedIcon}
             style={{ marginRight: 8, color: 'white' }}
