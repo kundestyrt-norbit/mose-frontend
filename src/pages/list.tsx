@@ -68,7 +68,7 @@ const SensorModal = ({ id, column, metaData }: Sensor): JSX.Element => {
   const [open, setOpen] = useState(false)
 
   return (
-    <Box sx={{ flexDirection: 'column', display: 'flex', minWidth: '300px', maxWidth: '50%', width: '100%', margin: 'auto' }}>
+    <Box sx={{ flexDirection: 'column', display: 'flex', minWidth: '300px', maxWidth: '50%', width: '100%', margin: 'auto', borderRadius: '3px' }}>
       <SensorModalButton onClick={() => { setOpen(!open) }}
         sx={{ backgroundColor: 'primary', borderRadius: '5px' }}>
         <span style={{ textAlign: 'center' }}>{metaData?.friendlyName ?? column}</span>
