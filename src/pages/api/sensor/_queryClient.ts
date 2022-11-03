@@ -1,4 +1,7 @@
 import { QueryCommand, QueryCommandOutput, TimestreamQueryClient } from '@aws-sdk/client-timestream-query'
+import { NextApiRequest } from 'next'
+import { Dashboard } from '../../../components/elements/dashboard/types'
+import { getDashboard } from '../dashboard/_queryUserSettings'
 import { SensorMetaData, SensorMetaDataMap } from './_sensorMetaData'
 
 /**
@@ -31,6 +34,10 @@ export interface Sensor {
   gatewayId: number
 }
 
+export interface SensorIncludeDashboard extends Sensor{
+  sensorIncludedInDashboard?: boolean
+}
+
 export async function getSensors (): Promise<Sensor[]> {
   const idQuery = 'SELECT DISTINCT tagId FROM "SensorData"."particleTest" WHERE time > ago(1h) ORDER BY 1'
   const ids = await queryDatabase(idQuery, (data) => data.Rows?.map((row) => row.Data?.[0].ScalarValue) as string[])
@@ -46,6 +53,17 @@ export async function getSensors (): Promise<Sensor[]> {
   }
   )))
   return sensors.flat()
+}
+
+export async function getSensorsIncludeDashboard (req: NextApiRequest, userId: string): Promise<SensorIncludeDashboard[]> {
+  const sensors = await getSensors()
+  const dashboard: Dashboard | undefined = (await getDashboard(req, userId)).Item as Dashboard | undefined
+  if (dashboard !== undefined) {
+    sensors.forEach((sensor: SensorIncludeDashboard) => {
+      sensor.sensorIncludedInDashboard = dashboard.sensors.some(s => s.id === sensor.id && s.column === sensor.column && s.gatewayId === sensor.gatewayId)
+    })
+  }
+  return sensors
 }
 
 export interface SensorMeasurements{

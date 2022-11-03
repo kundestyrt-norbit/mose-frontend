@@ -1,4 +1,5 @@
 import { Dashboard, DashboardListItem } from '../components/elements/dashboard/types'
+import { SensorIncludeDashboard } from '../pages/api/sensor/_queryClient'
 
 export async function getDashboards (): Promise<DashboardListItem[]> {
   const response = await fetch('/api/dashboard/list', {
@@ -14,6 +15,18 @@ export async function getDashboards (): Promise<DashboardListItem[]> {
 
 export async function getDashboardsIncludeHasSensor (gatewayId: number, sensorId: number, column: string): Promise<DashboardListItem[]> {
   const response = await fetch(`/api/dashboard/list/${gatewayId}/${sensorId}/${column}`, {
+    method: 'GET',
+    headers: {
+      'Content-type': 'application/json'
+    }
+  })
+  const resData = await response.json()
+
+  return resData
+}
+
+export async function getSensorsIncludeDashboard (dashboardId: string): Promise<SensorIncludeDashboard[]> {
+  const response = await fetch(`/api/sensor/list/${dashboardId}`, {
     method: 'GET',
     headers: {
       'Content-type': 'application/json'
