@@ -20,7 +20,6 @@ const DashboardPage = (): JSX.Element => {
     updateDashboard()
   }, [router.query.dashboardNumber])
 
-  console.log(dashboard)
   return (
     <PageLayoutWrapper>
       {(dashboard != null) &&

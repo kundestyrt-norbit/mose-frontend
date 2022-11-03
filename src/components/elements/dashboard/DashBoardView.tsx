@@ -3,7 +3,6 @@ import { SensorGraph } from './SensorGraph'
 import { Dashboard, Sensor } from './types'
 
 const DashBoardView = ({ dashboard }: { dashboard: Dashboard }): JSX.Element => {
-  console.log(dashboard.sensors)
   return (
     <div style={{
       display: 'flex',

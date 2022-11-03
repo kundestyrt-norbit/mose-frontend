@@ -76,7 +76,6 @@ export async function createDashboard (req: NextApiRequest, userId: string | nul
 
 export async function deleteDashboard (req: NextApiRequest, userId: string | null): Promise<DeleteCommandOutput> {
   const { dashboardId } = req.query
-  console.log(dashboardId, userId)
   const item = await userDB.send(new DeleteCommand({
     TableName: process.env.USER_DB_TABLE_NAME,
     Key: {
