@@ -5,7 +5,7 @@ import { Alarm, ALARM_TYPE, Dashboard, Sensor } from './types'
 import { Controller, useForm } from 'react-hook-form'
 import { SensorMetaDataMap } from '../../../pages/api/sensor/_sensorMetaData'
 
-const AlarmFormDialog = ({ sensor, dashboardId }: {sensor: Sensor, dashboardId: string}): JSX.Element => {
+const AlarmFormDialog = ({ sensor, dashboardId, onAddAlarm }: {sensor: Sensor, dashboardId: string, onAddAlarm: (alarm: Alarm) => void}): JSX.Element => {
   const [open, setOpen] = React.useState(false)
 
   const handleClickOpen = (): void => {
@@ -15,20 +15,20 @@ const AlarmFormDialog = ({ sensor, dashboardId }: {sensor: Sensor, dashboardId: 
   const handleClose = (): void => {
     setOpen(false)
   }
+  console.log(sensor)
 
   const addAlarm = (alarm: Alarm): void => {
     const endpoint = `/api/dashboard/${dashboardId}/${sensor.gatewayId}/${sensor.id}/${sensor.column}/alarm`
-    console.log(alarm)
     fetch(endpoint, {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json'
       },
       body: JSON.stringify(alarm)
-    }).catch(e => console.log(e))
+    }).then(() => onAddAlarm(alarm)).then(() => handleClose()).catch(e => console.log(e))
   }
 
-  const { control, handleSubmit } = useForm<Alarm>({
+  const { control, handleSubmit, getValues } = useForm<Alarm>({
     defaultValues: {
       name: '',
       value: undefined,
@@ -62,7 +62,6 @@ const AlarmFormDialog = ({ sensor, dashboardId }: {sensor: Sensor, dashboardId: 
                 }} />
               <Controller control={control}
                 name={'value'}
-                rules={{}}
                 render={({ field: { onChange, value } }) => {
                   return <TextField
                     value={value ?? ''}
@@ -84,7 +83,7 @@ const AlarmFormDialog = ({ sensor, dashboardId }: {sensor: Sensor, dashboardId: 
             </Box>
           </DialogContent>
           <DialogActions sx={theme => ({ backgroundColor: theme.palette.background.default })}>
-            <Button type='button' onClick={() => handleClose()}>Cancel</Button><Button type='submit'>Add</Button>
+            <Button type='button' onClick={() => handleClose()}>Cancel</Button><Button type='submit'>{sensor.alarms?.[getValues().type] != null ? 'Change' : 'Add'}</Button>
           </DialogActions>
 
         </form>
@@ -93,18 +92,18 @@ const AlarmFormDialog = ({ sensor, dashboardId }: {sensor: Sensor, dashboardId: 
   )
 }
 
-const DashboardSensorView = ({ dashboardId, sensor, unit }: {sensor: Sensor, dashboardId: string, unit: string}): JSX.Element => {
+const DashboardSensorView = ({ dashboardId, sensor, onAddAlarm, unit }: {sensor: Sensor, dashboardId: string, unit: string, onAddAlarm: (alarm: Alarm) => void}): JSX.Element => {
   const { column, id, alarms } = sensor
   return (
     <Box>
       <SensorAlarmGraph column={column} id={id} alarms={sensor.alarms} unit={unit} />
       {alarms != null && Object.values(alarms).map((alarm) => <>{alarm.name}</>)}
-      <AlarmFormDialog sensor={sensor} dashboardId={dashboardId} />
+      <AlarmFormDialog sensor={sensor} dashboardId={dashboardId} onAddAlarm={onAddAlarm} />
     </Box>
   )
 }
 
-const DashBoardView = ({ dashboardName, dashboardId, sensors }: Dashboard): JSX.Element => {
+const DashBoardView = ({ dashboardName, dashboardId, sensors, onAddAlarm }: Dashboard & {onAddAlarm: (alarm: Alarm) => void}): JSX.Element => {
   return (
     <div style={{
       display: 'flex',
@@ -121,7 +120,7 @@ const DashBoardView = ({ dashboardName, dashboardId, sensors }: Dashboard): JSX.
         return (
           <div key={sensor.id.toString() + sensor.column} style={{ flexDirection: 'column', textAlign: 'center', width: '45%', minWidth: '400px', border: '1px solid rgba(0, 0, 0, 0.229)', borderRadius: '4px', margin: '1% 0' }}>
             <h2 style={{ height: '3rem' }}>{SensorMetaDataMap[sensor.column].friendlyName ?? sensor.column}</h2>
-            <DashboardSensorView dashboardId={dashboardId} sensor={sensor} unit={SensorMetaDataMap[sensor.column].unit} />
+            <DashboardSensorView onAddAlarm={onAddAlarm} dashboardId={dashboardId} sensor={sensor} unit={SensorMetaDataMap[sensor.column].unit} />
           </div>
         )
       })}
