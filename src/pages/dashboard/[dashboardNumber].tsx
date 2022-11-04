@@ -1,22 +1,37 @@
 import PageLayoutWrapper from '../../components/layout/PageLayoutWrapper'
-import TemporaryDrawer from '../../components/elements/dashboard/SideBar'
-import FilterDash from '../../components/elements/dashboard/FilterDash'
+import TemporaryDrawer from '../../components/elements/dashboard/TopBar'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import DashBoardView from '../../components/elements/dashboard/DashBoardView'
+import AddSensor from '../../components/elements/dashboard/AddSensor'
+import { Dashboard } from '../../components/elements/dashboard/types'
 
 const DashboardPage = (): JSX.Element => {
-  const [dashboard, setDashboard] = useState({})
+  const [dashboard, setDashboard] = useState<Dashboard | null>(null)
   const router = useRouter()
 
-  useEffect(() => {
-    fetch(`/api/dashboard/${router.query.dashboardNumber as string}`).then(async res => await res.json()).then(res => setDashboard(res)).catch(err => console.log(err))
-  }, [])
+  const updateDashboard = (): void => {
+    if (router.query.dashboardNumber !== undefined) {
+      fetch(`/api/dashboard/${router.query.dashboardNumber as string}`)
+        .then(async res => await res.json())
+        .then(res => setDashboard(res))
+        .catch(async () => await router.push('/dashboard'))
+    }
+  }
 
-  console.log(dashboard)
+  useEffect(() => {
+    updateDashboard()
+  }, [router.query.dashboardNumber])
+
   return (
     <PageLayoutWrapper>
-      <TemporaryDrawer />
-      <FilterDash />
+      {(dashboard != null) &&
+        <>
+          <TemporaryDrawer />
+          <AddSensor dashboardId={dashboard.dashboardId} updateDashboard={updateDashboard} />
+          <DashBoardView {...dashboard} onAddAlarm={updateDashboard} />
+        </>
+      }
     </PageLayoutWrapper>
   )
 }

@@ -11,6 +11,6 @@ module.exports = {
         ACCESS_KEY_ID_DYNAMO_DB_AWS: process.env.ACCESS_KEY_ID_DYNAMO_DB_AWS,
         SECRET_ACCESS_KEY_DYNAMO_DB_AWS: process.env.SECRET_ACCESS_KEY_DYNAMO_DB_AWS,
         BASE_URL: process.env.BASE_URL,
-        AUTH_REDIRECT: process.env.AUTH_REDIRECT
+        AUTH_REDIRECT: process.env.AUTH_REDIRECT,
     }
 }
