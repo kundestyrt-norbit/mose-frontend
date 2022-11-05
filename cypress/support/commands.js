@@ -1,7 +1,7 @@
 const Auth = require ( "aws-amplify" ).Auth;
 import "cypress-localstorage-commands"; 
-const username = Cypress. env("CYPRESS_TEST_USERNAME"); 
-const password = Cypress. env("CYPRESS_TEST_PASSWORD"); 
+const username = Cypress. env("TEST_USERNAME"); 
+const password = Cypress. env("TEST_PASSWORD"); 
 const userPoolId = Cypress. env("COGNITO_USER_POOL_ID"); 
 const clientId = Cypress. env ("COGNITO_CLIENT_APP_ID"); 
 const awsconfig = { 
