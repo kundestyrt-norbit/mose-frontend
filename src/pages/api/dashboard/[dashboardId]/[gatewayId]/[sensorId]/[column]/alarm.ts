@@ -2,7 +2,7 @@ import getVerifiedUserID from '../../../../_verifyUser'
 import { NextApiRequest, NextApiResponse } from 'next'
 import Amplify, { withSSRContext } from 'aws-amplify'
 import { addAlarm, deleteAlarm } from './_alarmQuery'
-import config from 'next/config'
+import config from '../../../../../../../aws-exports'
 
 Amplify.configure({
   ...config,
