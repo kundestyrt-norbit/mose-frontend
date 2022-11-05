@@ -1,19 +1,13 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, MenuItem, TextField } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import { SensorAlarmGraph } from './SensorAlarmGraph'
 import { Alarm, ALARM_TYPE, Dashboard, Sensor } from './types'
 import { Controller, useForm } from 'react-hook-form'
 import { SensorMetaDataMap } from '../../../pages/api/sensor/_sensorMetaData'
 
-const AlarmFormDialog = ({ sensor, dashboardId, onAddAlarm }: {sensor: Sensor, dashboardId: string, onAddAlarm: (alarm: Alarm) => void}): JSX.Element => {
-  const [open, setOpen] = React.useState(false)
-
-  const handleClickOpen = (): void => {
-    setOpen(true)
-  }
-
+const AlarmFormDialog = ({ sensor, dashboardId, onAddAlarm, isOpen, onCloseDialog }: {sensor: Sensor, isOpen: boolean, dashboardId: string, onAddAlarm: () => void, onCloseDialog: () => void}): JSX.Element => {
   const handleClose = (): void => {
-    setOpen(false)
+    onCloseDialog()
   }
 
   const addAlarm = (alarm: Alarm): void => {
@@ -24,7 +18,7 @@ const AlarmFormDialog = ({ sensor, dashboardId, onAddAlarm }: {sensor: Sensor, d
         'Content-type': 'application/json'
       },
       body: JSON.stringify(alarm)
-    }).then(() => onAddAlarm(alarm)).then(() => handleClose()).catch(e => console.log(e))
+    }).then(() => onAddAlarm()).then(() => handleClose()).catch(e => console.log(e))
   }
 
   const deleteAlarm = (alarm: Alarm): void => {
@@ -35,12 +29,12 @@ const AlarmFormDialog = ({ sensor, dashboardId, onAddAlarm }: {sensor: Sensor, d
         'Content-type': 'application/json'
       },
       body: JSON.stringify(alarm)
-    }).then(() => onAddAlarm(alarm)).then(() => handleClose()).catch(e => console.log(e))
+    }).then(() => onAddAlarm()).then(() => handleClose()).catch(e => console.log(e))
   }
 
   const defaultAlarm = sensor.alarms?.[ALARM_TYPE.LOWER] ?? sensor.alarms?.[ALARM_TYPE.UPPER]
 
-  const { control, handleSubmit, getValues } = useForm<Alarm>({
+  const { control, handleSubmit, watch, reset } = useForm<Alarm>({
     defaultValues: {
       ...(defaultAlarm ?? {
         name: '',
@@ -50,14 +44,11 @@ const AlarmFormDialog = ({ sensor, dashboardId, onAddAlarm }: {sensor: Sensor, d
     }
   })
 
-  const currentAlarm = sensor.alarms?.[getValues().type]
+  const currentAlarm = sensor.alarms?.[watch('type')]
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Configure alarm
-      </Button>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={isOpen} onClose={handleClose}>
         <DialogTitle>Alarm</DialogTitle>
         <form onSubmit={(e) => { handleSubmit(addAlarm)(e).catch(e => console.log(e)) }}>
           <DialogContent sx={(theme) => (
@@ -73,8 +64,17 @@ const AlarmFormDialog = ({ sensor, dashboardId, onAddAlarm }: {sensor: Sensor, d
               flexDirection: 'column'
             }}>
               <Controller control={control}
+                name={'type'} render={({ field: { onChange, value } }) => {
+                  return (<TextField value={value} label={'Type'} onChange={(event) => {
+                    reset(sensor.alarms?.[event.target.value as ALARM_TYPE] ?? { name: '', value: 0, type: event.target.value as ALARM_TYPE })
+                    onChange(event)
+                  }} required select id='select' sx={{ marginTop: '20px' }}>
+                    {Object.values(ALARM_TYPE).map((type, i) => <MenuItem key={type} value={type}>{type}</MenuItem>)}
+                  </TextField>)
+                }} />
+              <Controller control={control}
                 name={'name'} render={({ field: { onChange, value } }) => {
-                  return <TextField onChange={onChange} value={value} required id="name" aria-describedby="my-helper-text" label="Name" />
+                  return <TextField onChange={onChange} value={value} required id="name" aria-describedby="my-helper-text" sx={{ marginTop: '20px' }} label="Name" />
                 }} />
               <Controller control={control}
                 name={'value'}
@@ -89,18 +89,12 @@ const AlarmFormDialog = ({ sensor, dashboardId, onAddAlarm }: {sensor: Sensor, d
                     label="Value"
                     required />
                 }} />
-              <Controller control={control}
-                name={'type'} render={({ field: { onChange, value } }) => {
-                  return (<TextField value={value} onChange={onChange} required select id='select' sx={{ marginTop: '20px' }}>
-                    {Object.values(ALARM_TYPE).map((type, i) => <MenuItem key={type} value={type}>{type}</MenuItem>)}
-                  </TextField>)
-                }} />
 
             </Box>
           </DialogContent>
           <DialogActions sx={theme => ({ backgroundColor: theme.palette.background.default })}>
             <Button type='button' onClick={() => handleClose()}>Cancel</Button>
-            <Button type='submit'>{sensor.alarms?.[getValues().type] != null ? 'Change' : 'Add'}</Button>
+            <Button type='submit'>{sensor.alarms?.[watch('type')] != null ? 'Change' : 'Add'}</Button>
             {currentAlarm != null && <Button type='button' onClick={() => deleteAlarm(currentAlarm)}>Delete</Button>}
           </DialogActions>
 
@@ -110,17 +104,21 @@ const AlarmFormDialog = ({ sensor, dashboardId, onAddAlarm }: {sensor: Sensor, d
   )
 }
 
-const DashboardSensorView = ({ dashboardId, sensor, onAddAlarm, unit }: {sensor: Sensor, dashboardId: string, unit: string, onAddAlarm: (alarm: Alarm) => void}): JSX.Element => {
+const DashboardSensorView = ({ dashboardId, sensor, onAddAlarm, unit }: {sensor: Sensor, dashboardId: string, unit: string, onAddAlarm: () => void}): JSX.Element => {
   const { column, id, alarms } = sensor
+  const [openDialog, setOpenDialog] = useState(false)
   return (
     <Box>
       <SensorAlarmGraph column={column} id={id} alarms={alarms} unit={unit} />
-      <AlarmFormDialog sensor={sensor} dashboardId={dashboardId} onAddAlarm={onAddAlarm} />
+      {openDialog && <AlarmFormDialog sensor={sensor} dashboardId={dashboardId} onAddAlarm={onAddAlarm} onCloseDialog={() => setOpenDialog(false)} isOpen={openDialog}/>}
+      <Button sx={{ marginBottom: '20px' }} variant="outlined" onClick={() => setOpenDialog(true)}>
+        Configure alarm
+      </Button>
     </Box>
   )
 }
 
-const DashBoardView = ({ dashboardName, dashboardId, sensors, onAddAlarm }: Dashboard & {onAddAlarm: (alarm: Alarm) => void}): JSX.Element => {
+const DashBoardView = ({ dashboardName, dashboardId, sensors, onAddAlarm }: Dashboard & {onAddAlarm: () => void}): JSX.Element => {
   return (
     <div style={{
       display: 'flex',
