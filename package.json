@@ -95,7 +95,7 @@
     "lint": "eslint \"src/**/*.ts\" \"src/**/*.tsx\"",
     "lint:fix": "eslint \"src/**/*.ts\" \"src/**/*.tsx\" --fix",
     "cypress:open": "cypress open",
-    "cypress-run": "cypress run"
+    "cypress:run": "cypress run"
   },
   "browserslist": {
     "production": [
