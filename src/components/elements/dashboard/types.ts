@@ -18,7 +18,7 @@ export interface Sensor {
   metaData: SensorMetaData
   filter?: Filter
   column: string
-  alarms?: {[key in ALARM_TYPE]: Alarm}
+  alarms?: AlarmMap
 }
 
 export enum ALARM_TYPE {
@@ -31,6 +31,8 @@ export interface Alarm {
   name?: string
   type: ALARM_TYPE
 }
+
+export type AlarmMap = {[key in ALARM_TYPE]: Alarm}
 
 export interface Dashboard {
   dashboardId: string
