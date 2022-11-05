@@ -2,7 +2,7 @@ import getVerifiedUserID from '../../../../_verifyUser'
 import { NextApiRequest, NextApiResponse } from 'next'
 import Amplify, { withSSRContext } from 'aws-amplify'
 import { addAlarm, deleteAlarm } from './_alarmQuery'
-import config from 'next/config'
+import config from '../../../../../../../aws-exports'
 
 Amplify.configure({
   ...config,
@@ -22,7 +22,7 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
   if (userId != null) {
     if (req.method === 'PUT') {
       const item = await addAlarm(req, userId)
-      res.status(201).json(item)
+      res.status(201).end(JSON.stringify(item))
     }
 
     if (req.method === 'DELETE') {
