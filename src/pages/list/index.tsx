@@ -2,11 +2,11 @@ import { Box, Button, Dialog, DialogContent, DialogTitle, DialogTitleProps, Icon
 import type { NextPage } from 'next'
 import React, { useState } from 'react'
 import useSWR from 'swr'
-import { SensorGraph } from '../components/elements/dashboard/SensorGraph'
-import PageLayoutWrapper from '../components/layout/PageLayoutWrapper'
-import { Sensor } from '../components/elements/dashboard/types'
+import { SensorGraph } from '../../components/elements/dashboard/SensorGraph'
+import PageLayoutWrapper from '../../components/layout/PageLayoutWrapper'
+import { Sensor } from '../../components/elements/dashboard/types'
 import CloseIcon from '@mui/icons-material/Close'
-import AddToDash from '../components/elements/AddToDash'
+import AddToDash from '../../components/elements/AddToDash'
 
 const fetcher = async (input: RequestInfo | URL, init?: RequestInit | undefined): Promise<Sensor[]> => await fetch(input, init).then(async (res) => await (res.json() as Promise<Sensor[]>))
 export interface SensorProps {
@@ -103,7 +103,8 @@ const ListPage: NextPage = () => {
           {data?.map((sensor) => <SensorModal key={sensor.id.toString() + sensor.column} id={sensor.id} column={sensor.column} metaData={sensor.metaData} gatewayId={8} />
           )}
         </Box>
-        <h1> Gløshaugen </h1>
+        <h1 style={{ marginBottom: '0' }}> Gløshaugen </h1>
+        <h2 style={{ marginTop: '0', color: '#faacac' }}> To be implemented ...</h2>
       </PageWrapper>
     </PageLayoutWrapper>
   )

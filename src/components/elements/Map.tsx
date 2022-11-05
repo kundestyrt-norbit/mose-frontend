@@ -46,7 +46,7 @@ const Map = (): JSX.Element => {
             />
             <Marker position={[63.443016, 10.429332]}>
               <Popup>
-                <Link href='/list'>
+                <Link href='/list/norbitParkingLot'>
                   <Button>Norbit Parking Lot <br /> </Button>
                 </Link>
               </Popup>
@@ -54,7 +54,7 @@ const Map = (): JSX.Element => {
             </Marker>
             <Marker position={[63.419728, 10.401713]}>
               <Popup>
-                <Link href='/list'>
+                <Link href='/list/gløshaugen'>
                   <Button>Gløshaugen <br /> </Button>
                 </Link>
               </Popup>
