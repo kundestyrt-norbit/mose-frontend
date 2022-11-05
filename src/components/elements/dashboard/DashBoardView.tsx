@@ -107,9 +107,11 @@ const AlarmFormDialog = ({ sensor, dashboardId, onAddAlarm, isOpen, onCloseDialo
 const DashboardSensorView = ({ dashboardId, sensor, onAddAlarm, unit }: {sensor: Sensor, dashboardId: string, unit: string, onAddAlarm: () => void}): JSX.Element => {
   const { column, id, alarms } = sensor
   const [openDialog, setOpenDialog] = useState(false)
+  const [includePrediction, SetIncludePrediction] = useState(true)
+
   return (
     <Box>
-      <SensorAlarmGraph column={column} id={id} alarms={alarms} unit={unit} />
+      <SensorAlarmGraph column={column} id={id} alarms={alarms} unit={unit} includePrediction={includePrediction}/>
       {openDialog && <AlarmFormDialog sensor={sensor} dashboardId={dashboardId} onAddAlarm={onAddAlarm} onCloseDialog={() => setOpenDialog(false)} isOpen={openDialog}/>}
       <Button sx={{ marginBottom: '20px' }} variant="outlined" onClick={() => setOpenDialog(true)}>
         Configure alarm

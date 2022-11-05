@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getSensorData } from '../_queryClient'
+import { getSensorData } from '../../_queryClient'
 
 export default async function handler (req: NextApiRequest, res: NextApiResponse): Promise<NextApiResponse<any>> {
   const { id, column, days } = req.query

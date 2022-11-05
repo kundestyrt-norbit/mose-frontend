@@ -43,3 +43,10 @@ export interface Dashboard {
 export interface SensorIncludeDashboard extends Sensor{
   sensorIncludedInDashboard?: boolean
 }
+
+export interface SensorPredictions {
+  time: Date
+  percentile005: number[]
+  percentile050: number[]
+  percentile095: number[]
+}
