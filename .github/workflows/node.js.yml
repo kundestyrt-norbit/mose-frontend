@@ -23,6 +23,7 @@ jobs:
           cat aws-exports-mock.js > aws-exports.js
           cd ..
     - run: DISABLE_ESLINT_PLUGIN=true npm run build
+    - run: npm cy:ci
   
   lint:
     runs-on: ubuntu-latest
