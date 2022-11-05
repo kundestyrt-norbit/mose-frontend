@@ -9,6 +9,7 @@ export default defineConfig({
     },
     baseUrl: 'http://localhost:3000',
     experimentalSessionAndOrigin: true,
-    excludeSpecPattern: process.env.CI ? ['cypress/e2e/runall_spec.cy.ts'] : [],
+    excludeSpecPattern: ['cypress/e2e/runall_spec.cy.ts'],
+    video: false,
   },
 })
