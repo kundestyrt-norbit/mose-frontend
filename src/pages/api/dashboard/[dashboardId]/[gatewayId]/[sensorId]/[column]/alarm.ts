@@ -16,20 +16,21 @@ Amplify.configure({
   ssr: true
 })
 
-export default async function handler (req: NextApiRequest, res: NextApiResponse): Promise<void> {
+export default async function handler (req: NextApiRequest, res: NextApiResponse): Promise<NextApiResponse<any>> {
   const { Auth } = withSSRContext({ req })
   const userId: string | null = await getVerifiedUserID(Auth)
   if (userId != null) {
     if (req.method === 'PUT') {
       const item = await addAlarm(req, userId)
-      res.status(201).end(JSON.stringify(item))
+      return res.status(201).end(JSON.stringify(item))
     }
 
     if (req.method === 'DELETE') {
       const deleteRes = await deleteAlarm(req, userId)
-      deleteRes ? res.status(204).end() : res.status(400).end()
+      return deleteRes ? res.status(204).end() : res.status(400).end()
     }
+    return res.status(404).end()
   } else {
-    throw new Error('User ID not valid')
+    return res.status(401).end()
   }
 }

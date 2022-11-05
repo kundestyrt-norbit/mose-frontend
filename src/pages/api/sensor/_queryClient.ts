@@ -2,6 +2,7 @@ import { QueryCommand, QueryCommandOutput, TimestreamQueryClient } from '@aws-sd
 import { NextApiRequest } from 'next'
 import { Dashboard, Sensor, SensorIncludeDashboard } from '../../../components/elements/dashboard/types'
 import { getDashboard } from '../dashboard/_queryUserSettings'
+import { ExistingSensors } from './_existingSensors'
 import { SensorMetaDataMap } from './_sensorMetaData'
 
 /**
@@ -28,20 +29,10 @@ async function queryDatabase<T> (query: string, queryDataProcessor: (data: Query
 }
 
 export async function getSensors (): Promise<Sensor[]> {
-  const idQuery = 'SELECT DISTINCT tagId FROM "SensorData"."particleTest" WHERE time > ago(1h) ORDER BY 1'
-  const ids = await queryDatabase(idQuery, (data) => data.Rows?.map((row) => row.Data?.[0].ScalarValue) as string[])
-  const dataByIdQuery = (id: string): string => `SELECT * FROM "SensorData"."particleTest" WHERE tagId='${id}' and time between ago(1h) and now() ORDER BY time DESC LIMIT 10`
-  const sensors = await Promise.all(ids.map(async (id) => await queryDatabase(dataByIdQuery(id), (data) => {
-    const columns = data.ColumnInfo?.filter((column, index) => data.Rows?.[0].Data?.[index].ScalarValue).slice(4)
-    const columnNames = columns?.map(sensor => sensor.Name)
-    const measurementNames = columnNames as string[]
-    return measurementNames.map((measurementName) => {
-      const sensor: Sensor = { id: Number(id), column: measurementName, gatewayId: 8, metaData: SensorMetaDataMap[measurementName] }
-      return sensor
-    })
-  }
-  )))
-  return sensors.flat()
+  // const idQuery = 'SELECT DISTINCT tagId FROM "SensorData"."particleTest" WHERE time > ago(1h) ORDER BY 1'
+  // const ids = await queryDatabase(idQuery, (data) => data.Rows?.map((row) => row.Data?.[0].ScalarValue) as string[])
+  // const dataByIdQuery = (id: string): string => `SELECT * FROM "SensorData"."particleTest" WHERE tagId='${id}' and time between ago(1h) and now() ORDER BY time DESC LIMIT 10`
+  return ExistingSensors
 }
 
 export async function getSensorsIncludeDashboard (req: NextApiRequest, userId: string): Promise<SensorIncludeDashboard[]> {
