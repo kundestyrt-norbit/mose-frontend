@@ -1,6 +1,6 @@
 import PageLayoutWrapper from '../layout/PageLayoutWrapper'
 import 'leaflet/dist/leaflet.css'
-import { MutableRefObject, useEffect, useRef, useState } from 'react'
+import React, { MutableRefObject, useEffect, useRef, useState } from 'react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/images/marker-shadow.png'
 import 'leaflet/dist/images/marker-icon-2x.png'
@@ -47,14 +47,16 @@ const Map = (): JSX.Element => {
             <Marker position={[63.443016, 10.429332]}>
               <Popup>
                 <Link href='/list'>
-                  <Button>📡NORBIT <br /> </Button>
+                  <Button>Norbit Parking Lot <br /> </Button>
                 </Link>
               </Popup>
 
             </Marker>
             <Marker position={[63.419728, 10.401713]}>
               <Popup>
-                🏖GLØSHAUGEN <br />
+                <Link href='/list'>
+                  <Button>Gløshaugen <br /> </Button>
+                </Link>
               </Popup>
             </Marker>
           </MapContainer>

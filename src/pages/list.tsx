@@ -1,6 +1,6 @@
 import { Box, Button, Dialog, DialogContent, DialogTitle, DialogTitleProps, IconButton, styled } from '@mui/material'
 import type { NextPage } from 'next'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import useSWR from 'swr'
 import { SensorGraph } from '../components/elements/dashboard/SensorGraph'
 import PageLayoutWrapper from '../components/layout/PageLayoutWrapper'
@@ -26,12 +26,17 @@ const SensorDialogContent = styled(DialogContent)({
 
 const SensorDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiPaper-root': {
-    width: '100%'
+    width: '100%',
+    maxWidth: '100%'
   }
 }))
 const PageWrapper = styled(Box)`
   width: 100%;
   margin: auto;
+  text-align: center; 
+  justify-content: space-evenly;
+  display: flex;
+  flex-direction: column;
 `
 
 const SensorModalButton = styled(Button)`
@@ -67,7 +72,7 @@ const SensorModal = ({ id, column, metaData }: Sensor): JSX.Element => {
   const [open, setOpen] = useState(false)
 
   return (
-    <Box sx={{ flexDirection: 'column', display: 'flex', minWidth: '300px', maxWidth: '50%', width: '100%', margin: 'auto', borderRadius: '3px' }}>
+    <Box sx={{ flexDirection: 'column', display: 'flex', minWidth: '300px', maxWidth: '45%', width: '100%', margin: '1%', borderRadius: '3px', border: '1px solid rgb(0,0,0,0.229)' }}>
       <SensorModalButton onClick={() => { setOpen(!open) }}
         sx={{ backgroundColor: 'primary', borderRadius: '5px' }}>
         <span style={{ textAlign: 'center' }}>{metaData?.friendlyName ?? column}</span>
@@ -92,11 +97,13 @@ const ListPage: NextPage = () => {
   return (
     <PageLayoutWrapper>
       <PageWrapper>
-        <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', marginTop: '30px' }}>
+        <h1>Norbit Parking Lot</h1>
+        <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
           {/* <RowAndColumnSpacing></RowAndColumnSpacing> */}
           {data?.map((sensor) => <SensorModal key={sensor.id.toString() + sensor.column} id={sensor.id} column={sensor.column} metaData={sensor.metaData} gatewayId={8} />
           )}
         </Box>
+        <h1> Gløshaugen </h1>
       </PageWrapper>
     </PageLayoutWrapper>
   )
