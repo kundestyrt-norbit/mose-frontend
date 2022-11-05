@@ -22,7 +22,7 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
   if (userId != null) {
     if (req.method === 'PUT') {
       const item = await addAlarm(req, userId)
-      res.status(201).json(item)
+      res.status(201).end(JSON.stringify(item))
     }
 
     if (req.method === 'DELETE') {
