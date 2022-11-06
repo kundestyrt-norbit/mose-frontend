@@ -97,7 +97,7 @@
     "lint:fix": "eslint \"src/**/*.ts\" \"src/**/*.tsx\" --fix",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
-    "cy:ci": "START_SERVER_AND_TEST_INSECURE=1 start-server-and-test start http-get://127.0.0.1:3000 cy:run --browser chrome --disable-gpu",
+    "cy:ci": "START_SERVER_AND_TEST_INSECURE=1 start-server-and-test start http-get://127.0.0.1:3000 'cy:run --browser chrome --disable-gpu'",
     "test:windows": "set START_SERVER_AND_TEST_INSECURE=1 && start-server-and-test start http-get://localhost:3000 cy:run --browser chrome"
   },
   "browserslist": {
