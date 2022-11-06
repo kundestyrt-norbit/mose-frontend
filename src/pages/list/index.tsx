@@ -7,6 +7,7 @@ import PageLayoutWrapper from '../../components/layout/PageLayoutWrapper'
 import { Sensor } from '../../components/elements/dashboard/types'
 import CloseIcon from '@mui/icons-material/Close'
 import AddToDash from '../../components/elements/AddToDash'
+import Link from 'next/link'
 
 const fetcher = async (input: RequestInfo | URL, init?: RequestInit | undefined): Promise<Sensor[]> => await fetch(input, init).then(async (res) => await (res.json() as Promise<Sensor[]>))
 export interface SensorProps {
@@ -42,6 +43,13 @@ const PageWrapper = styled(Box)`
 const SensorModalButton = styled(Button)`
   background-color: ${({ theme }) => theme.palette.background.default};
 `
+
+const TitleButton = styled(Button)`
+  text-transform: none;
+  font-size: 2em;
+  margin-top: 0.67em;
+`
+
 const BootstrapDialogTitle = (props: DialogTitleProps & { onClose: () => void }): JSX.Element => {
   const { children, onClose, ...other } = props
 
@@ -97,13 +105,17 @@ const ListPage: NextPage = () => {
   return (
     <PageLayoutWrapper>
       <PageWrapper>
-        <h1>Norbit Parking Lot</h1>
+        <Link href='/list/norbitParkingLot'>
+          <TitleButton> Norbit Parking Lot </TitleButton>
+        </Link>
         <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
           {/* <RowAndColumnSpacing></RowAndColumnSpacing> */}
           {data?.map((sensor) => <SensorModal key={sensor.id.toString() + sensor.column} id={sensor.id} column={sensor.column} metaData={sensor.metaData} gatewayId={8} />
           )}
         </Box>
-        <h1 style={{ marginBottom: '0' }}> Gløshaugen </h1>
+        <Link href='/list/gloshaugen'>
+          <TitleButton> Gløshaugen </TitleButton>
+        </Link>
         <h2 style={{ marginTop: '0', color: '#faacac' }}> To be implemented ...</h2>
       </PageWrapper>
     </PageLayoutWrapper>
