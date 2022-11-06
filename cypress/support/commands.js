@@ -20,4 +20,4 @@ Cypress.Commands.add("signIn", () => {
           // cy.setCookie(`CognitoIdentityServiceProvider.${cognitoUser.pool.clientId}.${cognitoUser.username}.refreshToken`, refreshToken)
         });
     })
-  });
+  }); //
