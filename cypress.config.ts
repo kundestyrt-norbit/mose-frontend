@@ -12,5 +12,6 @@ export default defineConfig({
     excludeSpecPattern: ['cypress/e2e/runall_spec.cy.ts'],
     video: false,
     screenshotOnRunFailure: false,
+    defaultCommandTimeout: 12000,
   },
 })
