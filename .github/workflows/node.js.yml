@@ -57,7 +57,7 @@ jobs:
         run: npm ci
 
       - name: Run Cypress tests
-        uses: cypress-io/github-actions@v4
+        uses: cypress-io/github-action@v4
         with:
           install: false
           start: npm run start
