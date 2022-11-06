@@ -25,7 +25,6 @@ jobs:
     - run: DISABLE_ESLINT_PLUGIN=true npm run build
     - name: Cypress tests
       uses: cypress-io/github-action@v4
-      timeout-minutes: 10
       with:
         browser: chrome
       env:
