@@ -60,7 +60,7 @@ jobs:
         uses: cypress-io/github-actions@v4
         with:
           install: false
-          start: npn run start
+          start: npm run start
           wait-on: 'http://127.0.0.1:3000'
           command: npm run cy:run
         env:
@@ -68,7 +68,7 @@ jobs:
           CYPRESS_TEST_PASSWORD: ${{ secrets.CYPRESS_TEST_PASSWORD }}
           CYPRESS_COGNITO_USER_POOL_ID: ${{ secrets.CYPRESS_COGNITO_USER_POOL_ID }}
           CYPRESS_COGNITO_CLIENT_APP_ID: ${{ secrets.CYPRESS_COGNITO_CLIENT_APP_ID }}
-          
+
   lint:
     runs-on: ubuntu-latest
     steps:
