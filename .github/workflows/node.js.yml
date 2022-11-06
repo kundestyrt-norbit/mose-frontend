@@ -27,14 +27,14 @@ jobs:
       steps:
         - uses: actions/checkout@v3
         - uses: cypress-io/github-action@v4
-        with:
-          browser: chrome
-        env:
-          CYPRESS_TEST_USERNAME: ${{ secrets.CYPRESS_TEST_USERNAME }}
-          CYPRESS_TEST_PASSWORD: ${{ secrets.CYPRESS_TEST_PASSWORD }}
-          CYPRESS_COGNITO_USER_POOL_ID: ${{ secrets.CYPRESS_COGNITO_USER_POOL_ID }}
-          CYPRESS_COGNITO_CLIENT_APP_ID: ${{ secrets.CYPRESS_COGNITO_CLIENT_APP_ID }}
-        run: npm run cy:ci
+          with:
+            browser: chrome
+          env:
+            CYPRESS_TEST_USERNAME: ${{ secrets.CYPRESS_TEST_USERNAME }}
+            CYPRESS_TEST_PASSWORD: ${{ secrets.CYPRESS_TEST_PASSWORD }}
+            CYPRESS_COGNITO_USER_POOL_ID: ${{ secrets.CYPRESS_COGNITO_USER_POOL_ID }}
+            CYPRESS_COGNITO_CLIENT_APP_ID: ${{ secrets.CYPRESS_COGNITO_CLIENT_APP_ID }}
+          run: npm run cy:ci
   
   lint:
     runs-on: ubuntu-latest
