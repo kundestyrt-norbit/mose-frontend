@@ -3,6 +3,7 @@ import { SxProps, Theme } from '@mui/system'
 import useSWR from 'swr'
 import { SensorMeasurements } from '../../../pages/api/sensor/_queryClient'
 import { Graph } from './Graph'
+import React from 'react'
 
 interface SensorGraphProps {
   id: number
