@@ -60,9 +60,7 @@ jobs:
         uses: cypress-io/github-action@v4
         with:
           install: false
-          start: npm run start
-          wait-on: 'http://127.0.0.1:3000'
-          command: npm run cy:run
+          command: cy:ci
         env:
           CYPRESS_TEST_USERNAME: ${{ secrets.CYPRESS_TEST_USERNAME }}
           CYPRESS_TEST_PASSWORD: ${{ secrets.CYPRESS_TEST_PASSWORD }}
