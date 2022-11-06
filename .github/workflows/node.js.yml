@@ -45,7 +45,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: next-build
-          path: build
+          path: .next
       
       - name: Setup Node
         uses: actions/setup-node@v3
