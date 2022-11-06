@@ -11,5 +11,6 @@ export default defineConfig({
     experimentalSessionAndOrigin: true,
     excludeSpecPattern: ['cypress/e2e/runall_spec.cy.ts'],
     video: false,
+    screenshotOnRunFailure: false,
   },
 })

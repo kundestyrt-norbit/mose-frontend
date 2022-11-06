@@ -24,6 +24,7 @@ tsconfig.tsbuildinfo
 .env.production.local
 
 cypress.env.json
+*/screenshots
 
 npm-debug.log*
 yarn-debug.log*
