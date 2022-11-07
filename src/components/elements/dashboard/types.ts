@@ -45,7 +45,7 @@ export interface SensorIncludeDashboard extends Sensor{
 }
 
 export interface SensorPredictions {
-  time: Date
+  time: string
   percentile005: number[]
   percentile050: number[]
   percentile095: number[]
