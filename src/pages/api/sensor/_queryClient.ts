@@ -81,6 +81,7 @@ export async function getSensorDataPrediction (gatewayId: number, column: string
     ScanIndexForward: false,
     Limit: 1
   }))).Items
+  console.log(item)
   if (item?.length === 1) {
     return {
       time: item[0].time,
