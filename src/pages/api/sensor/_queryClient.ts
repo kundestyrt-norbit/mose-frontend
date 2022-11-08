@@ -52,8 +52,16 @@ export interface SensorMeasurements extends Sensor{
   measurements: number[]
 }
 
-export async function getSensorData (id: number, column: string, daysAgo: number): Promise<SensorMeasurements> {
-  const query = `SELECT tagId, gateway_id, BIN(time, 30m) as bin_time, ROUND(AVG(${column}), 2) FROM SensorData.particleTest WHERE tagId = '${id}' and time between ago(${daysAgo}d) and now() GROUP BY tagId, gateway_id, BIN(time, 30m) ORDER BY BIN(time, 30m) DESC`
+export async function getSensorData (id: number, column: string, from?: Date, to?: Date): Promise<SensorMeasurements> {
+  let query
+  const daysAgo = 3
+  if (from != null && to != null && from < to) {
+    const numberOfBins = 140
+    const binMinuteSize = Math.round(((to.getTime() - from.getTime()) / 60000) / numberOfBins)
+    query = `SELECT tagId, gateway_id, BIN(time, ${binMinuteSize}m) as bin_time, ROUND(AVG(${column}), 2) FROM SensorData.particleTest WHERE tagId = '${id}' and time between DATE '${from.toISOString().split('T')[0]}' and DATE '${to.toISOString().split('T')[0]}' GROUP BY tagId, gateway_id, BIN(time, ${binMinuteSize}m) ORDER BY BIN(time, ${binMinuteSize}m) DESC`
+  } else {
+    query = `SELECT tagId, gateway_id, BIN(time, 30m) as bin_time, ROUND(AVG(${column}), 2) FROM SensorData.particleTest WHERE tagId = '${id}' and time between ago(${daysAgo}d) and now() GROUP BY tagId, gateway_id, BIN(time, 30m) ORDER BY BIN(time, 30m) DESC`
+  }
   return await queryDatabase(query, data => {
     const firstRowGatewayId = data.Rows?.[0]?.Data?.[1].ScalarValue
     const sensorData: SensorMeasurements = {
