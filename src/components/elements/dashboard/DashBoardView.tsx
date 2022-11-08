@@ -1,5 +1,5 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, MenuItem, TextField } from '@mui/material'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { SensorAlarmGraph } from './SensorAlarmGraph'
 import { Alarm, ALARM_TYPE, Dashboard, Sensor } from './types'
 import { Controller, useForm } from 'react-hook-form'
@@ -112,6 +112,8 @@ const DashboardSensorView = ({ dashboardId, sensor, onAddAlarm, unit }: { sensor
   const [openDialog, setOpenDialog] = useState(false)
   const [range, setRange] = useState<DateRange | undefined>(undefined)
 
+  const [view, setView] = useState<string>('current')
+
   const { mutate } = useSWRConfig()
 
   let timeOutId: NodeJS.Timeout | undefined
@@ -125,14 +127,24 @@ const DashboardSensorView = ({ dashboardId, sensor, onAddAlarm, unit }: { sensor
     }, 1500)
   }, [])
 
+  useEffect(() => {
+    if (view === 'current') {
+      setRange(undefined)
+    }
+  }, [view])
+
   return (
-    <Box>
-      <SensorAlarmGraph column={column} id={id} alarms={alarms} unit={unit} range={range} />
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <SensorAlarmGraph column={column} id={id} alarms={alarms} unit={unit} range={range} sx={{ width: '100%' }}/>
       {openDialog && <AlarmFormDialog sensor={sensor} dashboardId={dashboardId} onAddAlarm={onAddAlarm} onCloseDialog={() => setOpenDialog(false)} isOpen={openDialog}/>}
-      <Button sx={{ marginBottom: '20px' }} variant="outlined" onClick={() => setOpenDialog(true)}>
+      <Button sx={{ marginBottom: '20px', maxWidth: '400px' }} variant="outlined" onClick={() => setOpenDialog(true)}>
         Configure alarm
       </Button>
-      <DayPicker mode='range' selected={range} onSelect={handleRangeUpdate} hidden={{ before: new Date('2022-9-1'), after: new Date() }} />
+      <TextField select label={'View'} onChange={(event) => setView(event.target.value)} defaultValue={view} sx={{ maxWidth: '400px' }}>
+        <MenuItem value={'current'}>Current</MenuItem>
+        <MenuItem value={'range'}>Date range</MenuItem>
+      </TextField>
+      { view === 'range' && <DayPicker mode='range' selected={range} onSelect={handleRangeUpdate} hidden={{ before: new Date('2022-9-1'), after: new Date() }} />}
     </Box>
   )
 }
