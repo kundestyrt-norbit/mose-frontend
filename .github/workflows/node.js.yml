@@ -24,13 +24,13 @@ jobs:
           cd ..
     - name: Build next app
       run: DISABLE_ESLINT_PLUGIN=true npm run build
-    - name: Save build folder
-      uses: actions/upload-artifact@v3
-      with:
-        name: next-build
-        if-no-files-found: error
-        path: .next
-        retention-days: 1
+    # - name: Save build folder
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: next-build
+    #     if-no-files-found: error
+    #     path: .next
+    #     retention-days: 1
 
   # cypress:
   #   name: Cypress Tests
