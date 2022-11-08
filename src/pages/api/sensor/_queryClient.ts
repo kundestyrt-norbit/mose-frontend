@@ -81,7 +81,6 @@ export async function getSensorDataPrediction (gatewayId: number, column: string
     ScanIndexForward: false,
     Limit: 1
   }))).Items
-  console.log(item)
   if (item?.length === 1) {
     return {
       time: item[0].time,
@@ -92,6 +91,31 @@ export async function getSensorDataPrediction (gatewayId: number, column: string
   }
   throw new Error()
 }
+// export async function getYesterdaysPrediction (gatewayId: number, column: string): Promise<SensorPredictions> {
+//   const item = (await userDB.send(new QueryCommandDynamoDB({
+//     TableName: 'Predictions',
+//     KeyConditionExpression: 'gatewayId = :gatewayId',
+//     ExpressionAttributeValues: {
+//       ':gatewayId': gatewayId
+//     },
+//     ExpressionAttributeNames: {
+//       '#time': 'time'
+//     },
+//     ProjectionExpression: `#time, ${column}`,
+//     ScanIndexForward: false,
+//     Limit: 1,
+//     LastEvaluatedKey:
+//   }))).Items
+//   if (item?.length === 1) {
+//     return {
+//       time: item[0].time,
+//       percentile005: item[0][column].percentile005,
+//       percentile050: item[0][column].percentile050,
+//       percentile095: item[0][column].percentile095
+//     }
+//   }
+//   throw new Error()
+// }
 
 export interface SensorMeasurements extends Sensor{
   times: string[]

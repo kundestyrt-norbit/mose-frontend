@@ -20,7 +20,6 @@ const fetcherPrediction = async (input: RequestInfo | URL, init?: RequestInit | 
 export function SensorGraph ({ id, column, sx, friendlyName, unit, includePrediction }: SensorGraphProps): JSX.Element {
   const { data } = useSWR(`/api/sensor/${id}/${column}`, fetcher)
   const { data: dataPrediction } = includePrediction ? useSWR(`/api/sensor/8/${column}/prediction`, fetcherPrediction) : { data: undefined }
-  console.log(dataPrediction)
   return (
     <Box sx={sx}>
       {(data != null) ? <Graph time={data.times} measurments={data.measurements} unit={unit} dataPrediction={dataPrediction}/> : <CircularProgress size={100} />}

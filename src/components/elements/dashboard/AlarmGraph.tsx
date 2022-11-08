@@ -32,9 +32,9 @@ interface GraphParams {
   title?: string
   unit?: string
   alarms?: {[key in ALARM_TYPE]: Alarm}
-  predictionData?: SensorPredictions
+  dataPrediction?: SensorPredictions
 }
-export function AlarmGraph ({ time, measurments, label, title, unit, alarms, predictionData }: GraphParams): JSX.Element {
+export function AlarmGraph ({ time, measurments, label, title, unit, alarms, dataPrediction }: GraphParams): JSX.Element {
   const maxMeasurement = Math.max(...measurments)
   const minMeasurement = Math.min(...measurments)
   const alarmValues = (alarms != null) ? Object.values(alarms).map(alarm => alarm.value) : null

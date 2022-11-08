@@ -19,10 +19,10 @@ const fetcherPrediction = async (input: RequestInfo | URL, init?: RequestInit | 
 
 export function SensorAlarmGraph ({ id, column, sx, friendlyName, unit, alarms, includePrediction }: SensorAlarmGraphProps): JSX.Element {
   const { data } = useSWR(`/api/sensor/${id}/${column}`, fetcher)
-  const { data: predictionData } = includePrediction ? useSWR(`/api/sensor/8/${column}/prediction`, fetcherPrediction) : { data: undefined }
+  const { data: dataPrediction } = includePrediction ? useSWR(`/api/sensor/8/${column}/prediction`, fetcherPrediction) : { data: undefined }
   return (
     <Box sx={sx}>
-      {(data != null) ? <AlarmGraph time={data.times} measurments={data.measurements} unit={unit} alarms={alarms} predictionData={predictionData}/> : <CircularProgress size={100} />}
+      {(data != null) ? <AlarmGraph time={data.times} measurments={data.measurements} unit={unit} alarms={alarms} predictionData={dataPrediction}/> : <CircularProgress size={100} />}
     </Box>
   )
 }
