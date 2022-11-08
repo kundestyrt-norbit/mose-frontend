@@ -12,6 +12,7 @@ import {
   ChartData
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
+import { SensorPredictions } from './types'
 
 ChartJS.register(
   TimeScale,
@@ -29,8 +30,9 @@ interface GraphParams {
   label?: string
   title?: string
   unit?: string
+  dataPrediction?: SensorPredictions
 }
-export function Graph ({ time, measurments, label, title, unit }: GraphParams): JSX.Element {
+export function Graph ({ time, measurments, label, title, unit, dataPrediction }: GraphParams): JSX.Element {
   const options: ChartOptions<'line'> = {
     responsive: true,
     elements: {

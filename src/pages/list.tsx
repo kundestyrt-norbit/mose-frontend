@@ -77,7 +77,7 @@ const SensorModal = ({ id, column, metaData }: Sensor): JSX.Element => {
           {metaData?.friendlyName}
         </BootstrapDialogTitle>
         <SensorDialogContent>
-          <SensorGraph id={id} column={column} sx={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '20px' }} unit={metaData?.unit} />
+          <SensorGraph id={id} column={column} sx={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '20px' }} unit={metaData?.unit} includePrediction={true}/>
           {metaData?.description}
           <AddToDash id={id} column={column} gatewayId={8} />
         </SensorDialogContent>
