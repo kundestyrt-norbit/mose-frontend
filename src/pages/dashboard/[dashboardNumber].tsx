@@ -1,6 +1,6 @@
 import PageLayoutWrapper from '../../components/layout/PageLayoutWrapper'
 import TemporaryDrawer from '../../components/elements/dashboard/TopBar'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import DashBoardView from '../../components/elements/dashboard/DashBoardView'
 import AddSensor from '../../components/elements/dashboard/AddSensor'

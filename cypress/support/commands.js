@@ -1,25 +1,23 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+const Auth = require ( "aws-amplify" ).Auth;
+import "cypress-localstorage-commands"; 
+const username = Cypress. env("TEST_USERNAME"); 
+const password = Cypress. env("TEST_PASSWORD"); 
+const userPoolId = Cypress. env("COGNITO_USER_POOL_ID"); 
+const clientId = Cypress. env ("COGNITO_CLIENT_APP_ID"); 
+const awsconfig = { 
+  aws_user_pools_id: userPoolId, 
+  aws_user_pools_web_client_id: clientId, 
+}; 
+Auth. configure (awsconfig) ;
+
+Cypress.Commands.add("signIn", () => {
+    cy.session('testLogin', () => {
+        cy.then(() => Auth.signIn(username, password)).then((cognitoUser) => {
+          let { accessToken, idToken, refreshToken } = cognitoUser.signInUserSession
+          cy.setCookie(`CognitoIdentityServiceProvider.${cognitoUser.pool.clientId}.LastAuthUser`, cognitoUser.username)
+          cy.setCookie(`CognitoIdentityServiceProvider.${cognitoUser.pool.clientId}.${cognitoUser.username}.accessToken`, accessToken.jwtToken)
+          cy.setCookie(`CognitoIdentityServiceProvider.${cognitoUser.pool.clientId}.${cognitoUser.username}.idToken`, idToken.jwtToken)
+          // cy.setCookie(`CognitoIdentityServiceProvider.${cognitoUser.pool.clientId}.${cognitoUser.username}.refreshToken`, refreshToken)
+        });
+    })
+  }); //
