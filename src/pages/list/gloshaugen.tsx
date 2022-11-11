@@ -12,7 +12,7 @@ const PageWrapper = styled(Box)`
   display: flex;
   flex-direction: column;
 `
-
+// hardcoded page for sensors at Gløshaugen. Should be done dynamically in the future
 const ListPage: NextPage = () => {
   return (
     <PageLayoutWrapper>

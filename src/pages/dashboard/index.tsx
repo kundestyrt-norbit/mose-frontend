@@ -4,17 +4,17 @@ import TemporaryDrawer from '../../components/elements/dashboard/TopBar'
 import React from 'react'
 
 /**
- * Does nothing. Just redirection to /sensors
- * Natural page to have in the future
+ * Landing page of the app.
  */
-const hei: NextPage = () => {
+const DashboardPage: NextPage = () => {
   return (
     <div>
       <PageLayoutWrapper>
         <TemporaryDrawer />
+        <h2>Choose a dashboard or create a dashboard by clicking on the button above</h2>
       </PageLayoutWrapper>
     </div>
   )
 }
 
-export default hei
+export default DashboardPage

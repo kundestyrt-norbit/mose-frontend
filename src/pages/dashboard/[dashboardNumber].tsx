@@ -5,6 +5,8 @@ import { useRouter } from 'next/router'
 import DashBoardView from '../../components/elements/dashboard/DashBoardView'
 import AddSensor from '../../components/elements/dashboard/AddSensor'
 import { Dashboard } from '../../components/elements/dashboard/types'
+import { CircularProgress } from '@mui/material'
+import { Box } from '@mui/system'
 
 const DashboardPage = (): JSX.Element => {
   const [dashboard, setDashboard] = useState<Dashboard | null>(null)
@@ -25,12 +27,15 @@ const DashboardPage = (): JSX.Element => {
 
   return (
     <PageLayoutWrapper>
-      {(dashboard != null) &&
-        <>
+      {(dashboard != null)
+        ? <>
           <TemporaryDrawer />
           <AddSensor dashboardId={dashboard.dashboardId} updateDashboard={updateDashboard} />
           <DashBoardView {...dashboard} onAddAlarm={updateDashboard} />
         </>
+        : <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
+            <CircularProgress sx={{ marginTop: '4rem' }}/>
+        </Box>
       }
     </PageLayoutWrapper>
   )

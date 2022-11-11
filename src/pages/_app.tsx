@@ -7,6 +7,7 @@ import { CacheProvider, EmotionCache } from '@emotion/react'
 import { theme } from '../styles/theme'
 import createEmotionCache from '../utils/createEmotionCache'
 import Amplify from 'aws-amplify'
+import '../index.css'
 import {
   Authenticator,
   Button,

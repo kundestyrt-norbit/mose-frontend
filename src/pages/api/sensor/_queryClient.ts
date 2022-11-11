@@ -71,17 +71,19 @@ export async function getSensorDataPrediction (gatewayId: number, column: string
   const item = (await userDB.send(new QueryCommandDynamoDB({
     TableName: 'Predictions',
     KeyConditionExpression: 'gatewayId = :gatewayId',
+    FilterExpression: 'attribute_exists(#column)',
     ExpressionAttributeValues: {
       ':gatewayId': gatewayId
     },
     ExpressionAttributeNames: {
-      '#time': 'time'
+      '#time': 'time',
+      '#column': column
     },
     ProjectionExpression: `#time, ${column}`,
     ScanIndexForward: false,
-    Limit: 1
+    Limit: 24
   }))).Items
-  if (item?.length === 1) {
+  if (item !== undefined && item.length > 0) {
     return {
       time: item[0].time,
       percentile005: item[0][column].percentile005,

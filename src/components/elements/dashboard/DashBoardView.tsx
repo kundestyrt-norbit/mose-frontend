@@ -1,9 +1,11 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, MenuItem, Switch, TextField } from '@mui/material'
 import React, { useState } from 'react'
 import { SensorAlarmGraph } from './SensorAlarmGraph'
-import { Alarm, ALARM_TYPE, Dashboard, Sensor } from './types'
+import { Alarm, ALARM_TYPE, Dashboard, Sensor, SensorPredictions } from './types'
 import { Controller, useForm } from 'react-hook-form'
 import { SensorMetaDataMap } from '../../../pages/api/sensor/_sensorMetaData'
+import useSWR from 'swr'
+import { SensorMeasurements } from '../../../pages/api/sensor/_queryClient'
 
 const AlarmFormDialog = ({ sensor, dashboardId, onAddAlarm, isOpen, onCloseDialog }: {sensor: Sensor, isOpen: boolean, dashboardId: string, onAddAlarm: () => void, onCloseDialog: () => void}): JSX.Element => {
   const handleClose = (): void => {
@@ -103,21 +105,35 @@ const AlarmFormDialog = ({ sensor, dashboardId, onAddAlarm, isOpen, onCloseDialo
     </div>
   )
 }
+export const fetcher = async (input: RequestInfo | URL, init?: RequestInit | undefined): Promise<SensorMeasurements> => await fetch(input, init).then(async (res) => await (res.json() as Promise<SensorMeasurements>))
+export const fetcherPrediction = async (input: RequestInfo | URL, init?: RequestInit | undefined): Promise<SensorPredictions> => await fetch(input, init).then(async (res) => await (res.json() as Promise<SensorPredictions>))
 
 const DashboardSensorView = ({ dashboardId, sensor, onAddAlarm, unit }: {sensor: Sensor, dashboardId: string, unit: string, onAddAlarm: () => void}): JSX.Element => {
   const [openDialog, setOpenDialog] = useState(false)
   const [includePrediction, setIncludePrediction] = useState(true)
   const { column, id, alarms } = sensor
-
+  const { data } = useSWR(`/api/sensor/${id}/${column}`, fetcher)
+  const { data: dataPrediction, error } = useSWR(includePrediction ? `/api/sensor/8/${column}/prediction` : null, fetcherPrediction, { shouldRetryOnError: false })
   return (
-    <Box>
-      <Switch defaultChecked onChange={(e) => setIncludePrediction(e.target.checked)} />
-      <SensorAlarmGraph column={column} id={id} alarms={alarms} unit={unit} includePrediction={includePrediction}/>
+    <>
+      {(data?.times?.length !== 0)
+        ? <Box>
+       <Box>
+       {error === undefined
+         ? <>
+        Show predictions
+        <Switch checked={includePrediction} onChange={(e) => setIncludePrediction(e.target.checked)} /></>
+         : <>Predictions not available</> }
+      </Box>
+      <SensorAlarmGraph data={data} alarms={alarms} unit={unit} predictions={dataPrediction}/>
       {openDialog && <AlarmFormDialog sensor={sensor} dashboardId={dashboardId} onAddAlarm={onAddAlarm} onCloseDialog={() => setOpenDialog(false)} isOpen={openDialog}/>}
       <Button sx={{ marginBottom: '20px' }} variant="outlined" onClick={() => setOpenDialog(true)}>
         Configure alarm
       </Button>
-    </Box>
+      </Box>
+        : <>No data to display</>}
+    </>
+
   )
 }
 

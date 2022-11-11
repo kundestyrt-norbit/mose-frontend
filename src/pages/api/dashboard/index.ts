@@ -21,9 +21,9 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
   const userId: string | null = await getVerifiedUserID(Auth)
   if (userId != null) {
     if (req.method === 'PUT') {
-      return await createDashboard(req, userId).then(item => res.end(JSON.stringify(item))).catch(error => {
+      return await createDashboard(req, userId).then(item => res.end(JSON.stringify(item))).catch(() => {
         res.status(500)
-        return res.end(JSON.stringify(error))
+        return res.end()
       })
     }
     res.status(404)

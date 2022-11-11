@@ -6,6 +6,7 @@ import { userDB } from '../../../../_queryUserSettings'
 export async function addAlarm (req: NextApiRequest, userId: string): Promise<Boolean> {
   const { dashboardId, column, sensorId, gatewayId } = req.query
   const { name, type, value } = req.body
+  // to add an alarm we must first find the index of the sensor in the given dashboard
   const dashboardFromDb = (await userDB.send(new GetCommand({
     TableName: process.env.USER_DB_TABLE_NAME,
     Key: {
