@@ -22,13 +22,19 @@ const SensorDialogContent = styled(DialogContent)({
   alignItems: 'center',
   justifyContent: 'center',
   flexDirection: 'column',
-  width: '100%'
+  width: '100%',
+  '& .MuiDialogContent-root': {
+    height: 'initial'
+  },
+  overflowY: 'initial'
 })
 
 const SensorDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiPaper-root': {
-    width: '100%',
-    maxWidth: '100%'
+    maxHeight: '90vh',
+    width: '100vw',
+    height: '100vh',
+    maxWidth: '90vw'
   }
 }))
 const PageWrapper = styled(Box)`
@@ -90,7 +96,7 @@ const SensorModal = ({ id, column, metaData }: Sensor): JSX.Element => {
           {metaData?.friendlyName}
         </BootstrapDialogTitle>
         <SensorDialogContent>
-          <SensorGraph id={id} column={column} sx={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '20px' }} unit={metaData?.unit} />
+          <SensorGraph id={id} column={column} sx={{ width: '80vw', height: 'calc(90vh - 5rem - 140px - 6%)', display: 'flex', justifyContent: 'center', marginTop: '20px' }} unit={metaData?.unit} includePrediction={true}/>
           {metaData?.description}
           <AddToDash id={id} column={column} gatewayId={8} />
         </SensorDialogContent>
@@ -116,7 +122,7 @@ const ListPage: NextPage = () => {
         <Link href='/list/gloshaugen'>
           <TitleButton> Gløshaugen </TitleButton>
         </Link>
-        <h2 style={{ marginTop: '0', color: '#faacac' }}> To be implemented ...</h2>
+        <h2 style={{ marginTop: '0', color: '#faacac' }}> No sensors here yet ...</h2>
       </PageWrapper>
     </PageLayoutWrapper>
   )

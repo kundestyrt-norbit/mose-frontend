@@ -45,6 +45,7 @@ function addHours (numOfHours: number, date = new Date()): number {
 
 export function Graph ({ time, measurments, label, title, unit, dataPrediction }: GraphParams): JSX.Element {
   const options: ChartOptions<'line'> = {
+    maintainAspectRatio: false,
     responsive: true,
     elements: {
       point: {

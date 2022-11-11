@@ -22,7 +22,9 @@ export function SensorGraph ({ id, column, sx, friendlyName, unit, includePredic
   const { data: dataPrediction } = includePrediction ? useSWR(`/api/sensor/8/${column}/prediction`, fetcherPrediction) : { data: undefined }
   return (
     <Box sx={sx}>
+    {/* <> */}
       {(data != null) ? <Graph time={data.times} measurments={data.measurements} unit={unit} dataPrediction={dataPrediction}/> : <CircularProgress size={100} />}
+    {/* </> */}
     </Box>
   )
 }

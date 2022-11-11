@@ -18,7 +18,7 @@ const ListPage: NextPage = () => {
     <PageLayoutWrapper>
       <PageWrapper>
         <h1>Gløshaugen</h1>
-        <h2 style={{ marginTop: '100px', color: '#faacac', height: '100%' }}> To be implemented ...</h2>
+        <h2 style={{ marginTop: '100px', color: '#faacac', height: '100%' }}> No sensors here yet ...</h2>
       </PageWrapper>
     </PageLayoutWrapper>
   )

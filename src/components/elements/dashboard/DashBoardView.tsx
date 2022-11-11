@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, MenuItem, TextField } from '@mui/material'
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, MenuItem, Switch, TextField } from '@mui/material'
 import React, { useState } from 'react'
 import { SensorAlarmGraph } from './SensorAlarmGraph'
 import { Alarm, ALARM_TYPE, Dashboard, Sensor } from './types'
@@ -105,12 +105,13 @@ const AlarmFormDialog = ({ sensor, dashboardId, onAddAlarm, isOpen, onCloseDialo
 }
 
 const DashboardSensorView = ({ dashboardId, sensor, onAddAlarm, unit }: {sensor: Sensor, dashboardId: string, unit: string, onAddAlarm: () => void}): JSX.Element => {
-  const { column, id, alarms } = sensor
   const [openDialog, setOpenDialog] = useState(false)
-  const [includePrediction, SetIncludePrediction] = useState(true)
+  const [includePrediction, setIncludePrediction] = useState(true)
+  const { column, id, alarms } = sensor
 
   return (
     <Box>
+      <Switch defaultChecked onChange={(e) => setIncludePrediction(e.target.checked)} />
       <SensorAlarmGraph column={column} id={id} alarms={alarms} unit={unit} includePrediction={includePrediction}/>
       {openDialog && <AlarmFormDialog sensor={sensor} dashboardId={dashboardId} onAddAlarm={onAddAlarm} onCloseDialog={() => setOpenDialog(false)} isOpen={openDialog}/>}
       <Button sx={{ marginBottom: '20px' }} variant="outlined" onClick={() => setOpenDialog(true)}>
