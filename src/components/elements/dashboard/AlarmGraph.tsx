@@ -45,11 +45,6 @@ export function AlarmGraph ({ time, measurments, label, title, unit, alarms }: G
 
   const options: ChartOptions<'line'> & {plugins: {alarmLines: {[key in ALARM_TYPE]?: Alarm}}} = {
     responsive: true,
-    elements: {
-      point: {
-        radius: 3
-      }
-    },
     scales: {
       x: {
         type: 'time',
@@ -101,6 +96,8 @@ export function AlarmGraph ({ time, measurments, label, title, unit, alarms }: G
       {
         label,
         data: measurments,
+        pointRadius: 3,
+        pointBorderWidth: 1,
         borderColor: 'blue',
         pointBackgroundColor: (ctx, option) => {
           const index = ctx.dataIndex
