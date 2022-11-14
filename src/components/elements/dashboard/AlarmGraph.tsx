@@ -12,7 +12,8 @@ import {
   ChartData,
   Plugin,
   ChartDataset,
-  Filler
+  Filler,
+  ScatterDataPoint
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
 import { Alarm, ALARM_TYPE, SensorPredictions } from './types'
@@ -124,7 +125,7 @@ export function AlarmGraph ({ time, measurments, label, title, unit, alarms, dat
       pointBackgroundColor: (ctx, option) => {
         const index = ctx.dataIndex
         const value = ctx.dataset.data[index]
-        return (alarms != null) ? alarmBackgroundColor(value as number, alarms) : 'white'
+        return (alarms != null) ? alarmBackgroundColor(value as ScatterDataPoint, alarms) : 'white'
       }
     }
   ]
@@ -192,7 +193,7 @@ export function AlarmGraph ({ time, measurments, label, title, unit, alarms, dat
   return <Line options={options} data={data} plugins={[plugin]} />
 }
 
-function alarmBackgroundColor (value: Number, alarms: {[key in ALARM_TYPE]: Alarm}): string {
+function alarmBackgroundColor (value: ScatterDataPoint, alarms: {[key in ALARM_TYPE]: Alarm}): string {
   const lowerAlarm = (alarms.Lower !== undefined ? value.y <= alarms.Lower.value : false)
   const upperAlarm = alarms.Upper !== undefined ? value.y >= alarms.Upper.value : false
   return lowerAlarm || upperAlarm ? 'red' : 'white'
