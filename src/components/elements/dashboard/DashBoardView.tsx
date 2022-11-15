@@ -132,8 +132,11 @@ const DashboardSensorView = ({ dashboardId, sensor, onAddAlarm, unit }: {sensor:
   const handleRange = (): boolean => {
     console.log(range?.from, range?.to)
     if (range?.from != null && range?.to != null && range.from < new Date(range.to.getTime() + 3600 * 1000 * 24)) {
-      setView('range')
-      mutate(`/api/sensor/${sensor.id}/${sensor.column}`).catch(e => console.log(e))
+      if (view !== 'range') {
+        setView('range')
+      } else {
+        mutate(`/api/sensor/${sensor.id}/${sensor.column}`).catch(e => console.log(e))
+      }
       setOpen(false)
       setIncludesToday(range?.to !== undefined && new Date() < new Date(range.to.getTime() + 3600 * 1000 * 24))
       return true
@@ -169,7 +172,7 @@ const DashboardSensorView = ({ dashboardId, sensor, onAddAlarm, unit }: {sensor:
              : <>Predictions not available in the past</>)
          : <>Predictions not available</> }
       </Box>
-      <SensorAlarmGraph data={data} alarms={alarms} unit={unit} predictions={includesToday && includePrediction ? dataPrediction : undefined}/>
+      <SensorAlarmGraph sx={{ height: '50vh' }} data={data} alarms={alarms} unit={unit} predictions={includesToday && includePrediction ? dataPrediction : undefined}/>
       {openDialog && <AlarmFormDialog sensor={sensor} dashboardId={dashboardId} onAddAlarm={onAddAlarm} onCloseDialog={() => setOpenDialog(false)} isOpen={openDialog}/>}
       <Button sx={{ marginBottom: '20px', maxWidth: '400px', padding: '14.5px', color: 'primary.dark' }} variant="outlined" onClick={() => setOpenDialog(true)}>
         Configure alarm

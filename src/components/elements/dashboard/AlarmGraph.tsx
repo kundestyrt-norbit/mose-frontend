@@ -164,18 +164,22 @@ function AlarmGraph ({ time, measurments, label, title, unit, alarms, dataPredic
       const xAxis = chartInstance.scales.x
       const ctx = chartInstance.ctx
       ctx.save()
-      if (options != null) {
+      if (options != null && args.index === 0) {
         Object.entries(options).forEach(([alarmType, alarm]) => {
           const yValueStart = yAxis.getPixelForValue(alarm.value)// yAxis.getPixelForValue(testLine[0])
           const yValueEnd = yValueStart
           const xValueStart = xAxis.left
           const xValueEnd = xAxis.right
-
-          ctx.font = '18 px sans-serif'
-          ctx.fillStyle = 'rgba(50, 155, 255, 0.85)'
-          ctx.fillText((alarm.name != null) ? `${alarmType}:${alarm.name}` : '', 40, yValueStart + 10)
+          console.log(alarm)
+          ctx.font = '18px bold sans-serif'
+          if (alarm.name != null) {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.75)'
+            ctx.fillRect(35, yValueStart - 2, ctx.measureText(`${alarmType}:${alarm.name}`).width + 10, 25)
+            ctx.fillStyle = 'red'
+            ctx.fillText(`${alarmType}:${alarm.name}`, 40, yValueStart + 18)
+          }
           ctx.setLineDash([15, 15])
-          ctx.strokeStyle = 'rgba(50, 155, 255, 0.85)'
+          ctx.strokeStyle = 'red'
           ctx.lineWidth = 2.5
           ctx.beginPath()
           ctx.moveTo(xValueStart, yValueStart)
