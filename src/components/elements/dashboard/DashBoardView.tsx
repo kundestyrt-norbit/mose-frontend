@@ -1,5 +1,5 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, InputLabel, MenuItem, Select, Switch, TextField } from '@mui/material'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SensorAlarmGraph } from './SensorAlarmGraph'
 import { Alarm, ALARM_TYPE, Dashboard, Sensor, SensorPredictions } from './types'
 import { Controller, useForm } from 'react-hook-form'
