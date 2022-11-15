@@ -85,7 +85,7 @@ export async function getSensorDataPrediction (gatewayId: number, column: string
   }))).Items
   if (item !== undefined && item.length > 0) {
     return {
-      time: item[0].time,
+      time: (item[0].time as string).split(' ')[0] + 'T' + (item[0].time as string).split(' ')[1],
       percentile005: item[0][column].percentile005,
       percentile050: item[0][column].percentile050,
       percentile095: item[0][column].percentile095
@@ -143,7 +143,7 @@ export async function getSensorData (id: number, column: string, from?: Date, to
       metaData: SensorMetaDataMap[column]
     }
     data.Rows?.forEach(row => {
-      row.Data?.[2].ScalarValue !== undefined && sensorData.times.push(row.Data?.[2].ScalarValue)
+      row.Data?.[2].ScalarValue !== undefined && sensorData.times.push(row.Data?.[2].ScalarValue.split(' ')[0] + 'T' + row.Data?.[2].ScalarValue.split(' ')[1])
       row.Data?.[3].ScalarValue !== undefined && sensorData.measurements.push(+row.Data?.[3].ScalarValue)
     })
     return sensorData
