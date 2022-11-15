@@ -11,7 +11,6 @@ describe('Log in and out', () => {
   it('Logs in and out of the site', () => {
     cy.visit('/')
 
-    cy.contains('R').click()
-    cy.contains('Logout').click()
+    cy.contains('Sign out').click()
   })
 })

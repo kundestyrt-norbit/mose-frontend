@@ -14,7 +14,7 @@ import React, { useEffect } from 'react'
 import { Dashboard, DashboardListItem } from './types'
 import { v4 as uuidv4 } from 'uuid'
 import { createDashboard, deleteDashboard, getDashboards } from '../../../utils/dashboardUtils'
-import { IconButton, TextField } from '@mui/material'
+import { CircularProgress, IconButton, TextField } from '@mui/material'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import { useRouter } from 'next/router'
 
@@ -26,7 +26,7 @@ export default function TemporaryDrawer (): JSX.Element {
   })
   const [dashboardName, setDashboardName] = React.useState<string>('')
 
-  const [dashboardList, setDashboardList] = React.useState<DashboardListItem[]>([])
+  const [dashboardList, setDashboardList] = React.useState<DashboardListItem[] | null>(null)
   useEffect(() => {
     getDashboards().then(res => setDashboardList(res)).catch(err => console.log(err))
   }, [state])
@@ -55,7 +55,7 @@ export default function TemporaryDrawer (): JSX.Element {
     }
 
     createDashboard(dashboard).then(res => {
-      setDashboardList([...dashboardList, { dashboardId: dashboard.dashboardId, dashboardName: dashboard.dashboardName }])
+      setDashboardList([...dashboardList ?? [], { dashboardId: dashboard.dashboardId, dashboardName: dashboard.dashboardName }])
       // setState({ ...state, [anchor]: true })
     }
     ).catch((error) => {
@@ -66,8 +66,8 @@ export default function TemporaryDrawer (): JSX.Element {
   const removeDashboard = (e: React.MouseEvent<HTMLButtonElement>, dashboard: DashboardListItem): void => { // WORK IN PROGRESS
     e.stopPropagation()
     deleteDashboard(dashboard.dashboardId).then(async res => {
-      const newDashboardList = dashboardList.filter((item) => item.dashboardId !== dashboard.dashboardId)
-      setDashboardList(newDashboardList)
+      const newDashboardList = dashboardList?.filter((item) => item.dashboardId !== dashboard.dashboardId)
+      setDashboardList(newDashboardList ?? [])
       if (router.asPath.includes(dashboard.dashboardId)) {
         await router.push('/dashboard')
       }
@@ -82,8 +82,9 @@ export default function TemporaryDrawer (): JSX.Element {
       <List onClick={toggleDrawer(anchor, false)}
         onKeyDown={toggleDrawer(anchor, false)}>
         {
-          dashboardList.map((dashboardListItem, index) =>
-            (<ListItem key={dashboardListItem.dashboardId} disablePadding>
+          (dashboardList != null)
+            ? dashboardList.map((dashboardListItem, index) =>
+              (<ListItem key={dashboardListItem.dashboardId} disablePadding>
             <Link href={'/dashboard/' + dashboardListItem.dashboardId} >
               <ListItemButton> {/* Add Onclick-function that writes heading */}
                 <ListItemIcon>
@@ -95,7 +96,9 @@ export default function TemporaryDrawer (): JSX.Element {
             <IconButton sx={{ marginRight: '25px' }} onClick={(e) => removeDashboard(e, dashboardListItem)}>
               <DeleteForeverIcon />
             </IconButton>
-          </ListItem>))}
+          </ListItem>))
+            : <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
+          <CircularProgress color='secondary'/></Box>}
       </List>
       <Divider />
       <List sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>

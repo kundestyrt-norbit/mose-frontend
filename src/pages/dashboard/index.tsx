@@ -2,19 +2,20 @@ import type { NextPage } from 'next'
 import PageLayoutWrapper from '../../components/layout/PageLayoutWrapper'
 import TemporaryDrawer from '../../components/elements/dashboard/TopBar'
 import React from 'react'
+import { Container } from '@mui/material'
 
 /**
- * Does nothing. Just redirection to /sensors
- * Natural page to have in the future
+ * Landing page of the app.
  */
-const hei: NextPage = () => {
+const DashboardPage: NextPage = () => {
   return (
     <div>
       <PageLayoutWrapper>
         <TemporaryDrawer />
+        <Container sx={{ display: 'flex', justifyContent: 'center' }}><h2>Choose a dashboard or create a dashboard by clicking on the button above</h2></Container>
       </PageLayoutWrapper>
     </div>
   )
 }
 
-export default hei
+export default DashboardPage

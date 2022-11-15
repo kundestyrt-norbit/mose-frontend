@@ -1,17 +1,12 @@
-import type { NextPage } from 'next'
-import { SectionsWrapper } from '../components/layout/Section'
-import PageLayoutWrapper from '../components/layout/PageLayoutWrapper'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
-/**
- * Does nothing. Just redirection to /sensors
- * Natural page to have in the future
- */
-const HomePage: NextPage = () => {
-  return (
-    <PageLayoutWrapper>
-      <SectionsWrapper>Home</SectionsWrapper>
-    </PageLayoutWrapper>
-  )
+const RedirectPage = (): JSX.Element => {
+  const router = useRouter()
+  useEffect(() => {
+    router.replace('/dashboard').catch(err => console.log(err))
+  }, [])
+  return <div style={{ display: 'none' }}></div>
 }
 
-export default HomePage
+export default RedirectPage

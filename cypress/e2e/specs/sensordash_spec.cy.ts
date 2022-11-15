@@ -29,10 +29,11 @@ describe('Adds a sensor to and removes it from a dashboard', () => {
 
     cy.visit('/list')
 
-    cy.get(sensorButton).eq(0).click()
+    cy.contains('Temperature').click()
 
-    cy.get(sensorDashboardList).invoke('text').then(label => {
+    cy.contains('Temperature').invoke('text').then(label => {
       let sensorName = label
+      console.log(sensorName)
       cy.wrap(sensorName).as('sensorName')
     })
 
@@ -79,9 +80,9 @@ describe('Adds a sensor to and removes it from a dashboard', () => {
   it('Removes sensor from list page', () => {
     cy.visit('/list')
 
-    cy.get(sensorButton).eq(0).click()
+    cy.contains('Temperature').click()
 
-    cy.get(sensorDashboardList).invoke('text').then(label => {
+    cy.contains('Add to dashboard').invoke('text').then(label => {
       let sensorName = label
       cy.wrap(sensorName).as('sensorName')
     })

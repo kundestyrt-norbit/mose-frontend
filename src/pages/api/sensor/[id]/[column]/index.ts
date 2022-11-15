@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getSensors } from './_queryClient'
-import getVerifiedUserID from '../dashboard/_verifyUser'
-import config from '../../../aws-exports'
+import { getSensorData } from '../../_queryClient'
+import getVerifiedUserID from '../../../dashboard/_verifyUser'
+import config from '../../../../../aws-exports'
 import Amplify, { withSSRContext } from 'aws-amplify'
 
 Amplify.configure({
@@ -20,7 +20,16 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
   const { Auth } = withSSRContext({ req })
   const userId: string | null = await getVerifiedUserID(Auth)
   if (userId != null) {
-    return await getSensors().then(sesnsors => res.end(JSON.stringify(sesnsors))).catch(() => {
+    const { id, column, from, to } = req.query
+    let fromDate
+    let toDate
+    try {
+      fromDate = new Date(from as string)
+      const toExclusive = new Date(to as string)
+      toExclusive.setDate(toExclusive.getDate() + 1)
+      toDate = toExclusive
+    } catch {}
+    return await getSensorData(Number(id), String(column), fromDate, toDate).then(sensors => res.end(JSON.stringify(sensors))).catch(() => {
       res.status(500)
       return res.end()
     })

@@ -1,9 +1,13 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, MenuItem, TextField } from '@mui/material'
-import React, { useState } from 'react'
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, InputLabel, MenuItem, Select, Switch, TextField } from '@mui/material'
+import React, { useEffect, useState } from 'react'
 import { SensorAlarmGraph } from './SensorAlarmGraph'
-import { Alarm, ALARM_TYPE, Dashboard, Sensor } from './types'
+import { Alarm, ALARM_TYPE, Dashboard, Sensor, SensorPredictions } from './types'
 import { Controller, useForm } from 'react-hook-form'
 import { SensorMetaDataMap } from '../../../pages/api/sensor/_sensorMetaData'
+import useSWR, { useSWRConfig } from 'swr'
+import { SensorMeasurements } from '../../../pages/api/sensor/_queryClient'
+import { DateRange, DayPicker } from 'react-day-picker'
+import 'react-day-picker/dist/style.css'
 
 const AlarmFormDialog = ({ sensor, dashboardId, onAddAlarm, isOpen, onCloseDialog }: {sensor: Sensor, isOpen: boolean, dashboardId: string, onAddAlarm: () => void, onCloseDialog: () => void}): JSX.Element => {
   const handleClose = (): void => {
@@ -103,18 +107,102 @@ const AlarmFormDialog = ({ sensor, dashboardId, onAddAlarm, isOpen, onCloseDialo
     </div>
   )
 }
+export const fetcherPrediction = async (input: RequestInfo | URL, init?: RequestInit | undefined): Promise<SensorPredictions> => await fetch(input, init).then(async (res) => await (res.json() as Promise<SensorPredictions>))
 
 const DashboardSensorView = ({ dashboardId, sensor, onAddAlarm, unit }: {sensor: Sensor, dashboardId: string, unit: string, onAddAlarm: () => void}): JSX.Element => {
   const { column, id, alarms } = sensor
   const [openDialog, setOpenDialog] = useState(false)
+  const [open, setOpen] = useState(false)
+  const [includesToday, setIncludesToday] = useState(true)
+  const [range, setRange] = useState<DateRange | undefined>(undefined)
+  const [view, setView] = useState<string>('current')
+  const { mutate } = useSWRConfig()
+  const [includePrediction, setIncludePrediction] = useState(true)
+
+  useEffect(() => {
+    if (view === 'current') {
+      mutate(`/api/sensor/${sensor.id}/${sensor.column}`).catch(e => console.log(e))
+      setRange(undefined)
+      setIncludesToday(true)
+    } else if (range?.from != null && range?.to != null && range.from < new Date(range.to.getTime() + 3600 * 1000 * 24)) {
+      mutate(`/api/sensor/${sensor.id}/${sensor.column}`).catch(e => console.log(e))
+    }
+  }, [view])
+
+  const handleRange = (): boolean => {
+    console.log(range?.from, range?.to)
+    if (range?.from != null && range?.to != null && range.from < new Date(range.to.getTime() + 3600 * 1000 * 24)) {
+      if (view !== 'range') {
+        setView('range')
+      } else {
+        mutate(`/api/sensor/${sensor.id}/${sensor.column}`).catch(e => console.log(e))
+      }
+      setOpen(false)
+      setIncludesToday(range?.to !== undefined && new Date() < new Date(range.to.getTime() + 3600 * 1000 * 24))
+      return true
+    }
+    return false
+  }
+
+  let fetcher
+
+  if (view === 'range' && range?.from != null && range?.to != null && range.from < new Date(range.to.getTime() + 3600 * 1000 * 24)) {
+    fetcher = async (input: string, init?: RequestInit | undefined): Promise<SensorMeasurements> => await fetch(`${input}?${new URLSearchParams(
+      { from: range.from?.toISOString() ?? '', to: range?.to !== undefined ? (new Date(range.to.getTime() + 3600 * 1000 * 24)).toISOString() : '' }
+    ).toString()}`, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(async (res) => await (res.json() as Promise<SensorMeasurements>))
+  } else {
+    fetcher = async (input: string, init?: RequestInit | undefined): Promise<SensorMeasurements> => await fetch(input, init).then(async (res) => await (res.json() as Promise<SensorMeasurements>))
+  }
+  const { data } = useSWR(`/api/sensor/${id}/${column}`, fetcher)
+  const { data: dataPrediction, error } = useSWR(includePrediction ? `/api/sensor/8/${column}/prediction` : null, fetcherPrediction, { shouldRetryOnError: false })
   return (
-    <Box>
-      <SensorAlarmGraph column={column} id={id} alarms={alarms} unit={unit} />
+     <Box>
+     {(data?.times?.length !== 0)
+       ? <>
+       <Box>
+       {error === undefined
+         ? (includesToday
+             ? <>
+        Show predictions
+        <Switch checked={includePrediction} onChange={(e) => setIncludePrediction(e.target.checked)} /></>
+             : <>Predictions not available in the past</>)
+         : <>Predictions not available</> }
+      </Box>
+      <SensorAlarmGraph sx={{ height: '50vh' }} data={data} alarms={alarms} unit={unit} predictions={includesToday && includePrediction ? dataPrediction : undefined}/>
       {openDialog && <AlarmFormDialog sensor={sensor} dashboardId={dashboardId} onAddAlarm={onAddAlarm} onCloseDialog={() => setOpenDialog(false)} isOpen={openDialog}/>}
-      <Button sx={{ marginBottom: '20px' }} variant="outlined" onClick={() => setOpenDialog(true)}>
+      <Button sx={{ marginBottom: '20px', maxWidth: '400px', padding: '14.5px', color: 'primary.dark' }} variant="outlined" onClick={() => setOpenDialog(true)}>
         Configure alarm
       </Button>
-    </Box>
+      </>
+       : <>No data to display</>
+      }
+      <FormControl>
+      <InputLabel id='selectView'>
+        View
+      </InputLabel>
+      <Select
+        label={'View'} onClick={() => setOpen(!open)}
+        defaultValue='current'
+        id='selectView'
+        renderValue={() => <>{ view === 'current' ? 'Last 14 days' : 'Range' }</>}
+        open={open}
+        sx={{ maxWidth: '400px', marginBottom: '20px', color: 'primary.dark' }}>
+        <MenuItem sx={{ fontSize: 'larger', borderBottom: '1px solid', borderBottomColor: 'primary.dark' }} value='current' onClick={(event) => setView('current')}>Last 14 days</MenuItem>
+        {/* <Select value='range'> */}
+        <div onClick={(e) => e.stopPropagation()}>
+          <DayPicker mode='range' style={{ justifyContent: 'center', display: 'flex' }} selected={range} onSelect={(range) => setRange(range)} hidden={{ before: new Date('2022-9-1'), after: new Date() }}
+            footer={<Button variant='contained' onClick={() => handleRange()}>Select date range</Button>} />
+        </div>
+        {/* </Select> */}
+        {/* <MenuItem value='range'>Date range</MenuItem> */}
+      </Select>
+      </FormControl>
+      </Box>
+
   )
 }
 

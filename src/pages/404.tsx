@@ -8,7 +8,7 @@ import React from 'react'
 const NotFoundPage = (): JSX.Element => {
   return (
     <PageLayoutWrapper>
-      <SectionsWrapper>Side ikke funnet.</SectionsWrapper>
+      <SectionsWrapper>Page not found.</SectionsWrapper>
     </PageLayoutWrapper>
   )
 }

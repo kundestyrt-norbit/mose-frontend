@@ -1,9 +1,16 @@
 import { QueryCommand, QueryCommandOutput, TimestreamQueryClient } from '@aws-sdk/client-timestream-query'
 import { NextApiRequest } from 'next'
-import { Dashboard, Sensor, SensorIncludeDashboard } from '../../../components/elements/dashboard/types'
+import { Dashboard, Sensor, SensorIncludeDashboard, SensorPredictions } from '../../../components/elements/dashboard/types'
 import { getDashboard } from '../dashboard/_queryUserSettings'
 import { ExistingSensors } from './_existingSensors'
 import { SensorMetaDataMap } from './_sensorMetaData'
+import {
+  DynamoDBClient
+} from '@aws-sdk/client-dynamodb'
+import {
+  DynamoDBDocumentClient,
+  QueryCommand as QueryCommandDynamoDB
+} from '@aws-sdk/lib-dynamodb'
 
 /**
  * Page for displaying information about a sensor.
@@ -12,6 +19,8 @@ declare const process: {
   env: {
     ACCESS_KEY_ID_AWS: string
     SECRET_ACCESS_KEY_AWS: string
+    ACCESS_KEY_ID_DYNAMO_DB_AWS: string
+    SECRET_ACCESS_KEY_DYNAMO_DB_AWS: string
   }
 }
 export const queryClient = new TimestreamQueryClient(
@@ -22,6 +31,17 @@ export const queryClient = new TimestreamQueryClient(
       secretAccessKey: process.env.SECRET_ACCESS_KEY_AWS
     }
   })
+
+const userDBClient = new DynamoDBClient(
+  {
+    region: 'eu-north-1',
+    credentials: {
+      accessKeyId: process.env.ACCESS_KEY_ID_DYNAMO_DB_AWS,
+      secretAccessKey: process.env.SECRET_ACCESS_KEY_DYNAMO_DB_AWS
+    }
+  })
+
+export const userDB = DynamoDBDocumentClient.from(userDBClient)
 
 async function queryDatabase<T> (query: string, queryDataProcessor: (data: QueryCommandOutput) => T): Promise<T> {
   const command = new QueryCommand({ QueryString: query })
@@ -47,13 +67,71 @@ export async function getSensorsIncludeDashboard (req: NextApiRequest, userId: s
   return sensors
 }
 
+export async function getSensorDataPrediction (gatewayId: number, column: string): Promise<SensorPredictions> {
+  const item = (await userDB.send(new QueryCommandDynamoDB({
+    TableName: 'Predictions',
+    KeyConditionExpression: 'gatewayId = :gatewayId',
+    FilterExpression: 'attribute_exists(#column)',
+    ExpressionAttributeValues: {
+      ':gatewayId': gatewayId
+    },
+    ExpressionAttributeNames: {
+      '#time': 'time',
+      '#column': column
+    },
+    ProjectionExpression: `#time, ${column}`,
+    ScanIndexForward: false,
+    Limit: 24
+  }))).Items
+  if (item !== undefined && item.length > 0) {
+    return {
+      time: item[0].time,
+      percentile005: item[0][column].percentile005,
+      percentile050: item[0][column].percentile050,
+      percentile095: item[0][column].percentile095
+    }
+  }
+  throw new Error()
+}
+// export async function getYesterdaysPrediction (gatewayId: number, column: string): Promise<SensorPredictions> {
+//   const item = (await userDB.send(new QueryCommandDynamoDB({
+//     TableName: 'Predictions',
+//     KeyConditionExpression: 'gatewayId = :gatewayId',
+//     ExpressionAttributeValues: {
+//       ':gatewayId': gatewayId
+//     },
+//     ExpressionAttributeNames: {
+//       '#time': 'time'
+//     },
+//     ProjectionExpression: `#time, ${column}`,
+//     ScanIndexForward: false,
+//     Limit: 1,
+//     LastEvaluatedKey:
+//   }))).Items
+//   if (item?.length === 1) {
+//     return {
+//       time: item[0].time,
+//       percentile005: item[0][column].percentile005,
+//       percentile050: item[0][column].percentile050,
+//       percentile095: item[0][column].percentile095
+//     }
+//   }
+//   throw new Error()
+// }
+
 export interface SensorMeasurements extends Sensor{
   times: string[]
   measurements: number[]
 }
 
-export async function getSensorData (id: number, column: string, daysAgo: number): Promise<SensorMeasurements> {
-  const query = `SELECT tagId, gateway_id, BIN(time, 30m) as bin_time, ROUND(AVG(${column}), 2) FROM SensorData.particleTest WHERE tagId = '${id}' and time between ago(${daysAgo}d) and now() GROUP BY tagId, gateway_id, BIN(time, 30m) ORDER BY BIN(time, 30m) DESC`
+export async function getSensorData (id: number, column: string, from?: Date, to?: Date): Promise<SensorMeasurements> {
+  let query
+  const daysAgo = 14
+  if (from != null && to != null && from < to) {
+    query = `SELECT tagId, gateway_id, BIN(time, 30m) as bin_time, ROUND(AVG(${column}), 2) FROM SensorData.particleTest WHERE tagId = '${id}' and time between DATE '${from.toISOString().split('T')[0]}' and DATE '${to.toISOString().split('T')[0]}' GROUP BY tagId, gateway_id, BIN(time, 30m) ORDER BY BIN(time, 30m) DESC`
+  } else {
+    query = `SELECT tagId, gateway_id, BIN(time, 30m) as bin_time, ROUND(AVG(${column}), 2) FROM SensorData.particleTest WHERE tagId = '${id}' and time between ago(${daysAgo}d) and now() GROUP BY tagId, gateway_id, BIN(time, 30m) ORDER BY BIN(time, 30m) DESC`
+  }
   return await queryDatabase(query, data => {
     const firstRowGatewayId = data.Rows?.[0]?.Data?.[1].ScalarValue
     const sensorData: SensorMeasurements = {
