@@ -33,7 +33,14 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
           ))
         delete item.sensors
       })
-      return res.status(200).end(JSON.stringify(item.Items))
+      return res.status(200).end(JSON.stringify(item.Items?.sort((a, b) => {
+        const left: string = a.dashboardName.toString()
+        const right: string = b.dashboardName.toString()
+        if (left === right) {
+          return 0
+        }
+        return left > right ? 1 : -1
+      })))
     }
     return res.status(404).end()
   } else {

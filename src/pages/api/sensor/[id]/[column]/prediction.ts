@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { getSensorDataPrediction } from '../../_queryClient'
+import getVerifiedUserID from '../../../dashboard/_verifyUser'
+import config from '../../../../../aws-exports'
 import Amplify, { withSSRContext } from 'aws-amplify'
-import { createDashboard } from './_queryUserSettings'
-import getVerifiedUserID from './_verifyUser'
-import config from '../../../aws-exports'
 
 Amplify.configure({
   ...config,
@@ -20,16 +20,11 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
   const { Auth } = withSSRContext({ req })
   const userId: string | null = await getVerifiedUserID(Auth)
   if (userId != null) {
-    if (req.method === 'PUT') {
-      return await createDashboard(req, userId).then(item => res.end(JSON.stringify(item))).catch(() => {
-        res.status(500)
-        return res.end()
-      })
-    }
-    res.status(404)
-    return res.end()
-  } else {
-    res.status(401)
-    return res.end()
+    const { id, column } = req.query
+    return await getSensorDataPrediction(Number(id), String(column)).then(sensors => res.end(JSON.stringify(sensors))).catch(() => {
+      res.status(404)
+      return res.end()
+    })
   }
+  return res.status(401).end()
 }

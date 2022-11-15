@@ -16,7 +16,7 @@ export default function CheckboxesTags ({ dashboardId, updateDashboard }: { dash
   React.useEffect(() => {
     getSensorsIncludeDashboard(dashboardId)
       .then(res => setSensorList(res)).catch(err => console.log(err))
-  }, [])
+  }, [dashboardId])
   React.useEffect(() => {
     setValue(sensorList.filter(s => s.sensorIncludedInDashboard))
   }, [sensorList])
