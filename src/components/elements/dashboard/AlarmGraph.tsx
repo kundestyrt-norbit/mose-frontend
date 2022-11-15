@@ -17,6 +17,7 @@ import {
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
 import { Alarm, ALARM_TYPE, SensorPredictions } from './types'
+import React from 'react'
 
 ChartJS.register(
   TimeScale,
@@ -44,7 +45,7 @@ function addHours (numOfHours: number, date = new Date()): number {
   return date.getTime()
 }
 
-export function AlarmGraph ({ time, measurments, label, title, unit, alarms, dataPrediction }: GraphParams): JSX.Element {
+function AlarmGraph ({ time, measurments, label, title, unit, alarms, dataPrediction }: GraphParams): JSX.Element {
   const maxMeasurement = Math.max(...measurments)
   const minMeasurement = Math.min(...measurments)
   const alarmValues = (alarms != null) ? Object.values(alarms).map(alarm => alarm.value) : null
@@ -58,11 +59,7 @@ export function AlarmGraph ({ time, measurments, label, title, unit, alarms, dat
 
   const options: ChartOptions<'line'> & {plugins: {alarmLines: {[key in ALARM_TYPE]?: Alarm}}} = {
     responsive: true,
-    elements: {
-      point: {
-        radius: 3
-      }
-    },
+    maintainAspectRatio: false,
     scales: {
       x: {
         type: 'time',
@@ -198,3 +195,18 @@ function alarmBackgroundColor (value: ScatterDataPoint, alarms: {[key in ALARM_T
   const upperAlarm = alarms.Upper !== undefined ? value.y >= alarms.Upper.value : false
   return lowerAlarm || upperAlarm ? 'red' : 'white'
 }
+
+const areEqual = (prevProps: GraphParams, nextProps: GraphParams): boolean => {
+  return (prevProps.alarms === nextProps.alarms &&
+    prevProps.time === nextProps.time &&
+    prevProps.dataPrediction?.time === nextProps.dataPrediction?.time &&
+    prevProps.dataPrediction?.percentile005 === nextProps.dataPrediction?.percentile005 &&
+    prevProps.dataPrediction?.percentile050 === nextProps.dataPrediction?.percentile050 &&
+    prevProps.dataPrediction?.percentile095 === nextProps.dataPrediction?.percentile095 &&
+    prevProps.measurments === nextProps.measurments &&
+    prevProps.label === nextProps.label &&
+    prevProps.title === nextProps.title &&
+    prevProps.unit === nextProps.unit)
+}
+
+export default React.memo(AlarmGraph, areEqual)

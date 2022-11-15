@@ -6,7 +6,8 @@ import { BootstrapDialogTitle } from './BootstrapDialogTitle'
 import { Sensor } from '../dashboard/types'
 import { SensorAlarmGraph } from '../dashboard/SensorAlarmGraph'
 import useSWR from 'swr'
-import { fetcher, fetcherPrediction } from '../dashboard/DashBoardView'
+import { fetcherPrediction } from '../dashboard/DashBoardView'
+import { SensorMeasurements } from '../../../pages/api/sensor/_queryClient'
 
 const SensorDialogContent = styled(DialogContent)({
   margin: 'auto',
@@ -34,6 +35,9 @@ const SensorDialog = styled(Dialog)(({ theme }) => ({
 const SensorModalButton = styled(Button)`
   background-color: ${({ theme }) => theme.palette.background.default};
 `
+
+export const fetcher = async (input: RequestInfo | URL, init?: RequestInit | undefined): Promise<SensorMeasurements> => await fetch(input, init).then(async (res) => await (res.json() as Promise<SensorMeasurements>))
+
 export const SensorModal = ({ id, column, metaData }: Sensor): JSX.Element => {
   const [open, setOpen] = useState(false)
   const { data } = useSWR(`/api/sensor/${id}/${column}`, fetcher)
@@ -49,7 +53,7 @@ export const SensorModal = ({ id, column, metaData }: Sensor): JSX.Element => {
             {metaData?.friendlyName}
           </BootstrapDialogTitle>
           <SensorDialogContent>
-            <SensorAlarmGraph data={data} unit={metaData?.unit} predictions={dataPrediction} sx={{ width: '80vw', height: 'calc(90vh - 5rem - 140px - 6%)', display: 'flex', justifyContent: 'center', marginTop: '20px' }}/>
+            <SensorAlarmGraph data={data} unit={metaData?.unit} predictions={dataPrediction} sx={{ width: '80vw', height: 'calc(90vh - 5rem - 160px - 6%)', marginTop: '20px' }}/>
             {metaData?.description}
             <AddToDash id={id} column={column} gatewayId={8} />
           </SensorDialogContent>

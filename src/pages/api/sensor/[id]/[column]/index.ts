@@ -20,9 +20,16 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
   const { Auth } = withSSRContext({ req })
   const userId: string | null = await getVerifiedUserID(Auth)
   if (userId != null) {
-    const { id, column, days } = req.query
-    const numDays = days ?? 14
-    return await getSensorData(Number(id), String(column), Number(numDays)).then(sensors => res.end(JSON.stringify(sensors))).catch(() => {
+    const { id, column, from, to } = req.query
+    let fromDate
+    let toDate
+    try {
+      fromDate = new Date(from as string)
+      const toExclusive = new Date(to as string)
+      toExclusive.setDate(toExclusive.getDate() + 1)
+      toDate = toExclusive
+    } catch {}
+    return await getSensorData(Number(id), String(column), fromDate, toDate).then(sensors => res.end(JSON.stringify(sensors))).catch(() => {
       res.status(500)
       return res.end()
     })

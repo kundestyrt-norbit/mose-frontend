@@ -1,7 +1,7 @@
 import { Box, CircularProgress } from '@mui/material'
 import { SxProps, Theme } from '@mui/system'
 import { SensorMeasurements } from '../../../pages/api/sensor/_queryClient'
-import { AlarmGraph } from './AlarmGraph'
+import AlarmGraph from './AlarmGraph'
 import { Alarm, ALARM_TYPE, SensorPredictions } from './types'
 interface SensorAlarmGraphProps {
   data?: SensorMeasurements
