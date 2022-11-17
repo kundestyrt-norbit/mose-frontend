@@ -85,6 +85,7 @@ const MyApp = (props: MyAppProps): JSX.Element => {
       >
       <CacheProvider value={emotionCache}>
         <Head>
+          <title>MOSE</title>
           <meta name="viewport" content="initial-scale=1, width=device-width" />
         </Head>
         <ThemeProvider theme={theme}>

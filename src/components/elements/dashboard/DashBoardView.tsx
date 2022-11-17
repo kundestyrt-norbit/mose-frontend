@@ -130,7 +130,6 @@ const DashboardSensorView = ({ dashboardId, sensor, onAddAlarm, unit }: {sensor:
   }, [view])
 
   const handleRange = (): boolean => {
-    console.log(range?.from, range?.to)
     if (range?.from != null && range?.to != null && range.from < new Date(range.to.getTime() + 3600 * 1000 * 24)) {
       if (view !== 'range') {
         setView('range')
