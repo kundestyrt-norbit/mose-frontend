@@ -170,7 +170,6 @@ function AlarmGraph ({ time, measurments, label, title, unit, alarms, dataPredic
           const yValueEnd = yValueStart
           const xValueStart = xAxis.left
           const xValueEnd = xAxis.right
-          console.log(alarm)
           ctx.font = '18px bold sans-serif'
           if (alarm.name != null) {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.75)'
