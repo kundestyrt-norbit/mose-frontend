@@ -18,7 +18,6 @@ const pages = ['Map', 'Dashboard', 'List']
 
 function signOut (): void {
   Auth.signOut()
-    .then(() => (console.log('Signing out')))
     .catch(err => console.log(err))
 }
 
